@@ -6,6 +6,6 @@
  */
 window.CICLOFIT_CLOUD_CONFIG = {
   enabled: true,
-  supabaseUrl: '',
-  supabaseAnonKey: ''
+  supabaseUrl: 'https://dhwgggopjwhbrnproowa.supabase.co',
+  supabaseAnonKey: 'sb_secret_XkYGs••••••••••••••••'
 };
