@@ -1,9 +1,8 @@
-/* Configuração local criada para o primeiro deploy.
- * Substitua pelos dados reais do seu projeto Supabase depois de criá-lo.
- * Não coloque service_role key no navegador.
+/*
+ * Frontend aponta para a API Node. O Postgres fica no Supabase.
+ * Com `npm start`, apiUrl vazio usa http://127.0.0.1:PORTA
  */
 window.CICLOFIT_CLOUD_CONFIG = {
-  enabled: false,
-  supabaseUrl: 'https://SEU-PROJETO.supabase.co',
-  supabaseKey: 'SUA_PUBLISHABLE_KEY'
+  enabled: true,
+  apiUrl: ''
 };

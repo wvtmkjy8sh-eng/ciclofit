@@ -987,6 +987,11 @@ input,select,textarea{font-size:15px}
   transition:border-color .2s,box-shadow .2s,background .2s;
 }
 .auth-card .auth-input-wrap input::placeholder{color:#858a87;opacity:1}
+.auth-login-tools{display:flex;align-items:center;justify-content:center;gap:8px;margin:14px auto 2px;color:var(--muted,#8b928d);font-size:12px}
+.auth-theme-btn{width:38px;height:38px;display:grid;place-items:center;border:1px solid rgba(255,255,255,.12);border-radius:12px;background:rgba(255,255,255,.04);color:inherit;cursor:pointer}
+.auth-theme-btn:hover{background:rgba(255,255,255,.08)}
+.auth-theme-btn .cf-svg{width:18px;height:18px}
+.header-actions .cf-svg,.admin-topbar-actions .cf-svg{width:19px;height:19px;display:block}
 .auth-card .auth-input-wrap input:focus{
   border-color:#9cff00!important;
   background:rgba(255,255,255,.055)!important;
@@ -1322,3 +1327,674 @@ body[data-theme="light"] .auth-screen .auth-card input{color:#f2f4f0!important}
   .auth-submit{min-height:56px}
   .auth-hint{margin-top:7px}
 }
+
+/* ===== Alunos — organização visual e responsividade ===== */
+#adminPanel [data-admin-panel="students"] .card{
+  padding:20px;
+  border-radius:22px;
+  box-shadow:0 10px 30px rgba(17,24,39,.045);
+}
+
+#adminPanel [data-admin-panel="students"] .card-head{
+  display:flex;
+  justify-content:space-between;
+  gap:16px;
+  padding-bottom:16px;
+  border-bottom:1px solid var(--border);
+}
+
+#adminPanel [data-admin-panel="students"] .card-head h3{
+  font-size:20px;
+  letter-spacing:-.3px;
+}
+
+#adminPanel [data-admin-panel="students"] .admin-student-form{
+  margin-top:18px;
+  margin-bottom:10px;
+  gap:12px;
+}
+
+#adminPanel [data-admin-panel="students"] .admin-student-form label{
+  display:block;
+  min-width:0;
+}
+
+#adminPanel [data-admin-panel="students"] .admin-student-form input{
+  min-height:46px;
+}
+
+#adminPanel [data-admin-panel="students"] #createStudentBtn{
+  min-height:46px;
+  padding-inline:18px;
+}
+
+#adminPanel [data-admin-panel="students"] .admin-student-search{
+  margin:22px 0 14px;
+  padding:14px;
+  border:1px solid var(--border);
+  border-radius:16px;
+  background:var(--bg);
+}
+
+#adminPanel [data-admin-panel="students"] .admin-student-search-label{
+  justify-content:space-between;
+  width:100%;
+}
+
+#adminPanel [data-admin-panel="students"] .admin-student-search-label>span:last-child{
+  white-space:nowrap;
+}
+
+#adminPanel [data-admin-panel="students"] #studentList{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:12px;
+  margin-top:0;
+}
+
+#adminPanel [data-admin-panel="students"] .admin-student-row{
+  display:grid;
+  grid-template-columns:60px minmax(0,1fr);
+  grid-template-areas:
+    "avatar info"
+    "avatar actions";
+  align-items:center;
+  column-gap:14px;
+  row-gap:10px;
+  min-width:0;
+  margin:0;
+  padding:15px;
+  border:1px solid var(--border);
+  border-radius:18px;
+  background:var(--card);
+  box-shadow:0 5px 18px rgba(17,24,39,.03);
+  transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease;
+}
+
+#adminPanel [data-admin-panel="students"] .admin-student-row:hover{
+  transform:translateY(-1px);
+  border-color:rgba(183,245,0,.55);
+  box-shadow:0 10px 24px rgba(17,24,39,.055);
+}
+
+#adminPanel [data-admin-panel="students"] .admin-student-avatar{
+  grid-area:avatar;
+  width:60px;
+  height:60px;
+  min-width:60px;
+  border-radius:16px;
+  display:grid;
+  place-items:center;
+  overflow:hidden;
+  border:1px solid var(--border);
+  background:linear-gradient(135deg,rgba(183,245,0,.16),rgba(101,184,255,.12));
+  color:var(--text);
+  font-size:16px;
+  font-weight:900;
+  letter-spacing:.02em;
+}
+
+#adminPanel [data-admin-panel="students"] .admin-student-avatar img{
+  display:block;
+  width:60px;
+  height:60px;
+  object-fit:cover;
+  object-position:center;
+}
+
+#adminPanel [data-admin-panel="students"] .admin-student-info{
+  grid-area:info;
+  min-width:0;
+  gap:2px;
+}
+
+#adminPanel [data-admin-panel="students"] .admin-student-info strong{
+  display:block;
+  margin:0;
+  font-size:14px;
+  line-height:1.25;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+#adminPanel [data-admin-panel="students"] .admin-student-info small{
+  font-size:11px;
+  line-height:1.35;
+  white-space:normal;
+  overflow-wrap:anywhere;
+}
+
+#adminPanel [data-admin-panel="students"] .admin-row-actions{
+  grid-area:actions;
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:6px;
+  min-width:0;
+  width:100%;
+}
+
+#adminPanel [data-admin-panel="students"] .admin-row-actions .mini-action{
+  width:100%;
+  min-width:0;
+  min-height:36px;
+  padding:7px 6px;
+  font-size:11px;
+  line-height:1.15;
+  white-space:nowrap;
+}
+
+#adminPanel [data-admin-panel="students"] .admin-row-actions .mini-danger{
+  background:transparent;
+}
+
+#adminPanel [data-admin-panel="students"] #studentList>.muted{
+  grid-column:1/-1;
+  margin:0;
+  padding:28px 16px;
+  text-align:center;
+  border:1px dashed var(--border);
+  border-radius:16px;
+  background:var(--bg);
+}
+
+@media(max-width:980px){
+  #adminPanel [data-admin-panel="students"] #studentList{
+    grid-template-columns:1fr;
+  }
+}
+
+@media(max-width:700px){
+  #adminPanel [data-admin-panel="students"] .card{
+    padding:16px;
+    border-radius:18px;
+  }
+
+  #adminPanel [data-admin-panel="students"] .card-head{
+    padding-bottom:14px;
+  }
+
+  #adminPanel [data-admin-panel="students"] .card-head h3{
+    font-size:18px;
+  }
+
+  #adminPanel [data-admin-panel="students"] .admin-student-search{
+    padding:12px;
+  }
+}
+
+@media(max-width:520px){
+  #adminPanel [data-admin-panel="students"] .admin-student-search-label{
+    align-items:flex-start;
+    flex-direction:column;
+    gap:3px;
+  }
+
+  #adminPanel [data-admin-panel="students"] .admin-student-search-separator{
+    display:none;
+  }
+
+  #adminPanel [data-admin-panel="students"] .admin-student-row{
+    grid-template-columns:60px minmax(0,1fr);
+    padding:13px;
+    border-radius:16px;
+  }
+
+  #adminPanel [data-admin-panel="students"] .admin-row-actions{
+    grid-template-columns:repeat(3,minmax(0,1fr));
+  }
+
+  #adminPanel [data-admin-panel="students"] .admin-row-actions .mini-action{
+    min-height:34px;
+    font-size:10px;
+    padding-inline:4px;
+  }
+}
+
+@media(max-width:380px){
+  #adminPanel [data-admin-panel="students"] .admin-student-row{
+    grid-template-columns:52px minmax(0,1fr);
+    column-gap:10px;
+  }
+
+  #adminPanel [data-admin-panel="students"] .admin-student-avatar{
+    width:52px;
+    height:52px;
+    min-width:52px;
+    border-radius:14px;
+  }
+
+  #adminPanel [data-admin-panel="students"] .admin-student-avatar img{
+    width:52px;
+    height:52px;
+  }
+
+  #adminPanel [data-admin-panel="students"] .admin-student-info strong{
+    font-size:13px;
+  }
+}
+
+
+/* CicloFit 6.0 — paleta unificada, ícones 2D e tema também no login */
+:root{--accent:#b7f500;--accent-2:#65b8ff;--purple:#a58cff;--green:#36d399;--bg:#f4f7f5;--card:#ffffff;--text:#172019;--muted:#69736b;--border:#dce5de;--dark:#111812}
+body[data-theme="dark"]{--bg:#0a0f0b;--card:#121a14;--text:#f3f7f1;--muted:#9ca79f;--border:#273229;--dark:#060a07}
+/* Ícones planos 2D: sem sombras, brilho ou profundidade */
+.icon-btn,.mini-icon,.workout-icon,.hero-icon,.in-progress-icon,.catalog-icon,.admin-workout-icon,.week-card .day .icon{box-shadow:none!important;text-shadow:none!important;filter:none!important}
+.icon-btn{font-family:Arial,sans-serif;font-weight:700;line-height:1}
+.week-card{display:block!important;visibility:visible!important;min-height:150px}
+.week-card .day-grid{display:grid!important;grid-template-columns:repeat(7,minmax(0,1fr));visibility:visible!important}
+.week-card .day{display:flex!important;flex-direction:column;align-items:center;justify-content:flex-start;min-width:0;visibility:visible!important}
+/* Login acompanha o tema escolhido */
+body[data-theme="light"] .auth-screen{color:var(--text);background:linear-gradient(135deg,#edf4ef 0%,#f8fbf9 50%,#e7eef8 100%)}
+body[data-theme="light"] .auth-screen::before{background:linear-gradient(116deg,transparent 38%,rgba(101,184,255,.10) 39%,transparent 40%),linear-gradient(64deg,transparent 61%,rgba(165,140,255,.08) 62%,transparent 63%)}
+body[data-theme="light"] .auth-screen .auth-welcome{color:#536057}
+body[data-theme="light"] .auth-screen .auth-tagline{color:#6b756e}
+body[data-theme="light"] .auth-screen .auth-card{background:rgba(255,255,255,.86);border-color:rgba(101,184,255,.18)}
+body[data-theme="light"] .auth-screen .auth-card input{color:#172019!important;background:#f7faf8!important;border-color:#dce5de!important}
+body[data-theme="light"] .auth-screen .auth-input-icon{color:#53705b}
+body[data-theme="light"] .auth-screen .auth-bg-photo{mix-blend-mode:multiply;opacity:.05}
+
+/* v5.7 - Ícones SVG 2D planos */
+.cf-svg{width:1.2em;height:1.2em;display:inline-block;vertical-align:-.2em;fill:none;flex:0 0 auto}.mini-icon .cf-svg{width:1.35em;height:1.35em}.nav-btn .cf-svg{width:22px;height:22px;display:block;margin:0 auto 3px}.ride-mode-btn .cf-svg,.ride-gpx-action strong .cf-svg{margin-right:7px}.hero-icon .cf-svg{width:48px;height:48px}.auth-tab-icon,.auth-input-icon,.icon-btn{font-family:inherit}.ride-mode-btn{display:inline-flex;align-items:center;justify-content:center;gap:6px}.ride-mode-btn .cf-svg{margin:0}
+/* CicloFit SVG 2D — calendário e pedal */
+.section-title-icon{width:20px;height:20px;vertical-align:-4px;margin-right:8px;color:var(--primary,#b7f500)}
+.day .icon .cf-svg{width:22px;height:22px;display:block;margin:auto}
+.day .icon{display:flex;align-items:center;justify-content:center;min-height:26px}
+.ride-mode-btn .cf-svg,.ride-gpx-action .cf-svg{width:18px;height:18px;vertical-align:-4px;margin-right:6px}
+
+/* v5.8 — navegação do treino do dia + SVG 2D plano no Pedal */
+.hero-card.today-card-clickable{cursor:pointer}
+.hero-card.today-card-clickable:hover{transform:translateY(-2px);box-shadow:0 18px 36px rgba(17,24,39,.10)}
+.gpx-ref-icon .cf-svg,.ride-history-icon .cf-svg,.ride-actions .mini-action .cf-svg{width:16px;height:16px;display:inline-block;vertical-align:-3px}
+.gpx-ref-icon{display:inline-flex;align-items:center;justify-content:center;margin-left:6px}
+.gpx-ref-icon .cf-svg{width:17px;height:17px;vertical-align:0}
+.ride-history-icon{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;margin-right:6px;border-radius:6px;background:var(--bg);color:var(--green);vertical-align:-5px}
+.ride-actions .mini-action{display:inline-flex;align-items:center;gap:5px}
+.ride-actions .mini-action .cf-svg{width:14px;height:14px;vertical-align:0}
+.ride-history-icon .cf-svg{width:15px;height:15px;vertical-align:0}
+
+.inline-icon-text,.meta-icon-text{display:inline-flex;align-items:center;gap:5px}.inline-icon-text .cf-svg,.meta-icon-text .cf-svg{width:15px;height:15px;vertical-align:0}.workout-icon .cf-svg,.admin-workout-icon .cf-svg,.in-progress-icon .cf-svg{width:28px;height:28px}.admin-workout-icon .cf-svg{width:24px;height:24px}.in-progress-icon .cf-svg{width:25px;height:25px}.auth-tab-icon .cf-svg{width:18px;height:18px}.auth-input-icon .cf-svg{width:16px;height:16px}.btn .cf-svg{width:17px;height:17px;vertical-align:-3px}.hero-card.today-card-clickable{cursor:pointer}.hero-card.today-card-clickable #todayAction{position:relative;z-index:2}
+
+/* v44 — treino atribuído no Pedal + SVG 2D padronizado no Admin */
+.cf-svg{width:1.15em;height:1.15em;display:inline-block;vertical-align:-.16em;fill:none;flex:0 0 auto}
+.admin-search-wrap{display:flex;align-items:center;gap:8px;margin:0}.admin-search-wrap .cf-svg{color:var(--muted);width:18px;height:18px}.admin-search-wrap .exercise-search{flex:1;margin:0}
+.assigned-ride-card{border:1px solid var(--border);background:var(--card);box-shadow:0 12px 34px rgba(0,0,0,.08);margin-bottom:14px}.assigned-ride-head{display:flex;align-items:flex-start;gap:14px}.assigned-ride-icon{width:52px;height:52px;display:grid;place-items:center;border-radius:15px;background:rgba(183,245,0,.12);color:var(--accent);border:1px solid rgba(183,245,0,.28)}.assigned-ride-icon .cf-svg{width:27px;height:27px}.assigned-ride-head h3{margin:4px 0 4px;font-size:18px}.assigned-ride-head p{margin:0;color:var(--muted);font-size:12px;line-height:1.45}.assigned-ride-meta{display:flex;flex-wrap:wrap;gap:12px;margin:15px 0;color:var(--muted);font-size:11px}.assigned-ride-meta span{display:inline-flex;align-items:center;gap:5px}.assigned-ride-actions{display:flex;flex-wrap:wrap;gap:8px}.assigned-ride-actions .btn{display:inline-flex;align-items:center;gap:7px}.inline-icon-text{display:inline-flex;align-items:center;gap:6px}.inline-icon-text .cf-svg{width:15px;height:15px}.admin-student-info small,.admin-row strong{display:flex;align-items:center;gap:5px}.admin-student-info small .cf-svg{width:13px;height:13px}.admin-workout-icon .cf-svg{width:22px;height:22px}.catalog-icon .cf-svg{width:20px;height:20px}.ride-mode-btn,.ride-gpx-action strong{display:inline-flex;align-items:center;gap:7px}
+@media(max-width:620px){.assigned-ride-head{gap:10px}.assigned-ride-icon{width:44px;height:44px}.assigned-ride-actions{display:grid;grid-template-columns:1fr}.assigned-ride-actions .btn{width:100%;justify-content:center}.admin-search-wrap{width:100%}}
+
+/* Ajustes solicitados — painel Admin: controles compactos e tipografia dos exercícios */
+#adminPanel .admin-logout-icon{width:48px;min-width:48px;height:42px;padding:0;display:grid;place-items:center;}
+#adminPanel .admin-logout-icon .cf-svg{width:19px;height:19px;}
+#saveCustomWorkout{display:inline-flex;align-items:center;justify-content:center;gap:7px;}
+#saveCustomWorkout .cf-svg{width:18px;height:18px;flex:0 0 auto;}
+#adminPanel .selected-exercises .picker-head strong{font-size:17px;line-height:1.25;}
+#adminPanel .selected-exercises .picker-head small{font-size:12px;line-height:1.45;}
+#adminPanel .selected-exercise strong{font-size:14px;line-height:1.35;}
+#adminPanel .selected-exercise small{font-size:11px;line-height:1.35;}
+@media(max-width:620px){
+  #adminPanel .admin-logout-icon{width:42px;min-width:42px;height:40px;}
+  #adminPanel .selected-exercises .picker-head strong{font-size:15px;}
+  #adminPanel .selected-exercises .picker-head small{font-size:11px;}
+  #adminPanel .selected-exercise strong{font-size:13px;}
+  #adminPanel .selected-exercise small{font-size:10px;}
+}
+
+/* CicloFit — ajuste fino da aba Alunos no mobile */
+#adminPanel [data-admin-panel="students"] .admin-student-row{
+  overflow:hidden;
+}
+#adminPanel [data-admin-panel="students"] .admin-student-info small{
+  max-width:100%;
+}
+#adminPanel [data-admin-panel="students"] .admin-row-actions .mini-action{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+}
+#adminPanel [data-admin-panel="students"] .admin-row-actions .mini-action .cf-svg{
+  width:14px;
+  height:14px;
+  flex:0 0 14px;
+}
+@media(max-width:620px){
+  #adminPanel [data-admin-panel="students"] #studentList{
+    grid-template-columns:1fr;
+    gap:10px;
+  }
+  #adminPanel [data-admin-panel="students"] .admin-student-row{
+    grid-template-columns:58px minmax(0,1fr);
+    grid-template-areas:
+      "avatar info"
+      "actions actions";
+    padding:13px;
+    column-gap:12px;
+    row-gap:10px;
+    border-radius:17px;
+  }
+  #adminPanel [data-admin-panel="students"] .admin-student-avatar,
+  #adminPanel [data-admin-panel="students"] .admin-student-avatar img{
+    width:58px;
+    height:58px;
+  }
+  #adminPanel [data-admin-panel="students"] .admin-student-avatar{
+    min-width:58px;
+    border-radius:15px;
+  }
+  #adminPanel [data-admin-panel="students"] .admin-student-info strong{
+    font-size:15px;
+    line-height:1.2;
+  }
+  #adminPanel [data-admin-panel="students"] .admin-student-info small{
+    font-size:11px;
+    line-height:1.4;
+    overflow-wrap:anywhere;
+  }
+  #adminPanel [data-admin-panel="students"] .admin-row-actions{
+    width:100%;
+    display:grid;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:7px;
+  }
+  #adminPanel [data-admin-panel="students"] .admin-row-actions .mini-action{
+    min-height:36px;
+    font-size:10px;
+    padding:7px 5px;
+  }
+}
+@media(max-width:380px){
+  #adminPanel [data-admin-panel="students"] .admin-student-row{
+    grid-template-columns:52px minmax(0,1fr);
+    padding:11px;
+    column-gap:10px;
+  }
+  #adminPanel [data-admin-panel="students"] .admin-student-avatar,
+  #adminPanel [data-admin-panel="students"] .admin-student-avatar img{
+    width:52px;
+    height:52px;
+  }
+  #adminPanel [data-admin-panel="students"] .admin-student-avatar{
+    min-width:52px;
+  }
+}
+
+
+/* v66 — Painel Alunos: layout mobile mais limpo e menu horizontal estável */
+#adminPanel .admin-tabs{
+  width:100%;
+  box-sizing:border-box;
+  overflow:hidden;
+  background:color-mix(in srgb,var(--bg) 96%,transparent);
+  border-color:var(--border);
+  box-shadow:0 8px 22px rgba(0,0,0,.14);
+}
+#adminPanel .admin-tab{
+  min-width:0;
+  min-height:46px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  white-space:nowrap;
+  line-height:1;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+#adminPanel .admin-tab .cf-svg{width:17px;height:17px;flex:0 0 auto}
+#adminPanel [data-admin-panel="students"] #studentList{
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:12px;
+}
+#adminPanel [data-admin-panel="students"] .admin-student-row{
+  display:grid;
+  grid-template-columns:1fr auto;
+  grid-template-areas:
+    "head actions"
+    "details details";
+  align-items:start;
+  column-gap:12px;
+  row-gap:12px;
+  padding:15px;
+  min-width:0;
+}
+#adminPanel [data-admin-panel="students"] .admin-student-head{
+  grid-area:head;
+  min-width:0;
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+#adminPanel [data-admin-panel="students"] .admin-student-avatar{
+  width:58px;
+  height:58px;
+  min-width:58px;
+  border-radius:16px;
+}
+#adminPanel [data-admin-panel="students"] .admin-student-avatar img{width:100%;height:100%;object-fit:cover;display:block}
+#adminPanel [data-admin-panel="students"] .admin-student-info{min-width:0}
+#adminPanel [data-admin-panel="students"] .admin-student-info strong{font-size:15px;line-height:1.2}
+#adminPanel [data-admin-panel="students"] .admin-student-info small{display:block;font-size:11px;line-height:1.3;overflow-wrap:anywhere;margin-top:3px}
+#adminPanel [data-admin-panel="students"] .admin-student-details{
+  grid-area:details;
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+  min-width:0;
+  padding-top:2px;
+  border-top:1px solid color-mix(in srgb,var(--border) 75%,transparent);
+}
+#adminPanel [data-admin-panel="students"] .admin-student-details span{
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+  min-height:27px;
+  padding:5px 8px;
+  border:1px solid var(--border);
+  border-radius:9px;
+  background:var(--bg);
+  color:var(--muted);
+  font-size:10px;
+  line-height:1.15;
+  max-width:100%;
+}
+#adminPanel [data-admin-panel="students"] .admin-student-details .cf-svg{width:13px;height:13px;flex:0 0 auto}
+#adminPanel [data-admin-panel="students"] .student-no-data{font-style:italic;border-style:dashed!important}
+#adminPanel [data-admin-panel="students"] .admin-row-actions{
+  grid-area:actions;
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  gap:6px;
+  min-width:0;
+  width:auto;
+}
+#adminPanel [data-admin-panel="students"] .admin-row-actions .mini-action{
+  width:auto;
+  min-width:74px;
+  min-height:38px;
+  padding:7px 9px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:5px;
+  font-size:11px;
+  white-space:nowrap;
+}
+#adminPanel [data-admin-panel="students"] .admin-row-actions .mini-action .cf-svg{width:14px;height:14px;flex:0 0 auto}
+
+@media(max-width:980px){
+  #adminPanel [data-admin-panel="students"] #studentList{grid-template-columns:1fr}
+}
+@media(max-width:700px){
+  #adminPanel .admin-tabs{top:74px;gap:2px;padding:3px}
+  #adminPanel .admin-tab{min-height:44px;padding:8px 4px;font-size:9px;letter-spacing:.02em;gap:4px}
+  #adminPanel .admin-tab .cf-svg{width:16px;height:16px}
+  #adminPanel [data-admin-panel="students"] .admin-student-row{
+    grid-template-columns:1fr;
+    grid-template-areas:
+      "head"
+      "details"
+      "actions";
+    gap:10px;
+    padding:14px;
+    border-radius:17px;
+  }
+  #adminPanel [data-admin-panel="students"] .admin-student-head{gap:11px}
+  #adminPanel [data-admin-panel="students"] .admin-student-avatar{width:62px;height:62px;min-width:62px;border-radius:16px}
+  #adminPanel [data-admin-panel="students"] .admin-student-info strong{font-size:16px}
+  #adminPanel [data-admin-panel="students"] .admin-student-info small{font-size:11px}
+  #adminPanel [data-admin-panel="students"] .admin-student-details{gap:6px}
+  #adminPanel [data-admin-panel="students"] .admin-student-details span{font-size:10px;min-height:29px;padding:5px 8px}
+  #adminPanel [data-admin-panel="students"] .admin-row-actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));width:100%;gap:7px}
+  #adminPanel [data-admin-panel="students"] .admin-row-actions .mini-action{width:100%;min-width:0;min-height:40px;font-size:11px;padding:7px 5px}
+  #adminPanel [data-admin-panel="students"] .admin-row-actions .mini-action .cf-svg{width:15px;height:15px}
+}
+@media(max-width:390px){
+  #adminPanel .admin-tabs{gap:1px;padding:3px 2px}
+  #adminPanel .admin-tab{font-size:8px;padding-inline:2px;gap:3px}
+  #adminPanel .admin-tab .cf-svg{width:15px;height:15px}
+  #adminPanel [data-admin-panel="students"] .admin-student-row{padding:12px}
+  #adminPanel [data-admin-panel="students"] .admin-student-avatar{width:58px;height:58px;min-width:58px}
+  #adminPanel [data-admin-panel="students"] .admin-student-details span{font-size:9px;padding:5px 7px}
+  #adminPanel [data-admin-panel="students"] .admin-row-actions .mini-action{font-size:10px}
+}
+
+/* v67 — Menu superior do painel Admin centralizado e proporcional */
+#adminPanel .admin-tabs{
+  width:min(680px, calc(100% - 10px));
+  margin:0 auto 16px;
+  box-sizing:border-box;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  align-items:stretch;
+  justify-items:stretch;
+  padding:4px;
+  gap:4px;
+  overflow:hidden;
+}
+#adminPanel .admin-tab{
+  width:100%;
+  min-width:0;
+  box-sizing:border-box;
+  justify-content:center;
+  text-align:center;
+  padding:10px 5px;
+  line-height:1.1;
+}
+@media(max-width:700px){
+  #adminPanel .admin-tabs{
+    width:calc(100% - 4px);
+    margin-left:auto;
+    margin-right:auto;
+    gap:3px;
+    padding:3px;
+  }
+  #adminPanel .admin-tab{
+    padding:9px 3px;
+    font-size:9px;
+    letter-spacing:.01em;
+  }
+}
+@media(max-width:390px){
+  #adminPanel .admin-tabs{width:100%;gap:2px}
+  #adminPanel .admin-tab{padding:8px 2px;font-size:8px}
+}
+
+/* v68 — Aproxima ALUNOS de TREINOS sem alterar o espaçamento dos demais */
+#adminPanel .admin-tabs > .admin-tab:nth-child(1){
+  transform:translateX(2px);
+}
+#adminPanel .admin-tabs > .admin-tab:nth-child(2){
+  transform:translateX(-2px);
+}
+#adminPanel .admin-tabs > .admin-tab:nth-child(3),
+#adminPanel .admin-tabs > .admin-tab:nth-child(4){
+  transform:none;
+}
+
+/* v69 — Ajuste fino do espaçamento visual do menu Admin */
+#adminPanel .admin-tabs > .admin-tab:nth-child(1){
+  transform:translateX(4px);
+}
+#adminPanel .admin-tabs > .admin-tab:nth-child(2){
+  transform:translateX(-4px);
+}
+#adminPanel .admin-tabs > .admin-tab:nth-child(3){
+  transform:translateX(-3px);
+}
+#adminPanel .admin-tabs > .admin-tab:nth-child(4){
+  transform:translateX(3px);
+}
+
+/* v70 — Menu Admin: centralização real do grupo de abas dentro do próprio card */
+#adminPanel .admin-tabs{
+  width:fit-content;
+  max-width:100%;
+  margin:0 auto 16px;
+  grid-template-columns:repeat(4,max-content);
+  justify-content:center;
+  justify-items:center;
+  gap:8px;
+  padding:4px 8px;
+  overflow-x:auto;
+  overflow-y:hidden;
+}
+#adminPanel .admin-tab{
+  width:auto;
+  min-width:0;
+  justify-content:center;
+  white-space:nowrap;
+  padding:10px 9px;
+  transform:none !important;
+}
+@media(max-width:700px){
+  #adminPanel .admin-tabs{
+    width:fit-content;
+    max-width:100%;
+    grid-template-columns:repeat(4,max-content);
+    justify-content:center;
+    gap:6px;
+    padding:3px 6px;
+  }
+  #adminPanel .admin-tab{padding:9px 7px;font-size:9px;}
+}
+@media(max-width:390px){
+  #adminPanel .admin-tabs{
+    width:calc(100% - 2px);
+    grid-template-columns:repeat(4,max-content);
+    justify-content:center;
+    gap:4px;
+    padding:3px 4px;
+  }
+  #adminPanel .admin-tab{padding:8px 5px;font-size:8px;}
+}
+
+/* Calendário semanal: nomes compactos e sem poluição visual */
+.week-card .day strong{font-size:9px;line-height:1.15;max-width:92%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+@media(max-width:700px){.week-card .day strong{font-size:7.5px;max-width:96%;}.week-card .day-more{font-size:6px;}}
+
+/* Correção final do status do calendário: impede vazamento do texto em cards estreitos */
+.week-card .day-status{
+  width:100%;
+  max-width:100%;
+  box-sizing:border-box;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  text-align:center;
+}
+@media(max-width:700px){
+  .week-card .day-status{
+    width:100%;
+    padding-left:2px;
+    padding-right:2px;
+    font-size:7px;
+  }
+}
+
+/* v-home-progress-icons: spacing and compact section-title icons */
+.section-head h2{display:flex;align-items:center;gap:8px}
+.section-title-icon{width:21px;height:21px;flex:0 0 21px;color:var(--accent)}
+.inline-icon-text{display:inline-flex;align-items:center;gap:8px}
+.inline-icon-text .cf-svg{width:17px;height:17px;flex:0 0 17px}
+@media(max-width:620px){.section-head h2{gap:7px}.section-title-icon{width:20px;height:20px;flex-basis:20px}.inline-icon-text{gap:7px}}
+
+.theme-svg-icon{width:20px;height:20px;display:block;flex:0 0 auto}

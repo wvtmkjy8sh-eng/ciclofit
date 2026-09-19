@@ -3,9 +3,53 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#b7f500"><meta name="description" content="CicloFit 5.0 — treino, ciclismo, recuperação e evolução.">
-<link rel="manifest" href="manifest.json"><title>CicloFit 5.0</title><link rel="stylesheet" href="css/style.css">
+<link rel="manifest" href="manifest.json"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="CicloFit"><title>CicloFit 5.0</title><link rel="stylesheet" href="css/style.css"><link rel="stylesheet" href="css/premium-visual.css">
 </head>
 <body>
+<svg xmlns="http://www.w3.org/2000/svg" class="cf-sprite" aria-hidden="true" focusable="false">
+<defs>
+<style>.cf-line{fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}</style>
+</defs>
+<symbol id="i-home" viewBox="0 0 24 24"><path class="cf-line" d="M4.4 10.6 12 4.2l7.6 6.4V20a.9.9 0 0 1-.9.9h-4.4v-5.7H9.7V20.9H5.3a.9.9 0 0 1-.9-.9z"/></symbol>
+<symbol id="i-bike" viewBox="0 0 24 24"><circle class="cf-line" cx="6.2" cy="16.8" r="3"/><circle class="cf-line" cx="17.8" cy="16.8" r="3"/><path class="cf-line" d="M6.2 16.8 10 8.6h3.4l2.2 8.2M9.2 12.8h6.1l1.8-4.2H20"/></symbol>
+<symbol id="i-dumbbell" viewBox="0 0 24 24"><path class="cf-line" d="M4.2 9.2v5.6M7 7.4v9.2M17 7.4v9.2M19.8 9.2v5.6M7 12h10"/></symbol>
+<symbol id="i-training" viewBox="0 0 24 24"><rect class="cf-line" x="4.2" y="4.2" width="15.6" height="15.6" rx="3.2"/><path class="cf-line" d="M8 8.4h8M8 12h5.2M8 15.6h8M14.2 11.3l1.4 1.4 2.5-2.8"/></symbol>
+<symbol id="i-chart" viewBox="0 0 24 24"><path class="cf-line" d="M4.4 19.2V5.2M4.4 19.2h15.2M8.2 15.8v-3.6M12 15.8V8.6M15.8 15.8V6.4"/></symbol>
+<symbol id="i-user" viewBox="0 0 24 24"><circle class="cf-line" cx="12" cy="8" r="3.4"/><path class="cf-line" d="M5 19.6c1.3-3.4 3.7-5.1 7-5.1s5.7 1.7 7 5.1"/></symbol>
+<symbol id="i-calendar" viewBox="0 0 24 24"><rect class="cf-line" x="3.6" y="5.2" width="16.8" height="15.2" rx="2.2"/><path class="cf-line" d="M7.4 3.6v3.2M16.6 3.6v3.2M3.6 9.6h16.8"/></symbol>
+<symbol id="i-rest" viewBox="0 0 24 24"><path class="cf-line" d="M19.6 15.2A7.6 7.6 0 1 1 9.1 4.4 6.1 6.1 0 0 0 19.6 15.2Z"/></symbol>
+<symbol id="i-check" viewBox="0 0 24 24"><path class="cf-line" d="m5.2 12.2 4.2 4.2 9.4-9.8"/></symbol>
+<symbol id="i-manual" viewBox="0 0 24 24"><rect class="cf-line" x="5.2" y="3.8" width="13.6" height="16.4" rx="2"/><path class="cf-line" d="M8.2 8.2h7.6M8.2 12h7.6M8.2 15.8h5"/></symbol>
+<symbol id="i-download" viewBox="0 0 24 24"><path class="cf-line" d="M12 4v11.2m0 0 3.8-3.8M12 15.2 8.2 11.4M5.2 19.4h13.6"/></symbol>
+<symbol id="i-upload" viewBox="0 0 24 24"><path class="cf-line" d="M12 16.2V5m0 0L8.2 8.8M12 5l3.8 3.8M5.2 19.4h13.6"/></symbol>
+<symbol id="i-trophy" viewBox="0 0 24 24"><path class="cf-line" d="M7.4 4.4h9.2v4.2a4.6 4.6 0 0 1-9.2 0V4.4Z"/><path class="cf-line" d="M7.4 6.2H4.6v1.8a3.6 3.6 0 0 0 3.6 3.6M16.6 6.2h2.8v1.8a3.6 3.6 0 0 1-3.6 3.6M12 13v3.6M8.8 19.6h6.4M9.4 16.6h5.2"/></symbol>
+<!-- leftover-thick-start --><!--<symbol id="i-training-old" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="3" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8 8h8M8 12h5M8 16h8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="m14.5 11.5 1.5 1.5 2.5-3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="i-chart" viewBox="0 0 24 24"><path d="M4 19V5m0 14h16M8 16v-4m4 4V8m4 8V4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol><symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" fill="none" stroke="currentColor" stroke-width="2"/><path d="M4 21c1.5-4 4-6 8-6s6.5 2 8 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol><symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M7 3v4M17 3v4M3 10h18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol><symbol id="i-rest" viewBox="0 0 24 24"><path d="M20 15.5A8 8 0 1 1 8.5 4 6.5 6.5 0 0 0 20 15.5Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></symbol><symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="i-manual" viewBox="0 0 24 24"><path d="M5 4h14v16H5zM8 8h8M8 12h8M8 16h5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol><symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12m0 0 4-4m-4 4-4-4M5 19h14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="i-upload" viewBox="0 0 24 24"><path d="M12 16V4m0 0-4 4m4-4 4 4M5 20h14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="i-trophy" viewBox="0 0 24 24"><path d="M7 4h10v4.5a5 5 0 0 1-10 0V4Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M7 6H4v2a4 4 0 0 0 4 4M17 6h3v2a4 4 0 0 1-4 4M12 13v4M8.5 20h7M9 17h6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol> leftover-thick-end -->
+<symbol id="i-route" viewBox="0 0 24 24"><path class="cf-line" d="M5.4 18.6c2.8-4.6 3.8-7.4 6.6-7.4s3.8 2.8 6.6-5.6"/><circle class="cf-line" cx="5.4" cy="18.6" r="1.7"/><circle class="cf-line" cx="18.6" cy="5.6" r="1.7"/></symbol>
+<symbol id="i-mountain" viewBox="0 0 24 24"><path class="cf-line" d="m3.4 18.8 6.2-9.6 3.1 4.4 2.1-3 6.8 8.2z"/><path class="cf-line" d="m8.2 18.8 3.8-5.6 3.8 5.6"/></symbol>
+<symbol id="i-speed" viewBox="0 0 24 24"><path class="cf-line" d="M4.6 16.2a7.4 7.4 0 1 1 14.8 0"/><path class="cf-line" d="m12 16.2 3.6-4.6"/><circle class="cf-line" cx="12" cy="16.2" r="1.2"/></symbol>
+<symbol id="i-cadence" viewBox="0 0 24 24"><path class="cf-line" d="M12 5.2a6.8 6.8 0 1 0 6.8 6.8"/><path class="cf-line" d="M12 5.2v3.8l2.8 1.8M16.8 4.4v3.6h3.6"/></symbol>
+<symbol id="i-heart" viewBox="0 0 24 24"><path class="cf-line" d="M19.8 8.8c0 4.8-7.8 9.4-7.8 9.4S4.2 13.6 4.2 8.8A4.3 4.3 0 0 1 12 6.5a4.3 4.3 0 0 1 7.8 2.3Z"/></symbol>
+<symbol id="i-edit" viewBox="0 0 24 24"><path class="cf-line" d="m4.4 16.2 9.1-9.1 3.6 3.6-9.1 9.1H4.4z"/><path class="cf-line" d="m13.4 7.2 1.8-1.8a1.3 1.3 0 0 1 1.8 0l1.8 1.8a1.3 1.3 0 0 1 0 1.8l-1.8 1.8"/></symbol>
+<symbol id="i-trash" viewBox="0 0 24 24"><path class="cf-line" d="M5.2 7.2h13.6M9.2 7.2V4.6h5.6v2.6m-7.4 0 .9 12.2h7.4l.9-12.2M10.4 11v5.4M13.6 11v5.4"/></symbol>
+<symbol id="i-clock" viewBox="0 0 24 24"><circle class="cf-line" cx="12" cy="12" r="8"/><path class="cf-line" d="M12 7.4V12l3.2 1.8"/></symbol>
+<symbol id="i-lock" viewBox="0 0 24 24"><rect class="cf-line" x="5.2" y="10.4" width="13.6" height="9.2" rx="2"/><path class="cf-line" d="M8.2 10.4V7.8a3.8 3.8 0 0 1 7.6 0v2.6"/></symbol>
+<symbol id="i-fire" viewBox="0 0 24 24"><path class="cf-line" d="M12 20.2c3.8 0 6.4-2.4 6.4-6 0-2.8-1.6-4.6-3.8-6.4.1 1.8-.9 3-2.1 3.8.2-2.7-1.1-5-3.1-6.8.1 3.4-3.7 5.6-3.7 9.4 0 3.5 2.7 6 6.3 6Z"/></symbol>
+<symbol id="i-camera" viewBox="0 0 24 24"><path class="cf-line" d="M4.4 8.2h3.6l1.2-1.8h5.6l1.2 1.8h3.6V19H4.4z"/><circle class="cf-line" cx="12" cy="13.2" r="3"/></symbol>
+<symbol id="i-bell" viewBox="0 0 24 24"><path class="cf-line" d="M6.4 16.8h11.2l-1.3-2V10a4.3 4.3 0 0 0-8.6 0v4.8z"/><path class="cf-line" d="M10.2 19.4h3.6"/></symbol>
+<symbol id="i-mobile" viewBox="0 0 24 24"><rect class="cf-line" x="7.2" y="3.4" width="9.6" height="17.2" rx="2.2"/><path class="cf-line" d="M10.2 6.2h3.6M11.2 17.8h1.6"/></symbol>
+<symbol id="i-mail" viewBox="0 0 24 24"><rect class="cf-line" x="4.2" y="6.2" width="15.6" height="11.6" rx="2"/><path class="cf-line" d="m5.4 8.2 6.6 4.6 6.6-4.6"/></symbol>
+<symbol id="i-student" viewBox="0 0 24 24"><path class="cf-line" d="m3.6 9.2 8.4-3.8 8.4 3.8-8.4 3.8z"/><path class="cf-line" d="M6.4 11v3.6c2.2 2 8.8 2 11.2 0V11M20.2 10.2v4.6"/></symbol>
+<symbol id="i-admin" viewBox="0 0 24 24"><path class="cf-line" d="M12 3.6 18.8 6.4v4.6c0 4.1-2.6 7.2-6.8 9.4-4.2-2.2-6.8-5.3-6.8-9.4V6.4z"/><path class="cf-line" d="M9.2 12h5.6M12 9.2v5.6"/></symbol>
+<symbol id="i-phone" viewBox="0 0 24 24"><path class="cf-line" d="M7.2 4.4h2.8l1.1 3.6-1.8 1.4a12 12 0 0 0 4.9 4.9l1.4-1.8 3.6 1.1v2.8c0 .9-.9 1.8-1.8 1.8C10.4 18.2 5.4 13.2 5.4 6.2c0-.9.8-1.8 1.8-1.8Z"/></symbol>
+<symbol id="i-scale" viewBox="0 0 24 24"><path class="cf-line" d="M6.4 5.2h11.2l1.8 13.6H4.6z"/><path class="cf-line" d="M9.2 9h5.6M10.2 12.8h3.6"/></symbol>
+<symbol id="i-flash" viewBox="0 0 24 24"><path class="cf-line" d="m12.8 3.4-7.2 10h5.5l-.9 7.2 7.2-10.8h-5.5z"/></symbol>
+<symbol id="i-sun" viewBox="0 0 24 24"><circle class="cf-line" cx="12" cy="12" r="3.6"/><path class="cf-line" d="M12 3.4v1.8M12 18.8v1.8M4.9 4.9l1.3 1.3M17.8 17.8l1.3 1.3M3.4 12h1.8M18.8 12h1.8M4.9 19.1l1.3-1.3M17.8 6.2l1.3-1.3"/></symbol>
+<symbol id="i-moon" viewBox="0 0 24 24"><path class="cf-line" d="M18.8 14.8A7.8 7.8 0 0 1 9.2 5.2 8 8 0 1 0 18.8 14.8Z"/></symbol>
+<symbol id="i-logout" viewBox="0 0 24 24"><path class="cf-line" d="M10.2 5.2H5.4v13.6h4.8M14.8 8.2 18.6 12l-3.8 3.8M18.6 12H9.2"/></symbol>
+<symbol id="i-search" viewBox="0 0 24 24"><circle class="cf-line" cx="10.6" cy="10.6" r="5.2"/><path class="cf-line" d="m14.8 14.8 4.6 4.6"/></symbol>
+<symbol id="i-target" viewBox="0 0 24 24"><circle class="cf-line" cx="12" cy="12" r="7.6"/><circle class="cf-line" cx="12" cy="12" r="2.8"/><path class="cf-line" d="M12 3.2v2.6M12 18.2v2.6M3.2 12h2.6M18.2 12h2.6"/></symbol>
+<symbol id="i-ruler" viewBox="0 0 24 24"><path class="cf-line" d="m4.4 17.6 13.2-13.2 2.8 2.8L7.2 20.4z"/><path class="cf-line" d="m10 10 1.8 1.8M12 8.2l1.8 1.8M13.2 6l1.8 1.8"/></symbol>
+</svg>
 <div id="authScreen" class="auth-screen">
   <div class="auth-bg-glow auth-bg-glow-one"></div>
   <div class="auth-bg-glow auth-bg-glow-two"></div>
@@ -16,19 +60,19 @@
   <div class="auth-card">
     <div class="auth-logo">
       <div class="auth-logo-halo"></div>
-      <img src="assets/ciclofit-logo.png" alt="CicloFit">
+      <img src="assets/ciclofit-logo3.png" alt="CicloFit">
     </div>
 
-    <div class="auth-welcome">Bem-vindo ao <strong>CICLO-FIT</strong></div>
+    <div class="auth-welcome">Bem vindo(a)</div>
     <p class="auth-tagline">Treine. Evolua. Supere-se.</p>
 
     <div class="auth-tabs" role="tablist" aria-label="Tipo de acesso">
       <button class="auth-tab active" data-role="student" type="button">
-        <span class="auth-tab-icon" aria-hidden="true">♙</span>
+        <span class="auth-tab-icon" aria-hidden="true"><svg class="cf-svg"><use href="#i-student"/></svg></span>
         <span>ALUNO</span>
       </button>
       <button class="auth-tab" data-role="admin" type="button">
-        <span class="auth-tab-icon" aria-hidden="true">⬡</span>
+        <span class="auth-tab-icon" aria-hidden="true"><svg class="cf-svg"><use href="#i-admin"/></svg></span>
         <span>ADMIN</span>
       </button>
     </div>
@@ -37,7 +81,7 @@
       <label class="auth-field auth-field-user">
         <span class="auth-field-label">Usuário</span>
         <span class="auth-input-wrap">
-          <span class="auth-input-icon" aria-hidden="true">✉</span>
+          <span class="auth-input-icon" aria-hidden="true"><svg class="cf-svg"><use href="#i-mail"/></svg></span>
           <input id="loginUser" autocomplete="username" placeholder="E-mail ou CPF">
         </span>
       </label>
@@ -45,7 +89,7 @@
       <label class="auth-field auth-field-pass">
         <span class="auth-field-label">Senha</span>
         <span class="auth-input-wrap">
-          <span class="auth-input-icon" aria-hidden="true">▣</span>
+          <span class="auth-input-icon" aria-hidden="true"><svg class="cf-svg"><use href="#i-lock"/></svg></span>
           <input id="loginPass" type="password" autocomplete="current-password" placeholder="Senha">
         </span>
       </label>
@@ -56,6 +100,11 @@
     <div id="loginHint" class="auth-hint">O acesso do aluno é criado pelo administrador.</div>
     <div id="loginError" class="auth-error" hidden></div>
 
+    <div class="auth-login-tools">
+      <button class="icon-btn auth-theme-btn" id="loginThemeToggle" type="button" aria-label="Alternar tema" title="Alternar tema"><svg class="cf-svg theme-svg-icon" aria-hidden="true"><use href="#i-sun"/></svg></button>
+      <span>Alternar tema</span>
+    </div>
+
     <div class="auth-footer-mark">
       <span></span><i></i><span></span>
     </div>
@@ -63,19 +112,19 @@
 </div>
 
 <section id="adminPanel" class="admin-panel page">
-  <div class="admin-topbar"><div class="admin-brand"><img src="assets/ciclofit-logo.png" alt="CicloFit"></div><div class="admin-topbar-actions"><button class="icon-btn admin-theme-btn" id="adminThemeToggle" type="button" aria-label="Alternar tema" title="Alternar tema">☀</button><button class="btn btn-light" id="logoutBtn" type="button">⇥ Sair</button></div></div>
+  <div class="admin-topbar"><div class="admin-brand"><img src="assets/ciclofit-logo3.png" alt="CicloFit"></div><div class="admin-topbar-actions"><button class="icon-btn admin-theme-btn" id="adminThemeToggle" type="button" aria-label="Alternar tema" title="Alternar tema"><svg class="cf-svg theme-svg-icon" aria-hidden="true"><use href="#i-sun"/></svg></button><button class="btn btn-light admin-logout-icon" id="logoutBtn" type="button" aria-label="Sair" title="Sair"><svg class="cf-svg" aria-hidden="true"><use href="#i-logout"/></svg></button></div></div>
   
   <div class="admin-tabs" role="tablist" aria-label="Seções do painel administrativo">
-    <button class="admin-tab active" data-admin-tab="students" type="button">ALUNOS</button>
-    <button class="admin-tab" data-admin-tab="workouts" type="button">TREINOS</button>
-    <button class="admin-tab" data-admin-tab="custom" type="button">CRIAR TREINO</button>
-    <button class="admin-tab" data-admin-tab="notifications" type="button">NOTIFICAÇÕES</button>
+    <button class="admin-tab active" data-admin-tab="students" type="button"><svg class="cf-svg" aria-hidden="true"><use href="#i-user"/></svg> ALUNOS</button>
+    <button class="admin-tab" data-admin-tab="workouts" type="button"><svg class="cf-svg" aria-hidden="true"><use href="#i-dumbbell"/></svg> TREINOS</button>
+    <button class="admin-tab" data-admin-tab="custom" type="button"><svg class="cf-svg" aria-hidden="true"><use href="#i-training"/></svg> CRIAR TREINO</button>
+    <button class="admin-tab" data-admin-tab="notifications" type="button"><svg class="cf-svg" aria-hidden="true"><use href="#i-bell"/></svg> NOTIFICAÇÕES</button>
   </div>
-  <div class="admin-actions"><button class="btn btn-light" id="adminNotifyBtn">🔔 Ativar notificações</button></div>
+  <div class="admin-actions"><button class="btn btn-light" id="adminNotifyBtn"><svg class="cf-svg" aria-hidden="true"><use href="#i-bell"/></svg> Ativar notificações</button></div>
   <div class="admin-tab-panel active" data-admin-panel="students">
   <div class="card"><div class="card-head"><div><span class="eyebrow">ALUNOS</span><h3>Contas dos alunos</h3></div></div>
-    <div class="form-grid admin-student-form"><label>Nome<input id="newStudentName" placeholder="Nome do aluno"></label><label>Usuário<input id="newStudentUser" placeholder="usuario"></label><label>Senha<input id="newStudentPass" type="text" placeholder="Senha inicial"></label></div>
-    <button class="btn btn-primary" id="createStudentBtn">+ Criar acesso</button>
+    <div class="form-grid admin-student-form"><label>Nome<input id="newStudentName" placeholder="Nome do aluno"></label><label>E-mail<input id="newStudentUser" type="email" placeholder="aluno@exemplo.com"></label><label>Senha<input id="newStudentPass" type="text" placeholder="Senha inicial"></label></div>
+    <button class="btn btn-primary" id="createStudentBtn"><svg class="cf-svg" aria-hidden="true"><use href="#i-user"/></svg> Criar acesso</button>
     <label class="admin-student-search"><span class="admin-student-search-label"><strong>Buscar aluno cadastrado</strong><span class="admin-student-search-separator">/</span><span>Alunos registrados: <b id="adminStudentSearchCount">0</b></span></span><input id="adminStudentSearch" class="exercise-search" type="search" placeholder="Nome ou usuário" aria-label="Buscar aluno cadastrado"></label>
     <div id="studentList" class="admin-list"></div>
   </div>
@@ -84,7 +133,7 @@
   <div class="card admin-workouts-panel">
     <div class="admin-workouts-head">
       <div><span class="eyebrow">GESTÃO DE TREINOS</span><h3>Treinos atribuídos</h3><p class="muted">Visualize, filtre e gerencie os treinos dos alunos em um só lugar.</p></div>
-      <button class="btn btn-primary" id="goCustomWorkoutBtn" type="button">+ Novo treino</button>
+      <button class="btn btn-primary" id="goCustomWorkoutBtn" type="button"><svg class="cf-svg" aria-hidden="true"><use href="#i-training"/></svg> Novo treino</button>
     </div>
     <div class="admin-workout-stats">
       <div><strong id="adminWorkoutCount">0</strong><small>Total</small></div>
@@ -92,7 +141,7 @@
       <div><strong id="adminWorkoutExpired">0</strong><small>Vencidos</small></div>
     </div>
     <div class="admin-workout-tools">
-      <input id="adminWorkoutSearch" class="exercise-search" placeholder="🔎 Buscar aluno ou treino..." aria-label="Buscar treino">
+      <label class="admin-search-wrap"><svg class="cf-svg" aria-hidden="true"><use href="#i-search"/></svg><input id="adminWorkoutSearch" class="exercise-search" placeholder="Buscar aluno ou treino..." aria-label="Buscar treino"></label>
       <select id="adminWorkoutStudentFilter" aria-label="Filtrar por aluno"><option value="">Todos os alunos</option></select>
       <select id="adminWorkoutStatusFilter" aria-label="Filtrar por status"><option value="all">Todos os status</option><option value="active">Ativos</option><option value="expired">Vencidos</option></select>
     </div>
@@ -101,12 +150,12 @@
   </div>
   <div class="admin-tab-panel" data-admin-panel="custom">
   <div class="card custom-workout-builder">
-    <div class="card-head"><div><span class="eyebrow">CRIAR TREINO</span><h3>Montar novo treino</h3><p class="muted custom-builder-intro">Monte a sessão, organize os exercícios e atribua ao aluno.</p></div></div>
-    <div class="form-grid"><label>Nome do treino<input id="customWorkoutName" placeholder="Ex.: Força + endurance"></label><label>Grupo de treino<input id="customWorkoutGroup" placeholder="Ex.: Base 1, Emagrecimento, Performance"></label><label>Modalidade<select id="customWorkoutCategory"><option value="gym">🏋️ Academia</option><option value="bike">🚴 Bike</option></select></label><label>Duração<input id="customWorkoutDuration" placeholder="Ex.: 60 min"></label><label>Intensidade<select id="customWorkoutIntensity"><option>Leve</option><option selected>Moderada</option><option>Alta</option></select></label></div>
-    <div class="exercise-picker"><div class="picker-head"><div><span class="picker-kicker">CATÁLOGO DE EXERCÍCIOS</span><strong>Adicionar exercícios</strong><small>Pesquise e organize por grupo muscular ou modalidade.</small></div><button class="btn btn-light mini-add-exercise" id="addExerciseBtn" type="button">+ Novo exercício</button></div><div class="exercise-catalog-tools"><label class="catalog-filter-field">Buscar<input id="exerciseSearch" class="exercise-search" placeholder="Ex.: agachamento"></label><label class="catalog-filter-field">Grupo muscular<select id="exerciseCatalogGroup"><option value="all">Todos os grupos</option></select></label><label class="catalog-filter-field">Modalidade<select id="exerciseCatalogCategory"><option value="all">Todas</option><option value="gym">Academia</option><option value="bike">Bike</option></select></label></div><div id="exerciseCatalog" class="exercise-catalog"></div></div>
+    <div class="card-head"><div><h3>Montar novo treino</h3><p class="muted custom-builder-intro">Monte a sessão, organize os exercícios e atribua ao aluno.</p></div></div>
+    <div class="form-grid"><label>Nome do treino<input id="customWorkoutName" placeholder="Ex.: Força + endurance"></label><label>Grupo de treino<input id="customWorkoutGroup" placeholder="Ex.: Base 1, Emagrecimento, Performance"></label><label>Modalidade<select id="customWorkoutCategory"><option value="gym">Academia</option><option value="bike">Bike</option></select></label><label>Duração<input id="customWorkoutDuration" placeholder="Ex.: 60 min"></label><label>Intensidade<select id="customWorkoutIntensity"><option>Leve</option><option selected>Moderada</option><option>Alta</option></select></label></div>
+    <div class="exercise-picker"><div class="picker-head"><div><span class="picker-kicker">CATÁLOGO DE EXERCÍCIOS</span><strong>Adicionar exercícios</strong><small>Pesquise e organize por grupo muscular ou modalidade.</small></div><button class="btn btn-light mini-add-exercise" id="addExerciseBtn" type="button"><svg class="cf-svg" aria-hidden="true"><use href="#i-training"/></svg> Novo exercício</button></div><div class="exercise-catalog-tools"><label class="catalog-filter-field">Buscar<input id="exerciseSearch" class="exercise-search" placeholder="Ex.: agachamento"></label><label class="catalog-filter-field">Grupo muscular<select id="exerciseCatalogGroup"><option value="all">Todos os grupos</option></select></label><label class="catalog-filter-field">Modalidade<select id="exerciseCatalogCategory"><option value="all">Todas</option><option value="gym">Academia</option><option value="bike">Bike</option></select></label></div><div id="exerciseCatalog" class="exercise-catalog"></div></div>
     <div class="selected-exercises"><div class="picker-head"><strong>Exercícios do treino</strong><small>Defina séries/repetições ou tempo</small></div><div id="selectedExercises" class="selected-exercise-list"><div class="muted">Nenhum exercício adicionado.</div></div></div>
     <div class="form-grid"><label>Aluno (opcional)<select id="customWorkoutStudent"><option value="" selected>Não atribuir agora</option></select></label><label>Dia da semana<select id="customWorkoutWeekday"><option value="" selected>Selecione o dia</option><option value="0">Domingo</option><option value="1">Segunda-feira</option><option value="2">Terça-feira</option><option value="3">Quarta-feira</option><option value="4">Quinta-feira</option><option value="5">Sexta-feira</option><option value="6">Sábado</option></select></label><label>Validade<input id="customWorkoutValidity" type="number" min="1" value="30"><small>dias</small></label><label>Data de início<input id="customWorkoutStart" type="date"></label><label>Observação<input id="customWorkoutNote" placeholder="Orientação para o aluno"></label></div>
-    <button class="btn btn-primary" id="saveCustomWorkout">+ Criar e atribuir treino personalizado</button>
+    <button class="btn btn-primary" id="saveCustomWorkout"><svg class="cf-svg" aria-hidden="true"><use href="#i-check"/></svg> Salvar treino</button>
     <button class="btn btn-light" id="cancelCustomWorkoutEdit" type="button" hidden>Cancelar edição</button><div id="customWorkoutFeedback" class="muted" style="margin-top:8px">Defina o treino, adicione exercícios e salve como grupo. Você poderá atribuí-lo a alunos agora ou depois.</div>
     <div id="customWorkoutList" class="admin-list"></div>
   </div>
@@ -116,21 +165,21 @@
   </div>
 </section>
 
-<header class="app-header"><div class="container header-top"><div class="app-brand-logo"><img src="assets/ciclofit-logo.png" alt="CicloFit"></div><div class="header-actions"><button class="icon-btn" id="themeToggle" aria-label="Alternar tema">☾</button><button class="icon-btn logout-header" id="headerLogout" aria-label="Sair">⇥</button></div></div></header>
+<header class="app-header"><div class="container header-top"><div class="app-brand-logo"><img src="assets/ciclofit-logo3.png" alt="CicloFit"></div><div class="header-actions"><button class="icon-btn" id="themeToggle" type="button" aria-label="Alternar tema" title="Alternar tema"><svg class="cf-svg theme-svg-icon" aria-hidden="true"><use href="#i-sun"/></svg></button><button class="icon-btn logout-header" id="headerLogout" type="button" aria-label="Sair" title="Sair"><svg class="cf-svg" aria-hidden="true"><use href="#i-logout"/></svg></button></div></div></header>
 <main class="container app-main">
 <section id="home" class="page active">
   <div class="welcome"><div><span class="eyebrow" id="todayDate"></span><h1 id="welcomeTitle">Seu dia começa aqui.</h1><p id="welcomeSub">Acompanhe o próximo passo e mantenha a consistência.</p></div></div>
   <article class="hero-card">
-    <div class="today-badge hero-today-badge" id="todayBadge">HOJE</div><div class="hero-icon" id="todayIcon">🚴</div><div class="hero-copy"><span class="eyebrow" id="todayLabel">FOCO DE HOJE</span><h2 id="todayWorkout"></h2><p id="todayDescription"></p></div><div class="hero-stats"><div><strong id="todayDuration">—</strong><span>duração</span></div><div><strong id="todayExercises">—</strong><span>exercícios</span></div><div><strong id="todayIntensity">—</strong><span>intensidade</span></div></div><button class="btn btn-primary full" id="todayAction">COMEÇAR</button></article>
-  <div class="section-head"><div><span class="eyebrow">SEMANA</span><h2>Calendário da semana</h2></div><span class="muted" id="weekCurrent">Segunda a domingo</span></div>
+    <div class="today-badge hero-today-badge" id="todayBadge">HOJE</div><div class="hero-icon" id="todayIcon"><svg class="cf-svg" aria-hidden="true"><use href="#i-bike"/></svg></div><div class="hero-copy"><span class="eyebrow" id="todayLabel">FOCO DE HOJE</span><h2 id="todayWorkout"></h2><p id="todayDescription"></p></div><div class="hero-stats"><div><strong id="todayDuration">—</strong><span>duração</span></div><div><strong id="todayExercises">—</strong><span>exercícios</span></div><div><strong id="todayIntensity">—</strong><span>intensidade</span></div></div><button class="btn btn-primary full" id="todayAction">COMEÇAR</button></article>
+  <div class="section-head"><div><span class="eyebrow">SEMANA</span><h2><svg class="section-title-icon cf-svg" aria-hidden="true"><use href="#i-calendar"/></svg>Calendário da semana</h2></div><span class="muted" id="weekCurrent">Segunda a domingo</span></div>
   <div class="card week-card">
     <div id="weekGrid" class="day-grid"></div>
   </div>
-  <div class="section-head"><div><span class="eyebrow">RESUMO</span><h2>Seu progresso</h2></div><button class="text-btn" data-go="progress">Ver evolução</button></div>
-  <div class="grid-4"><div class="mini-card"><span class="mini-icon orange">🏋️</span><strong id="weekGym">0</strong><small>treinos</small></div><div class="mini-card"><span class="mini-icon blue">🚴</span><strong id="weekRides">0</strong><small>pedais</small></div><div class="mini-card"><span class="mini-icon green">⏱</span><strong id="weekMinutes">0</strong><small>minutos</small></div><div class="mini-card"><span class="mini-icon purple">🔥</span><strong id="streak">0</strong><small>dias ativos</small></div></div>
+  <div class="section-head"><div><span class="eyebrow">RESUMO</span><h2><svg class="section-title-icon cf-svg" aria-hidden="true"><use href="#i-chart"/></svg><span>Seu progresso</span></h2></div><button class="text-btn" data-go="progress">Ver evolução</button></div>
+  <div class="grid-4"><div class="mini-card"><span class="mini-icon orange"><svg class="cf-svg" aria-hidden="true"><use href="#i-dumbbell"/></svg></span><strong id="weekGym">0</strong><small>treinos</small></div><div class="mini-card"><span class="mini-icon blue"><svg class="cf-svg" aria-hidden="true"><use href="#i-bike"/></svg></span><strong id="weekRides">0</strong><small>pedais</small></div><div class="mini-card"><span class="mini-icon green"><svg class="cf-svg" aria-hidden="true"><use href="#i-chart"/></svg></span><strong id="weekMinutes">0</strong><small>minutos</small></div><div class="mini-card"><span class="mini-icon purple"><svg class="cf-svg" aria-hidden="true"><use href="#i-fire"/></svg></span><strong id="streak">0</strong><small>dias ativos</small></div></div>
   
-  <div class="section-head"><div><span class="eyebrow">OBJETIVOS</span><h2>Metas de <span id="goalMonthLabel">mês</span></h2></div><button class="text-btn" onclick="openGoalEditor()">Editar</button></div>
-  <div class="card goals-card"><div class="goal-row"><div><strong>🚴 Distância</strong><small id="goalKmText">0 / 500 km</small></div><b id="goalKmPct">0%</b></div><div class="progress"><i id="goalKmFill"></i></div><div class="goal-row"><div><strong>🏋️ Treinos</strong><small id="goalWorkoutText">0 / 12</small></div><b id="goalWorkoutPct">0%</b></div><div class="progress"><i id="goalWorkoutFill"></i></div></div>
+  <div class="section-head"><div><span class="eyebrow">OBJETIVOS</span><h2><svg class="section-title-icon cf-svg" aria-hidden="true"><use href="#i-target"/></svg><span>Metas de <span id="goalMonthLabel">mês</span></span></h2></div><button class="text-btn" onclick="openGoalEditor()">Editar</button></div>
+  <div class="card goals-card"><div class="goal-row"><div><strong class="inline-icon-text"><svg class="cf-svg" aria-hidden="true"><use href="#i-bike"/></svg><span>Distância</span></strong><small id="goalKmText">0 / 500 km</small></div><b id="goalKmPct">0%</b></div><div class="progress"><i id="goalKmFill"></i></div><div class="goal-row"><div><strong class="inline-icon-text"><svg class="cf-svg" aria-hidden="true"><use href="#i-dumbbell"/></svg><span>Treinos</span></strong><small id="goalWorkoutText">0 / 12</small></div><b id="goalWorkoutPct">0%</b></div><div class="progress"><i id="goalWorkoutFill"></i></div></div>
 </section>
 <section id="workouts" class="page">
   <div class="page-intro"><span class="eyebrow">ACADEMIA</span><h1>Treinos</h1><p>Escolha o treino, faça suas séries e acompanhe seu progresso.</p></div>
@@ -148,15 +197,15 @@
     </div>
 
     <div class="ride-mode-tabs" role="tablist" aria-label="Tipo de registro">
-      <button id="gpxModeBtn" class="ride-mode-btn active" type="button">📥 Carregar GPX</button>
-      <button id="manualModeBtn" class="ride-mode-btn" type="button">✍️ Manual</button>
+      <button id="gpxModeBtn" class="ride-mode-btn active" type="button"><svg class="cf-svg" aria-hidden="true"><use href="#i-upload"/></svg>Carregar GPX</button>
+      <button id="manualModeBtn" class="ride-mode-btn" type="button"><svg class="cf-svg" aria-hidden="true"><use href="#i-manual"/></svg>Manual</button>
     </div>
 
     <label>Data da atividade<input id="rideDate" type="date"></label>
 
     <div id="gpxRideFields">
       <div class="ride-gpx-action">
-        <div><strong>📁 Arquivo GPX</strong><small>Selecione um arquivo GPX para importar os dados do pedal.</small></div>
+        <div><strong><svg class="cf-svg" aria-hidden="true"><use href="#i-upload"/></svg>Arquivo GPX</strong><small>Selecione um arquivo GPX para importar os dados do pedal.</small></div>
         <button class="btn btn-primary" id="importGpx" type="button">Selecionar GPX</button>
       </div>
       <div class="gpx-hint" id="gpxHint">Nenhum GPX carregado.</div>
@@ -179,19 +228,28 @@
   <div class="section-head"><div><span class="eyebrow">HISTÓRICO DE PEDAL</span><h2>Histórico</h2></div></div>
   <div id="rideHistory"></div>
 </section>
-<section id="progress" class="page"><div class="page-intro"><span class="eyebrow">PERFORMANCE</span><h1>Evolução</h1><p>Veja volume, consistência e recordes em um só lugar.</p></div><div class="progress-hero"><div><span class="eyebrow">ATIVIDADE TOTAL</span><strong id="progressHeadline">0</strong><span>sessões registradas</span></div><div class="ring" id="progressRing"><span id="progressRingText">0%</span></div></div><div class="grid-3"><div class="metric-card"><small>Treinos</small><strong id="totalCompleted">0</strong></div><div class="metric-card"><small>Pedais</small><strong id="ridesCompleted">0</strong></div><div class="metric-card"><small>Km totais</small><strong id="totalKm">0</strong></div><div class="metric-card"><small>Tempo pedal</small><strong id="totalRideTime">0h</strong></div><div class="metric-card"><small>Elevação</small><strong id="totalElevation">0m</strong></div><div class="metric-card"><small>Volume academia</small><strong id="totalVolume">0 kg</strong></div></div><div class="card chart-card"><div class="card-head"><div><span class="eyebrow">ACADEMIA</span><h3>Volume</h3></div><span id="volumeTotal">0 kg</span></div><canvas id="volumeChart" height="190"></canvas></div><div class="card chart-card"><div class="card-head"><div><span class="eyebrow">CICLISMO</span><h3>Distância recente</h3></div><span>km</span></div><canvas id="rideChart" height="190"></canvas></div><div class="card"><div class="card-head"><div><span class="eyebrow">DESEMPENHO</span><h3>Recordes pessoais</h3></div><span id="prCount">0</span></div><div id="prList"></div></div><div class="card"><div class="card-head"><h3>Últimos treinos</h3><span>histórico</span></div><div id="history"></div></div><div class="button-row"><button class="btn btn-light" id="exportData">⬇️ Exportar dados</button><button class="btn btn-light" id="importData">⬆️ Importar backup</button></div><input id="backupFile" type="file" accept="application/json" hidden><button class="btn btn-danger full progress-danger" id="clearData">Apagar meu progresso</button></section>
-<section id="profile" class="page"><div class="page-intro"><span class="eyebrow">CONTA</span><h1>Perfil</h1><p>Personalize seus dados e acompanhe sua evolução.</p></div><div class="card profile-card"><div class="avatar" id="avatar">CF</div><div class="profile-head-copy"><h2 id="profileDisplayName">Seu perfil</h2><p class="muted" id="profileDisplayGoal">Configure seus dados para personalizar o CicloFit.</p><label class="photo-upload"><input id="profilePhotoInput" type="file" accept="image/*" hidden><button class="btn btn-light" type="button" onclick="document.getElementById('profilePhotoInput').click()">📷 Carregar foto</button></label></div></div><div class="card"><div class="section-label">Dados pessoais</div><div class="form-grid"><label>Nome<input id="profileName" placeholder="Seu nome"></label><label>Data de nascimento<input id="profileBirthDate" type="date"></label><label>Idade<input id="profileAge" type="number" min="1" readonly></label><label>Telefone<input id="profilePhone" type="tel" placeholder="(71) 99999-9999"></label><label>Peso (kg)<input id="profileWeight" type="number" step="0.1"></label><label>Altura (cm)<input id="profileHeight" type="number"></label><label>Objetivo<select id="profileGoal"><option>Melhorar condicionamento</option><option>Aumentar resistência</option><option>Ganhar força</option><option>Preparar para prova</option><option>Perder peso</option></select></label><label>Nível<select id="profileLevel"><option>Iniciante</option><option>Intermediário</option><option>Avançado</option></select></label><label>FC máxima<input id="profileMaxHr" type="number" placeholder="190"></label><label>FTP (W)<input id="profileFtp" type="number" placeholder="250"></label></div><button class="btn btn-primary full" id="saveProfile">Salvar perfil</button></div><div class="card"><div class="section-label">❤️ Zonas de frequência cardíaca</div><div id="zones"></div></div><div class="card settings-list"><div class="section-label">Configurações</div><button id="installApp" class="btn btn-light full">📱 Instalar CicloFit</button><button id="notifyBtn" class="btn btn-light full">🔔 Ativar lembretes</button></div></section>
+<section id="progress" class="page"><div class="page-intro"><span class="eyebrow">PERFORMANCE</span><h1>Evolução</h1><p>Veja volume, consistência e recordes em um só lugar.</p></div><div class="progress-hero"><div><span class="eyebrow">ATIVIDADE TOTAL</span><strong id="progressHeadline">0</strong><span>sessões registradas</span></div><div class="ring" id="progressRing"><span id="progressRingText">0%</span></div></div><div class="grid-3"><div class="metric-card"><small>Treinos</small><strong id="totalCompleted">0</strong></div><div class="metric-card"><small>Pedais</small><strong id="ridesCompleted">0</strong></div><div class="metric-card"><small>Km totais</small><strong id="totalKm">0</strong></div><div class="metric-card"><small>Tempo pedal</small><strong id="totalRideTime">0h</strong></div><div class="metric-card"><small>Elevação</small><strong id="totalElevation">0m</strong></div><div class="metric-card"><small>Volume academia</small><strong id="totalVolume">0 kg</strong></div></div><div class="card chart-card"><div class="card-head"><div><span class="eyebrow">ACADEMIA</span><h3>Volume</h3></div><span id="volumeTotal">0 kg</span></div><canvas id="volumeChart" height="190"></canvas></div><div class="card chart-card"><div class="card-head"><div><span class="eyebrow">CICLISMO</span><h3>Distância recente</h3></div><span>km</span></div><canvas id="rideChart" height="190"></canvas></div><div class="card"><div class="card-head"><div><span class="eyebrow">DESEMPENHO</span><h3>Recordes pessoais</h3></div><span id="prCount">0</span></div><div id="prList"></div></div><div class="card"><div class="card-head"><h3>Últimos treinos</h3><span>histórico</span></div><div id="history"></div></div><div class="button-row"><button class="btn btn-light" id="exportData"><svg class="cf-svg" aria-hidden="true"><use href="#i-download"/></svg> Exportar dados</button><button class="btn btn-light" id="importData"><svg class="cf-svg" aria-hidden="true"><use href="#i-upload"/></svg> Importar backup</button></div><input id="backupFile" type="file" accept="application/json" hidden></section>
+<section id="profile" class="page"><div class="page-intro"><span class="eyebrow">CONTA</span><h1>Perfil</h1><p>Personalize seus dados e acompanhe sua evolução.</p></div><div class="card profile-card"><div class="avatar" id="avatar">CF</div><div class="profile-head-copy"><h2 id="profileDisplayName">Seu perfil</h2><p class="muted" id="profileDisplayGoal">Configure seus dados para personalizar o CicloFit.</p><label class="photo-upload"><input id="profilePhotoInput" type="file" accept="image/*" hidden><button class="btn btn-light" type="button" onclick="document.getElementById('profilePhotoInput').click()"><svg class="cf-svg" aria-hidden="true"><use href="#i-camera"/></svg> Carregar foto</button></label></div></div><div class="card"><div class="section-label">Dados pessoais</div><div class="form-grid"><label>Nome<input id="profileName" placeholder="Seu nome"></label><label>Data de nascimento<input id="profileBirthDate" type="date"></label><label>Idade<input id="profileAge" type="number" min="1" readonly></label><label>Telefone<input id="profilePhone" type="tel" placeholder="(71) 99999-9999"></label><label>Peso (kg)<input id="profileWeight" type="number" step="0.1"></label><label>Altura (cm)<input id="profileHeight" type="number"></label><label>Objetivo<select id="profileGoal"><option>Melhorar condicionamento</option><option>Aumentar resistência</option><option>Ganhar força</option><option>Preparar para prova</option><option>Perder peso</option></select></label><label>Nível<select id="profileLevel"><option>Iniciante</option><option>Intermediário</option><option>Avançado</option></select></label><label>FC máxima<input id="profileMaxHr" type="number" placeholder="190"></label><label>FTP (W)<input id="profileFtp" type="number" placeholder="250"></label></div><button class="btn btn-primary full" id="saveProfile">Salvar perfil</button></div><div class="card"><div class="section-label"><svg class="cf-svg" aria-hidden="true"><use href="#i-heart"/></svg> Zonas de frequência cardíaca</div><div id="zones"></div></div></section>
 </main>
-<nav class="bottom-nav" aria-label="Navegação principal"><button class="nav-btn active" data-page="home">⌂<span>Início</span></button><button class="nav-btn" data-page="workouts">▦<span>Treinos</span></button><button class="nav-btn" data-page="cycling">◉<span>Pedal</span></button><button class="nav-btn" data-page="progress">↗<span>Evolução</span></button><button class="nav-btn" data-page="profile">○<span>Perfil</span></button></nav>
-<div class="modal" id="newExerciseModal" role="dialog" aria-modal="true" aria-labelledby="newExerciseTitle"><div class="modal-content small-modal"><button class="close" id="closeNewExercise" aria-label="Fechar">×</button><div class="eyebrow">CATÁLOGO</div><h2 id="newExerciseTitle">Novo exercício</h2><p class="muted">Cadastre um exercício para reutilizá-lo nos próximos treinos personalizados.</p><div class="form-grid"><label>Nome do exercício<input id="newExerciseName" placeholder="Ex.: Agachamento búlgaro"></label><label>Grupo muscular / objetivo<input id="newExerciseGroup" placeholder="Ex.: Pernas"></label><label>Modalidade<select id="newExerciseCategory"><option value="gym">🏋️ Academia</option><option value="bike">🚴 Bike</option></select></label></div><div class="button-row" style="margin-top:12px"><button class="btn btn-light" id="cancelNewExercise" type="button">Cancelar</button><button class="btn btn-primary" id="saveNewExercise" type="button">+ Adicionar exercício</button></div></div></div>
+<nav class="bottom-nav" aria-label="Navegação principal"><button class="nav-btn active" data-page="home"><svg class="cf-svg" aria-hidden="true"><use href="#i-home"/></svg><span>Início</span></button><button class="nav-btn" data-page="workouts"><svg class="cf-svg" aria-hidden="true"><use href="#i-dumbbell"/></svg><span>Treinos</span></button><button class="nav-btn" data-page="cycling"><svg class="cf-svg" aria-hidden="true"><use href="#i-bike"/></svg><span>Pedal</span></button><button class="nav-btn" data-page="progress"><svg class="cf-svg" aria-hidden="true"><use href="#i-chart"/></svg><span>Evolução</span></button><button class="nav-btn" data-page="profile"><svg class="cf-svg" aria-hidden="true"><use href="#i-user"/></svg><span>Perfil</span></button></nav>
+<!-- leftover-nav-junk --><!--<symbol id="i-fire-old" viewBox="0 0 24 24"><path d="M12 21c4.2 0 7-2.7 7-6.6 0-3.1-1.8-5.1-4.2-7.1.1 2-1 3.3-2.3 4.2.2-3-1.2-5.5-3.4-7.5.1 3.7-4.1 6.1-4.1 10.3C5 18.2 8 21 12 21Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></symbol><symbol id="i-camera" viewBox="0 0 24 24"><path d="M4 8h4l1.3-2h5.4L16 8h4v11H4z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="12" cy="13.5" r="3.2" fill="none" stroke="currentColor" stroke-width="2"/></symbol><symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 17h12l-1.4-2.1V10a4.6 4.6 0 0 0-9.2 0v4.9z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M10 20h4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol><symbol id="i-mobile" viewBox="0 0 24 24"><rect x="7" y="3" width="10" height="18" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M10 6h4M11 18h2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol><symbol id="i-mail" viewBox="0 0 24 24"><rect x="4" y="6" width="16" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="m5 8 7 5 7-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></symbol><symbol id="i-student" viewBox="0 0 24 24"><path d="m3 9 9-4 9 4-9 4z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M6 11v4c2.4 2.2 9.6 2.2 12 0v-4M21 10v5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol><symbol id="i-admin" viewBox="0 0 24 24"><path d="M12 3 19 6v5c0 4.4-2.8 7.8-7 10-4.2-2.2-7-5.6-7-10V6z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M9 12h6M12 9v6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol><symbol id="i-phone" viewBox="0 0 24 24"><path d="M7 4h3l1.2 4-2 1.5a13 13 0 0 0 5.3 5.3L16 13l4 1.2v3c0 1-1 2-2 2C10.3 19.2 4.8 13.7 4.8 6 4.8 5 5.7 4 7 4Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></symbol><symbol id="i-scale" viewBox="0 0 24 24"><path d="M6 5h12l2 15H4z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M9 9h6M10 13h4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol><symbol id="i-flash" viewBox="0 0 24 24"><path d="m13 2-8 11h6l-1 9 8-12h-6z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></symbol><symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.65 17.65l1.42 1.42M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.65 6.35l1.42-1.42" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol><symbol id="i-moon" viewBox="0 0 24 24"><path d="M20 15.2A8.5 8.5 0 0 1 8.8 4.1 8.6 8.6 0 1 0 20 15.2Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></symbol><symbol id="i-logout" viewBox="0 0 24 24"><path d="M10 5H5v14h5M15 8l4 4-4 4M19 12H9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol><symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="m15 15 5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol><span>Perfil</span></button></nav> leftover-nav-junk-end -->
+<div class="modal" id="newExerciseModal" role="dialog" aria-modal="true" aria-labelledby="newExerciseTitle"><div class="modal-content small-modal"><button class="close" id="closeNewExercise" aria-label="Fechar">×</button><div class="eyebrow">CATÁLOGO</div><h2 id="newExerciseTitle">Novo exercício</h2><p class="muted">Cadastre um exercício para reutilizá-lo nos próximos treinos personalizados.</p><div class="form-grid"><label>Nome do exercício<input id="newExerciseName" placeholder="Ex.: Agachamento búlgaro"></label><label>Grupo muscular / objetivo<input id="newExerciseGroup" placeholder="Ex.: Pernas"></label><label>Modalidade<select id="newExerciseCategory"><option value="gym">Academia</option><option value="bike">Bike</option></select></label></div><div class="button-row" style="margin-top:12px"><button class="btn btn-light" id="cancelNewExercise" type="button">Cancelar</button><button class="btn btn-primary" id="saveNewExercise" type="button">+ Adicionar exercício</button></div></div></div>
 <div class="modal gym-workout-overlay" id="workoutModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="modal-content gym-workout-sheet"><div class="gym-sheet-handle"></div><div class="gym-sheet-head"><div><h2 id="modalTitle"></h2><p class="muted" id="modalSubtitle"></p></div><button class="close gym-close" id="closeModal" aria-label="Fechar treino">×</button></div><div class="gym-live-bar"><b id="gymSessionStatus">SÉRIE EM ANDAMENTO</b><small>registre carga e repetições</small></div><div id="exerciseList"></div><div class="timer"><div><small>DESCANSO</small><strong id="timer">60</strong><span>s</span></div><div class="timer-progress"><i id="timerProgress"></i></div><div class="timer-actions"><button class="btn btn-light" id="minusTimer">−15s</button><button class="btn btn-light" id="startTimer">Iniciar</button><button class="btn btn-light" id="plusTimer">+15s</button><button class="btn btn-light" id="resetTimer">Reset</button></div></div><button class="btn btn-primary full" id="finishWorkout">✓ Concluir treino</button></div></div>
 <div class="modal" id="goalModal"><div class="modal-content small-modal"><button class="close" onclick="closeGoalEditor()" aria-label="Fechar">×</button><div class="eyebrow">METAS MENSAIS</div><h2>Personalize sua evolução</h2><div class="form-grid"><label>Distância (km)<input id="goalKmInput" type="number" min="1"></label><label>Treinos<input id="goalWorkoutInput" type="number" min="1"></label><label>Horas de pedal<input id="goalHoursInput" type="number" min="1"></label><label>Elevação (m)<input id="goalElevationInput" type="number" min="1"></label></div><button class="btn btn-primary full" onclick="saveGoals()">Salvar metas</button></div></div>
-<div class="modal" id="quickModal"><div class="modal-content small-modal"><button class="close" onclick="closeQuick()" aria-label="Fechar">×</button><div class="eyebrow">REGISTRO RÁPIDO</div><h2>O que deseja fazer?</h2><div class="quick-grid"><button onclick="closeQuick();navigate('cycling')"><span>🚴</span><b>Registrar pedal</b><small>Distância e tempo</small></button><button onclick="closeQuick();navigate('workouts')"><span>🏋️</span><b>Começar treino</b><small>Séries e cargas</small></button><button onclick="closeQuick();navigate('progress')"><span>📊</span><b>Ver evolução</b><small>Resultados e metas</small></button></div></div></div>
-
+<div class="modal" id="quickModal"><div class="modal-content small-modal"><button class="close" onclick="closeQuick()" aria-label="Fechar">×</button><div class="eyebrow">REGISTRO RÁPIDO</div><h2>O que deseja fazer?</h2><div class="quick-grid"><button onclick="closeQuick();navigate('cycling')"><span><svg class="cf-svg" aria-hidden="true"><use href="#i-bike"/></svg></span><b>Registrar pedal</b><small>Distância e tempo</small></button><button onclick="closeQuick();navigate('workouts')"><span><svg class="cf-svg" aria-hidden="true"><use href="#i-dumbbell"/></svg></span><b>Começar treino</b><small>Séries e cargas</small></button><button onclick="closeQuick();navigate('progress')"><span><svg class="cf-svg" aria-hidden="true"><use href="#i-chart"/></svg></span><b>Ver evolução</b><small>Resultados e metas</small></button></div></div></div>
 
 <div id="toast" class="toast" role="status" aria-live="polite"></div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="js/cloud-config.js"></script>
 <script src="js/cloud-sync.js"></script>
 <script src="js/app.js"></script>
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js').catch(err => {
+      console.warn('CicloFit PWA: falha ao registrar Service Worker', err);
+    });
+  });
+}
+</script>
 </body></html>

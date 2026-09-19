@@ -1,13 +1,10 @@
 /*
- * Copie este arquivo para js/cloud-config.js e preencha os dados do seu
- * projeto Supabase.
+ * Copie para js/cloud-config.js (esse arquivo não vai para o Git).
  *
- * IMPORTANTE:
- * - Use somente a Publishable Key (ou a antiga anon key) no navegador.
- * - NUNCA coloque a service_role key neste arquivo ou no GitHub.
+ * Local com `npm start`: deixe apiUrl vazio para usar a mesma origem.
+ * Produção: apiUrl = URL pública da API Node (não é a URL do Supabase).
  */
 window.CICLOFIT_CLOUD_CONFIG = {
-  enabled: false,
-  supabaseUrl: 'https://SEU-PROJETO.supabase.co',
-  supabaseKey: 'SUA_PUBLISHABLE_KEY'
+  enabled: true,
+  apiUrl: ''
 };
