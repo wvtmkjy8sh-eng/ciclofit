@@ -1,11 +1,5 @@
-/*
- * Frontend fala direto com o Supabase (Auth + RLS).
- * Cole Project Settings → API → Project URL e anon public.
- * Este arquivo pode ir ao Git: a anon key é pública por desenho.
- * Nunca coloque service_role aqui.
- */
 window.CICLOFIT_CLOUD_CONFIG = {
   enabled: true,
   supabaseUrl: 'https://dhvgggopjwhbrrproowa.supabase.co',
-  supabaseAnonKey: 'sb_secret_XkYGs••••••••••••••••'
+  supabaseAnonKey: 'sb_publishable_PuMcxnSra42lAT8yrR-tMA_53R-XVRh'
 };
