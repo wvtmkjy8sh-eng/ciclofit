@@ -1,0 +1,6 @@
+# A função valida o JWT no código (perfil admin).
+[functions.create-student]
+verify_jwt = false
+
+[functions.manage-student]
+verify_jwt = false

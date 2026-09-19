@@ -1,10 +1,10 @@
 /*
- * Copie para js/cloud-config.js (esse arquivo não vai para o Git).
- *
- * Local com `npm start`: deixe apiUrl vazio para usar a mesma origem.
- * Produção: apiUrl = URL pública da API Node (não é a URL do Supabase).
+ * Copie para js/cloud-config.js.
+ * Use a URL do projeto e a anon/publishable key (Project Settings → API).
+ * Nunca coloque a service_role no navegador.
  */
 window.CICLOFIT_CLOUD_CONFIG = {
   enabled: true,
-  apiUrl: ''
+  supabaseUrl: 'https://SEU-PROJETO.supabase.co',
+  supabaseAnonKey: 'COLE_A_ANON_KEY'
 };

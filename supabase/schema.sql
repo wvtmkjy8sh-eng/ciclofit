@@ -183,10 +183,93 @@ for all to authenticated using (student_id = auth.uid()) with check (student_id 
 create policy "rides_own" on public.rides
 for all to authenticated using (student_id = auth.uid()) with check (student_id = auth.uid());
 
--- app_state/app_health ficam protegidos por padrão. O modo cloud-sync de teste só será
--- habilitado depois de definirmos políticas específicas para o ambiente de teste.
 create policy "health_read" on public.app_health
-for select to authenticated using (true);
+for select to anon, authenticated using (true);
 
--- Atualiza o cache do PostgREST imediatamente após criar as tabelas e políticas.
+alter table public.profiles add column if not exists extras jsonb not null default '{}'::jsonb;
+
+-- Evita recursão nas políticas: a função lê o próprio perfil com privilégio do dono.
+create or replace function public.is_admin()
+returns boolean
+language sql
+stable
+security definer
+set search_path = public
+as $$
+  select exists (
+    select 1 from public.profiles
+    where id = auth.uid() and role = 'admin'
+  );
+$$;
+
+create or replace function public.protect_profile_role()
+returns trigger
+language plpgsql
+security definer
+set search_path = public
+as $$
+begin
+  if not public.is_admin() then
+    new.role := old.role;
+    new.active := old.active;
+  elsif old.role = 'admin' and new.role is distinct from 'admin' and old.id = auth.uid() then
+    new.role := 'admin';
+  end if;
+  return new;
+end;
+$$;
+
+drop trigger if exists protect_profile_role on public.profiles;
+create trigger protect_profile_role
+  before update on public.profiles
+  for each row execute procedure public.protect_profile_role();
+
+drop policy if exists "profiles_select_admin" on public.profiles;
+drop policy if exists "profiles_update_admin" on public.profiles;
+drop policy if exists "app_state_own" on public.app_state;
+drop policy if exists "app_state_select" on public.app_state;
+drop policy if exists "app_state_write_own" on public.app_state;
+drop policy if exists "app_state_update_own" on public.app_state;
+drop policy if exists "app_state_delete_own" on public.app_state;
+drop policy if exists "app_state_write_shared" on public.app_state;
+drop policy if exists "app_state_update_shared" on public.app_state;
+
+create policy "profiles_select_admin" on public.profiles
+for select to authenticated using (public.is_admin());
+
+create policy "profiles_update_admin" on public.profiles
+for update to authenticated
+using (public.is_admin())
+with check (public.is_admin());
+
+-- Estado pessoal do usuário + blob administrativo compartilhado (treinos atribuídos).
+create policy "app_state_select" on public.app_state
+for select to authenticated
+using (scope_key = auth.uid()::text or scope_key = 'shared');
+
+create policy "app_state_write_own" on public.app_state
+for insert to authenticated
+with check (scope_key = auth.uid()::text);
+
+create policy "app_state_update_own" on public.app_state
+for update to authenticated
+using (scope_key = auth.uid()::text)
+with check (scope_key = auth.uid()::text);
+
+create policy "app_state_delete_own" on public.app_state
+for delete to authenticated
+using (scope_key = auth.uid()::text);
+
+create policy "app_state_write_shared" on public.app_state
+for insert to authenticated
+with check (scope_key = 'shared' and public.is_admin());
+
+create policy "app_state_update_shared" on public.app_state
+for update to authenticated
+using (scope_key = 'shared' and public.is_admin())
+with check (scope_key = 'shared' and public.is_admin());
+
+-- Primeiro admin: Authentication → Users → Add user, depois:
+-- update public.profiles set role = 'admin' where email = 'seu-admin@email.com';
+
 notify pgrst, 'reload schema';

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'ciclofit-static-v3';
+const CACHE_NAME = 'ciclofit-static-v4';
 const APP_SHELL = [
   './',
   './index.html',
@@ -42,17 +42,25 @@ self.addEventListener('fetch', event => {
   if (url.pathname.startsWith('/api/')) return;
   if (url.origin !== self.location.origin) return;
 
+  const live = /\.(js|css|html)$/.test(url.pathname) || url.pathname.endsWith('/');
   event.respondWith(
-    caches.match(request).then(cached => {
-      const network = fetch(request).then(response => {
-        if (response && response.ok) {
-          const copy = response.clone();
-          caches.open(CACHE_NAME).then(cache => cache.put(request, copy));
-        }
-        return response;
-      }).catch(() => cached);
-
-      return cached || network;
-    })
+    live
+      ? fetch(request).then(response => {
+          if (response && response.ok) {
+            const copy = response.clone();
+            caches.open(CACHE_NAME).then(cache => cache.put(request, copy));
+          }
+          return response;
+        }).catch(() => caches.match(request))
+      : caches.match(request).then(cached => {
+          const network = fetch(request).then(response => {
+            if (response && response.ok) {
+              const copy = response.clone();
+              caches.open(CACHE_NAME).then(cache => cache.put(request, copy));
+            }
+            return response;
+          }).catch(() => cached);
+          return cached || network;
+        })
   );
 });

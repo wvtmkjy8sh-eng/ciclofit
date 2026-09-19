@@ -1,8 +1,11 @@
 /*
- * Frontend aponta para a API Node. O Postgres fica no Supabase.
- * Com `npm start`, apiUrl vazio usa http://127.0.0.1:PORTA
+ * Frontend fala direto com o Supabase (Auth + RLS).
+ * Cole Project Settings → API → Project URL e anon public.
+ * Este arquivo pode ir ao Git: a anon key é pública por desenho.
+ * Nunca coloque service_role aqui.
  */
 window.CICLOFIT_CLOUD_CONFIG = {
   enabled: true,
-  apiUrl: ''
+  supabaseUrl: '',
+  supabaseAnonKey: ''
 };

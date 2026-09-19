@@ -7,7 +7,6 @@ Thumbs.db
 .idea/
 
 # Configurações locais / segredos
-js/cloud-config.js
 .env
 .env.*
 !.env.example

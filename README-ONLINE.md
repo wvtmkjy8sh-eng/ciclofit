@@ -1,62 +1,52 @@
-# CicloFit — banco no Supabase
+# CicloFit — GitHub Pages + Supabase
 
-O navegador não fala direto com o Postgres. Ele chama a API Node (`server.js`), e a API grava no PostgreSQL do seu projeto Supabase.
+O site estático abre no GitHub Pages. Login, alunos e sincronização vão direto ao Supabase Auth e ao Postgres, com RLS. Não precisa de Node nem Render.
 
-Tabelas da API: `ciclofit_users`, `ciclofit_state`, `ciclofit_admin_state`.
-O arquivo `supabase/schema.sql` (profiles + Auth) é outro modelo e não é usado por este login.
+## 1) SQL e Auth no Supabase
 
-## 1) Connection string no Supabase
+1. SQL Editor: execute `supabase/schema.sql` (inteiro).
+2. Authentication → Providers: e-mail ligado. Em **URL Configuration**:
+   - Site URL: `https://wvtmkjy8sh-eng.github.io/ciclofit/`
+   - Redirect URLs: a mesma e `http://127.0.0.1:3001`
+3. Authentication → Users → Add user: crie o admin (e-mail + senha, auto-confirm).
+4. SQL Editor:
 
-1. Abra o projeto em [supabase.com](https://supabase.com).
-2. **Project Settings → Database → Connect**.
-3. Copie a **URI** (mode Session pooler, porta `6543`, ou Direct, porta `5432`).
-4. Troque `[YOUR-PASSWORD]` pela senha do banco (a que você definiu ao criar o projeto).
+```sql
+update public.profiles
+set role = 'admin'
+where email = 'SEU-ADMIN@email.com';
+```
 
-## 2) Arquivo `.env` na raiz do app
+Alunos antigos em `ciclofit_users` (API Node) não entram sozinhos no Auth. Recrie-os no painel Admin depois do login.
 
-Copie `.env.example` para `.env` e preencha:
+## 2) Edge Functions (criar / editar / apagar aluno)
 
-- `DATABASE_URL` — URI do passo 1
-- `JWT_SECRET` — um texto longo qualquer
-- `PORT=3001`
-- `CICLOFIT_ADMIN_EMAIL` e `CICLOFIT_ADMIN_PASSWORD` — primeiro admin (e-mail + senha com 6+ caracteres)
-
-Não commite o `.env`.
-
-## 3) Subir o app com o banco
+No PC, com [Supabase CLI](https://supabase.com/docs/guides/cli):
 
 ```powershell
 cd C:\xampp\htdocs\ciclo-fit
-npm install
-npm start
+npx supabase login
+npx supabase link --project-ref SEU-REF
+npx supabase functions deploy create-student --no-verify-jwt
+npx supabase functions deploy manage-student --no-verify-jwt
 ```
 
-Abra **http://127.0.0.1:3001** (não use só o XAMPP/Apache: a API `/api` precisa do Node).
+`--no-verify-jwt` evita bloqueio no gateway; a função valida o JWT e o `role = admin` no código. As secrets `SUPABASE_URL`, `SUPABASE_ANON_KEY` e `SUPABASE_SERVICE_ROLE_KEY` já existem no projeto.
 
-No primeiro start as tabelas são criadas e o admin do `.env` é inserido.
+## 3) Chaves no frontend
 
-## 4) Login
+Em `js/cloud-config.js` (já versionado) cole **Project URL** e **anon public**. Não use service_role.
 
-Aba **ADMIN**: o e-mail e a senha de `CICLOFIT_ADMIN_*`.
+Com as duas chaves preenchidas o app entra online; sem elas cai no modo local (`admin` / `admin123`, `aluno` / `1234`).
 
-Aba **ALUNO**: contas criadas no painel Admin → Criar acesso (e-mail + senha).
+## 4) GitHub Pages
 
-Com o banco no ar o app deixa o modo local (`admin` / `aluno`) e usa o Postgres.
+1. Push em `main`.
+2. Repo → Settings → Pages → Deploy from a branch → `main` / `/ (root)`.
+3. Abra `https://wvtmkjy8sh-eng.github.io/ciclofit/`.
 
-## 5) Publicar (Render + GitHub)
+O login do admin é o usuário criado no Auth, não o antigo `admin` local.
 
-O jeito mais simples: um único serviço Node. Ele entrega o site e a API, e o banco continua no Supabase.
+## API Node (opcional, só local)
 
-1. Envie o código para o GitHub (`main`).
-2. Em [render.com](https://render.com), faça login com GitHub.
-3. **New → Blueprint** e selecione o repositório, ou **New → Web Service** apontando para `ciclofit`.
-4. Build: `npm install` · Start: `npm start`.
-5. Em Environment, cole as mesmas variáveis do `.env` local:
-   - `DATABASE_URL`
-   - `JWT_SECRET`
-   - `CICLOFIT_ADMIN_EMAIL`
-   - `CICLOFIT_ADMIN_PASSWORD`
-6. Deploy. A URL fica `https://ciclofit-xxxx.onrender.com`.
-7. Abra essa URL (não o GitHub Pages). O `apiUrl` vazio usa a mesma origem.
-
-O plano free do Render pode hibernar após inatividade; o primeiro acesso depois disso demora ~30–50s.
+`npm start` + `.env` com `DATABASE_URL` ainda sobe o Express antigo (`ciclofit_users`). O PWA publicado não usa essa API.
