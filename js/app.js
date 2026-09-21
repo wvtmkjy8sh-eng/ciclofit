@@ -1158,7 +1158,7 @@ async function initAuth(){
     }
   };
   $('#loginPass').addEventListener('keydown',e=>{if(e.key==='Enter')$('#loginBtn').click()});
-  $('#registerBtn').onclick=async()=>{
+  if($('#registerBtn')) $('#registerBtn').onclick=async()=>{
     if(!cloud?.enabled)return toast('Ative o Supabase para criar contas online.','error');
     const name=prompt('Seu nome:')?.trim();
     if(!name)return;

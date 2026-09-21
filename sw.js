@@ -1,4 +1,4 @@
-const CACHE_NAME = 'ciclofit-static-v4';
+const CACHE_NAME = 'ciclofit-static-v5';
 const APP_SHELL = [
   './',
   './index.html',
@@ -9,8 +9,9 @@ const APP_SHELL = [
   './js/app.js',
   './assets/ciclofit-logo3.png',
   './manifest.json',
+  './icons/icon-180.png',
   './icons/icon-192.png',
-  './icons/icon-512.png'
+  './icons/icon-512.png',
 ];
 
 self.addEventListener('install', event => {

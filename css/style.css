@@ -56,7 +56,7 @@ input[type="file"]{display:none!important}
 
 .ride-zone-detail{margin-top:9px;padding:7px 9px;border-radius:10px;background:rgba(255,80,100,.07);color:var(--muted);font-size:9px;font-weight:700}.ride-zone-detail strong{color:var(--text)}
 
-.ride-mode-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:4px 0 12px}.ride-mode{border:1px solid var(--border);background:var(--bg);color:var(--text);border-radius:15px;padding:13px;text-align:left;cursor:pointer;transition:.18s}.ride-mode strong,.ride-mode small{display:block}.ride-mode strong{font-size:11px}.ride-mode small{color:var(--muted);font-size:9px;margin-top:3px}.ride-mode.active{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent);background:rgba(183,245,0,.06)}.manual-ride-fields{margin-bottom:12px}.gpx-ride-fields[hidden],.manual-ride-fields[hidden]{display:none}@media(max-width:620px){.ride-mode-grid{grid-template-columns:1fr}.ride-meta{grid-template-columns:repeat(2,1fr)}}
+.ride-mode-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:4px 0 12px}.ride-mode{border:1px solid var(--border);background:var(--bg);color:var(--text);border-radius:15px;padding:13px;text-align:left;cursor:pointer;transition:.18s}.ride-mode strong,.ride-mode small{display:block}.ride-mode strong{font-size:11px}.ride-mode small{color:var(--muted);font-size:9px;margin-top:3px}.ride-mode.active{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent);background:rgba(183,245,0,.06)}.manual-ride-fields{margin-bottom:12px}.gpx-ride-fields[hidden],.manual-ride-fields[hidden]{display:none}@media(max-width:620px){.ride-mode-grid{grid-template-columns:1fr}}
 .gpx-detail-modal{max-width:920px;width:min(94vw,920px);max-height:92vh;overflow:auto}.gpx-detail-map{height:330px;border-radius:18px;overflow:hidden;margin:14px 0 8px;background:#e8edf2}.gpx-detail-location{font-size:13px;font-weight:700;margin:8px 0 14px}.gpx-detail-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.gpx-detail-grid>div{padding:13px;border:1px solid var(--line,#e5e7eb);border-radius:14px;background:var(--surface,#fff)}.gpx-detail-grid small{display:block;color:var(--muted,#6b7280);font-size:11px;margin-bottom:5px}.gpx-detail-grid strong{font-size:16px}.gpx-estimated{font-size:9px;color:#9a6700;margin-left:5px}.gpx-detail-note{font-size:11px;color:#6b7280;margin:14px 2px 0}.route-pill{cursor:pointer}.route-pill:hover{opacity:.8}@media(max-width:640px){.gpx-detail-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.gpx-detail-map{height:270px}}
 
 /* CicloFit 4.9.8 — visual refinements for Pedal / GPX */
@@ -243,7 +243,6 @@ body[data-theme="dark"] .gpx-detail-modal{background:#000}
     gap:4px 8px;
     padding:9px 10px;
   }
-  .gym-live-bar small{grid-column:2}
   .gym-workout-sheet #exerciseList{
     max-height:42dvh;
     padding-right:1px;
@@ -445,16 +444,10 @@ body[data-theme="dark"] .gpx-detail-modal{background:#000}
 .week-card .day-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:8px}
 .week-card .day{min-height:94px;border:1px solid var(--border);border-radius:14px;padding:10px 6px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;background:var(--card);transition:.2s}
 .week-card .day.today{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
-.week-card .day.today .day-name{color:#fff}
 .week-card .day .icon{font-size:19px;line-height:1;margin:3px 0}
-.week-card .day strong{font-size:10px;line-height:1.2;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.week-card .day-status{font-size:8px;color:var(--muted);line-height:1.1}
 .week-card .day:not(.assigned-day) strong{color:var(--muted);font-weight:700}
 .week-card .day.rest-day .icon{opacity:.7}
-.week-card .day.assigned-day{border-color:rgba(183,245,0,.28);background:rgba(183,245,0,.055)}
-.week-card .day.assigned-day.today{background:var(--accent);border-color:var(--accent)}
-.week-card .day.today .day-status{color:rgba(255,255,255,.82)}
-@media(max-width:700px){.week-card{padding:12px}.week-card .day-grid{gap:5px}.week-card .day{min-height:88px;padding:8px 3px;border-radius:11px}.week-card .day .icon{font-size:16px}.week-card .day strong{font-size:8px}.week-card .day-status{font-size:7px}.week-card .day-name{font-size:8px}}
+@media(max-width:700px){.week-card .day{min-height:88px;padding:8px 3px;border-radius:11px}.week-card .day-name{font-size:8px}}
 
 /* v54 — refinamentos de visualização, andamento, perfil e cargas */
 .week-card{padding:14px;background:linear-gradient(180deg,var(--card),var(--bg));overflow:hidden}
@@ -476,7 +469,7 @@ body[data-theme="dark"] .gpx-detail-modal{background:#000}
 .in-progress-card{display:grid;grid-template-columns:44px minmax(0,1fr) auto;gap:11px;align-items:center;padding:11px;border:1px solid var(--border);border-radius:14px;background:var(--card);margin-top:9px}
 .in-progress-icon{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;background:var(--bg);font-size:21px}
 .in-progress-main{min-width:0}.in-progress-top{display:flex;justify-content:space-between;gap:8px;align-items:center;margin-bottom:3px}.in-progress-top span{font-size:8px;font-weight:900;color:var(--green)}.in-progress-top b{font-size:9px;color:var(--muted)}.in-progress-main>strong{display:block;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.in-progress-main small{display:block;color:var(--muted);font-size:9px;margin-top:2px}.in-progress-bar{height:5px;background:var(--bg);border-radius:99px;overflow:hidden;margin-top:7px}.in-progress-bar i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-2));border-radius:inherit}.in-progress-empty{padding:14px 4px;color:var(--muted);font-size:10px}
-.default-load-label{display:flex;align-items:center;gap:6px;margin-top:7px;font-size:8px;color:var(--muted)}.default-load-input{width:82px!important;margin:0!important;padding:6px 7px!important;font-size:11px!important;font-weight:800}.profile-card{display:flex;align-items:center;gap:14px}.profile-head-copy{min-width:0}.profile-head-copy h2{margin:0;font-size:18px}.profile-head-copy p{margin:3px 0 8px}.photo-upload{display:inline-block}.photo-upload button{min-height:36px;padding:8px 11px;font-size:10px}.avatar{overflow:hidden}.avatar img{width:100%;height:100%;object-fit:cover;display:block}.profile-card input[readonly]{opacity:.75;cursor:default}
+.default-load-label{display:flex;align-items:center;gap:6px;margin-top:7px;font-size:8px;color:var(--muted)}.default-load-input{width:82px!important;margin:0!important;padding:6px 7px!important;font-size:11px!important;font-weight:800}.profile-head-copy{min-width:0}.profile-head-copy h2{margin:0;font-size:18px}.profile-head-copy p{margin:3px 0 8px}.photo-upload{display:inline-block}.photo-upload button{min-height:36px;padding:8px 11px;font-size:10px}.avatar{overflow:hidden}.avatar img{width:100%;height:100%;object-fit:cover;display:block}.profile-card input[readonly]{opacity:.75;cursor:default}
 @media(max-width:620px){.in-progress-card{grid-template-columns:38px minmax(0,1fr);gap:9px}.in-progress-icon{width:38px;height:38px;font-size:18px}.in-progress-card .mini-action{grid-column:1/-1;width:100%}.in-progress-main>strong{font-size:11px}.profile-card{align-items:flex-start}.profile-head-copy h2{font-size:16px}}
 /* Tipografia ligeiramente maior para leitura em telas pequenas */
 @media(max-width:620px){body{font-size:14px}.page-intro p,.welcome p{font-size:12px}.card{padding:16px}.workout-item h3{font-size:15px}.workout-item p{font-size:11px}.section-head h2{font-size:19px}}
@@ -651,7 +644,6 @@ input,select,textarea{font-size:15px}
   .custom-workout-builder .card-head{margin-bottom:2px}
   .custom-workout-builder .form-grid{grid-template-columns:1fr;gap:10px}
   .exercise-catalog-tools{grid-template-columns:1fr 1fr;gap:8px;padding:10px}
-  .exercise-catalog-tools .catalog-filter-field:first-child{grid-column:1/-1}
   .exercise-catalog{grid-template-columns:1fr;max-height:360px;gap:7px}
   .catalog-item{grid-template-columns:36px minmax(0,1fr) 24px;min-height:60px;padding:9px}
   .catalog-copy strong{white-space:normal;line-height:1.25}

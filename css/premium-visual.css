@@ -7506,12 +7506,14 @@ body:has(#authScreen[style*="display: flex"]) .bottom-nav{
       margin-right: auto !important;
     }
   }
-  
+
+@media (max-width: 700px){
     /*
-     * CARD DE LOGIN
+     * CARD DE LOGIN (somente mobile)
      *
-     * A largura agora é calculada diretamente
-     * pela largura disponível da tela.
+     * Estas regras eram globais por um fechamento
+     * prematuro do media query e esmagavam o card
+     * desktop em 430px, cortando a coluna do formulário.
      */
     #authScreen.auth-screen .auth-card{
       position: relative !important;
@@ -7748,7 +7750,6 @@ and (max-width: 700px){
 @media (min-width: 901px) {
 
   #authScreen.auth-screen {
-    display: flex !important;
     align-items: center !important;
     justify-content: center !important;
 
@@ -8651,5 +8652,53 @@ and (max-width: 700px){
 
   #authScreen .auth-footer-mark{
     margin-top:8px !important;
+  }
+}
+
+/* =========================================================
+   Auth card — evita corte do painel sem mudar HTML/JS
+   ========================================================= */
+
+@media (min-width: 701px){
+  #authScreen.auth-screen{
+    overflow-x:hidden !important;
+    overflow-y:auto !important;
+    align-items:center !important;
+    justify-content:center !important;
+  }
+
+  #authScreen.auth-screen .auth-card{
+    width:min(1120px,94vw) !important;
+    max-width:none !important;
+    min-width:0 !important;
+    height:auto !important;
+    max-height:none !important;
+    margin:auto !important;
+    overflow:visible !important;
+    padding:30px clamp(34px,4vw,64px) 22px !important;
+  }
+
+  #authScreen .auth-logo{
+    overflow:visible !important;
+  }
+}
+
+@media (min-width: 701px) and (max-width: 900px){
+  #authScreen.auth-screen .auth-card{
+    display:block !important;
+    width:min(620px,94vw) !important;
+    padding:20px 24px !important;
+    text-align:center !important;
+  }
+}
+
+@media (min-width: 901px){
+  #authScreen.auth-screen .auth-card{
+    display:grid !important;
+    grid-template-columns:minmax(0,0.92fr) minmax(0,0.98fr) !important;
+    grid-template-rows:repeat(7,auto) !important;
+    column-gap:clamp(44px,6vw,88px) !important;
+    align-items:start !important;
+    text-align:left !important;
   }
 }

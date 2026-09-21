@@ -1,10 +1,78 @@
 <!doctype html>
 <html lang="pt-BR">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#b7f500"><meta name="description" content="CicloFit 5.0 — treino, ciclismo, recuperação e evolução.">
-<link rel="manifest" href="manifest.json"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="CicloFit"><title>CicloFit 5.0</title><link rel="stylesheet" href="css/style.css"><link rel="stylesheet" href="css/premium-visual.css">
+  <meta charset="utf-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, viewport-fit=cover"
+  >
+  
+  <meta
+    name="theme-color"
+    content="#b7f500"
+  >
+  
+  <meta
+    name="description"
+    content="CicloFit 5.0 — treino, ciclismo, recuperação e evolução."
+  >
+  
+  <meta
+    name="mobile-web-app-capable"
+    content="yes"
+  >
+  
+  <meta
+    name="apple-mobile-web-app-capable"
+    content="yes"
+  >
+  
+  <meta
+    name="apple-mobile-web-app-status-bar-style"
+    content="black-translucent"
+  >
+  
+  <meta
+    name="apple-mobile-web-app-title"
+    content="CicloFit"
+  >
+  
+  <meta
+    name="application-name"
+    content="CicloFit"
+  >
+  
+  <link
+    rel="manifest"
+    href="./manifest.json"
+  >
+  
+  <link
+    rel="apple-touch-icon"
+    href="./assets/ciclofit-logo3.png"
+  >
+  <link rel="apple-touch-icon" sizes="180x180" href="icons/icon-180.png">
+  <title>CicloFit 5.0</title><link rel="stylesheet" href="css/style.css"><link rel="stylesheet" href="css/premium-visual.css">
 </head>
+<script>
+  window.addEventListener('load', () => {
+    const splash = document.getElementById('ciclofit-splash');
+
+    if (!splash) {
+      return;
+    }
+
+    setTimeout(() => {
+      splash.classList.add('is-hidden');
+
+      setTimeout(() => {
+        splash.remove();
+      }, 500);
+
+    }, 700);
+  });
+</script>
 <body>
 <svg xmlns="http://www.w3.org/2000/svg" class="cf-sprite" aria-hidden="true" focusable="false">
 <defs>
@@ -50,6 +118,23 @@
 <symbol id="i-target" viewBox="0 0 24 24"><circle class="cf-line" cx="12" cy="12" r="7.6"/><circle class="cf-line" cx="12" cy="12" r="2.8"/><path class="cf-line" d="M12 3.2v2.6M12 18.2v2.6M3.2 12h2.6M18.2 12h2.6"/></symbol>
 <symbol id="i-ruler" viewBox="0 0 24 24"><path class="cf-line" d="m4.4 17.6 13.2-13.2 2.8 2.8L7.2 20.4z"/><path class="cf-line" d="m10 10 1.8 1.8M12 8.2l1.8 1.8M13.2 6l1.8 1.8"/></symbol>
 </svg>
+<div id="ciclofit-splash" class="ciclofit-splash">
+  <div class="ciclofit-splash-content">
+    <img
+      src="./assets/ciclofit-logo3.png"
+      alt="CicloFit"
+      class="ciclofit-splash-logo"
+    >
+
+    <div class="ciclofit-splash-loader">
+      <span></span>
+    </div>
+
+    <div class="ciclofit-splash-text">
+      CICLOFIT
+    </div>
+  </div>
+</div>
 <div id="authScreen" class="auth-screen">
   <div class="auth-bg-glow auth-bg-glow-one"></div>
   <div class="auth-bg-glow auth-bg-glow-two"></div>
@@ -244,12 +329,47 @@
 <script src="js/cloud-sync.js"></script>
 <script src="js/app.js"></script>
 <script>
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./sw.js').catch(err => {
-      console.warn('CicloFit PWA: falha ao registrar Service Worker', err);
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', async () => {
+      try {
+        const registration = await navigator.serviceWorker.register(
+  './sw.js',
+  {
+    scope: './'
+  }
+);
+  
+        console.log(
+          'CicloFit PWA: Service Worker registrado.',
+          registration.scope
+        );
+  
+        registration.addEventListener('updatefound', () => {
+          const newWorker = registration.installing;
+  
+          if (!newWorker) {
+            return;
+          }
+  
+          newWorker.addEventListener('statechange', () => {
+            if (
+              newWorker.state === 'installed' &&
+              navigator.serviceWorker.controller
+            ) {
+              console.log(
+                'CicloFit PWA: nova versão disponível.'
+              );
+            }
+          });
+        });
+  
+      } catch (error) {
+        console.warn(
+          'CicloFit PWA: falha ao registrar Service Worker.',
+          error
+        );
+      }
     });
-  });
-}
-</script>
+  }
+  </script>
 </body></html>

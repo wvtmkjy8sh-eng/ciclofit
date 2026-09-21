@@ -20,3 +20,4 @@ build/
 # Arquivos temporários
 *.bak
 *.tmp
+supabase/.temp/
