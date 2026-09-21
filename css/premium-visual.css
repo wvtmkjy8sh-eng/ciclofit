@@ -96,9 +96,7 @@ body[data-theme="dark"]{
 }
 .btn-primary{background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#162000;box-shadow:0 12px 26px rgba(143,217,0,.20)}
 .btn-primary:hover{box-shadow:0 16px 30px rgba(143,217,0,.28);filter:none}
-.btn-light{background:var(--card);color:var(--text);border:1px solid var(--border)}
 .btn-danger{background:linear-gradient(135deg,#e34d4d,#c83e3e)}
-.text-btn{font-size:12px}
 .chip{background:var(--surface-2);border-color:var(--border);color:var(--muted);box-shadow:none}
 .chip.active{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);box-shadow:0 8px 18px rgba(183,245,0,.18)}
 
@@ -163,7 +161,6 @@ input:focus,select:focus,textarea:focus{background:var(--card);border-color:var(
   backdrop-filter:blur(18px);
 }
 .nav-btn{color:var(--muted);transition:color .18s ease,transform .18s ease,background .18s ease}
-.nav-btn.active{color:var(--accent)}
 .nav-btn:hover{transform:translateY(-1px)}
 .nav-btn.active:before{content:"";position:absolute;top:5px;left:50%;width:34px;height:3px;transform:translateX(-50%);border-radius:999px;background:var(--accent);box-shadow:0 0 10px rgba(183,245,0,.25)}
 
@@ -294,7 +291,6 @@ body[data-theme="dark"] .auth-screen{background:radial-gradient(circle at 50% -1
   stroke-linejoin:round;
   flex:0 0 auto;
 }
-.nav-btn .cf-svg{width:22px;height:22px;display:block;margin:0 auto 3px}
 .hero-icon .cf-svg{width:28px;height:28px}
 .icon-btn .cf-svg,.auth-theme-btn .cf-svg{width:18px;height:18px}
 .workout-locked{opacity:.72}
@@ -330,3 +326,8021 @@ body[data-theme="dark"] .auth-screen{background:radial-gradient(circle at 50% -1
   .week-card .day{min-height:110px;padding:12px 6px}
   .hero-card{padding:28px}
 }
+/* =========================================================
+   CICLOFIT — PWA SPLASH SCREEN
+   ========================================================= */
+
+   .ciclofit-splash {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+  
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  
+    background:
+      radial-gradient(
+        circle at center,
+        rgba(183, 245, 0, 0.08) 0%,
+        rgba(11, 15, 13, 0) 42%
+      ),
+      #0b0f0d;
+  
+    opacity: 1;
+    visibility: visible;
+  
+    transition:
+      opacity 0.45s ease,
+      visibility 0.45s ease;
+  
+    padding:
+      env(safe-area-inset-top)
+      env(safe-area-inset-right)
+      env(safe-area-inset-bottom)
+      env(safe-area-inset-left);
+  }
+  
+  .ciclofit-splash.is-hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+  
+  .ciclofit-splash-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  
+    width: min(80vw, 360px);
+  
+    text-align: center;
+  }
+  
+  .ciclofit-splash-logo {
+    display: block;
+  
+    width: min(62vw, 220px);
+    height: auto;
+  
+    object-fit: contain;
+  
+    filter:
+      drop-shadow(0 0 12px rgba(183, 245, 0, 0.18))
+      drop-shadow(0 0 32px rgba(183, 245, 0, 0.08));
+  
+    animation: ciclofitSplashLogo 1.2s ease-out both;
+  }
+  
+  .ciclofit-splash-text {
+    margin-top: 22px;
+  
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.32em;
+  
+    color: rgba(255, 255, 255, 0.68);
+  
+    animation: ciclofitSplashText 0.8s 0.35s ease-out both;
+  }
+  
+  .ciclofit-splash-loader {
+    width: 90px;
+    height: 3px;
+  
+    margin-top: 28px;
+  
+    overflow: hidden;
+  
+    border-radius: 999px;
+  
+    background: rgba(255, 255, 255, 0.10);
+  
+    animation: ciclofitSplashLoader 0.8s 0.25s ease-out both;
+  }
+  
+  .ciclofit-splash-loader span {
+    display: block;
+  
+    width: 38%;
+    height: 100%;
+  
+    border-radius: inherit;
+  
+    background: #b7f500;
+  
+    box-shadow:
+      0 0 8px rgba(183, 245, 0, 0.65),
+      0 0 18px rgba(183, 245, 0, 0.25);
+  
+    animation: ciclofitSplashProgress 1.15s ease-in-out infinite;
+  }
+  
+  @keyframes ciclofitSplashLogo {
+    from {
+      opacity: 0;
+      transform: scale(0.92);
+    }
+  
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  
+  @keyframes ciclofitSplashText {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+  
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes ciclofitSplashLoader {
+    from {
+      opacity: 0;
+    }
+  
+    to {
+      opacity: 1;
+    }
+  }
+  
+  @keyframes ciclofitSplashProgress {
+    0% {
+      transform: translateX(-130%);
+    }
+  
+    50% {
+      transform: translateX(150%);
+    }
+  
+    100% {
+      transform: translateX(300%);
+    }
+  }
+  
+  @media (prefers-reduced-motion: reduce) {
+    .ciclofit-splash,
+    .ciclofit-splash-logo,
+    .ciclofit-splash-text,
+    .ciclofit-splash-loader,
+    .ciclofit-splash-loader span {
+      animation: none !important;
+      transition: none !important;
+    }
+  }
+  /* =========================================================
+   CICLOFIT — PWA SAFE AREA / FULL SCREEN
+   ========================================================= */
+
+html {
+  min-height: 100%;
+  background: #0b0f0d;
+}
+
+body {
+  min-height: 100vh;
+  min-height: 100dvh;
+  margin: 0;
+
+  padding-top: env(safe-area-inset-top);
+  padding-right: env(safe-area-inset-right);
+  padding-bottom: calc(
+    72px + env(safe-area-inset-bottom)
+  );
+  padding-left: env(safe-area-inset-left);
+
+  background: #0b0f0d;
+
+  overflow-x: hidden;
+}
+
+/* Mantém o aplicativo ocupando toda a altura disponível */
+#app,
+.app,
+.app-shell,
+main {
+  min-height: 100%;
+}
+
+/* Evita que elementos fixos fiquem escondidos atrás
+   do notch ou da barra inferior */
+header,
+.topbar,
+.navbar,
+.bottom-nav,
+.bottom-navigation,
+.mobile-nav {
+  padding-top: max(
+    0px,
+    env(safe-area-inset-top)
+  );
+
+  padding-bottom: max(
+    0px,
+    env(safe-area-inset-bottom)
+  );
+}
+
+/* Botões e áreas clicáveis inferiores */
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Melhor comportamento de rolagem em dispositivos móveis */
+html,
+body {
+  overscroll-behavior-y: none;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+/* Quando instalado como aplicativo */
+@media (display-mode: standalone) {
+
+  html,
+  body {
+    width: 100%;
+    min-height: 100%;
+    min-height: 100dvh;
+  }
+
+}
+
+/* iOS / Safari */
+@supports (-webkit-touch-callout: none) {
+
+  body {
+    min-height: -webkit-fill-available;
+  }
+
+}
+/* =========================================================
+   CICLOFIT — MOBILE PWA BOTTOM NAVIGATION
+   ========================================================= */
+
+   .bottom-nav {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  
+    height: 72px;
+  
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    align-items: stretch;
+  
+    padding:
+      6px
+      max(8px, env(safe-area-inset-right))
+      max(8px, env(safe-area-inset-bottom))
+      max(8px, env(safe-area-inset-left));
+  
+    box-sizing: border-box;
+  
+    background:
+      color-mix(in srgb, var(--card) 94%, transparent);
+  
+    border-top: 1px solid var(--border);
+  
+    box-shadow:
+      0 -8px 30px rgba(0, 0, 0, 0.10);
+  
+    backdrop-filter: blur(22px);
+    -webkit-backdrop-filter: blur(22px);
+  
+    z-index: 1000;
+  
+    isolation: isolate;
+  }
+  
+  
+  /* Área clicável de cada item */
+  
+  .nav-btn {
+    position: relative;
+  
+    min-width: 0;
+    min-height: 56px;
+  
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  
+    gap: 4px;
+  
+    padding: 6px 4px;
+  
+    border: 0;
+    border-radius: 16px;
+  
+    background: transparent;
+  
+    color: var(--muted);
+  
+    font-family: inherit;
+    font-size: 10px;
+    font-weight: 700;
+  
+    cursor: pointer;
+  
+    -webkit-tap-highlight-color: transparent;
+  
+    transition:
+      color 0.2s ease,
+      background 0.2s ease,
+      transform 0.15s ease;
+  }
+  
+  
+  /* Ícones */
+  
+  .nav-btn .cf-svg {
+    width: 21px;
+    height: 21px;
+  
+    flex: 0 0 auto;
+  
+    stroke-width: 1.6;
+  
+    transition:
+      transform 0.2s ease,
+      filter 0.2s ease;
+  }
+  
+  
+  /* Texto */
+  
+  .nav-btn span {
+    display: block;
+  
+    max-width: 100%;
+  
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  
+    font-size: 9px;
+    line-height: 1;
+    font-weight: 800;
+  
+    letter-spacing: 0.01em;
+  }
+  
+  
+  /* Item ativo */
+  
+  .nav-btn.active {
+    color: var(--accent);
+  
+    background:
+      rgba(183, 245, 0, 0.075);
+  }
+  
+  
+  /* Indicador superior */
+  
+  .nav-btn.active::before {
+    content: "";
+  
+    position: absolute;
+  
+    top: 3px;
+    left: 50%;
+  
+    width: 24px;
+    height: 3px;
+  
+    transform: translateX(-50%);
+  
+    border-radius: 999px;
+  
+    background: var(--accent);
+  
+    box-shadow:
+      0 0 8px rgba(183, 245, 0, 0.35);
+  }
+  
+  
+  /* Ícone ativo */
+  
+  .nav-btn.active .cf-svg {
+    transform: translateY(-1px);
+  
+    filter:
+      drop-shadow(0 0 5px rgba(183, 245, 0, 0.28));
+  }
+  
+  
+  /* Feedback de toque */
+  
+  .nav-btn:active {
+    transform: scale(0.94);
+  }
+  
+  
+  /* Desktop: navegação continua disponível,
+     mas fica mais discreta */
+  
+  @media (min-width: 769px) {
+  
+    .bottom-nav {
+      left: 50%;
+      right: auto;
+      bottom: 18px;
+  
+      width: min(620px, calc(100% - 40px));
+  
+      height: 66px;
+  
+      transform: translateX(-50%);
+  
+      border: 1px solid var(--border);
+  
+      border-radius: 22px;
+  
+      padding:
+        5px
+        7px
+        max(5px, env(safe-area-inset-bottom))
+        7px;
+  
+      box-shadow:
+        0 18px 50px rgba(0, 0, 0, 0.16);
+    }
+  
+    .nav-btn {
+      min-height: 54px;
+    }
+  
+  }
+  
+  
+  /* Telas muito pequenas */
+  
+  @media (max-width: 360px) {
+  
+    .bottom-nav {
+      height: 68px;
+    }
+  
+    .nav-btn {
+      min-height: 52px;
+  
+      padding-left: 2px;
+      padding-right: 2px;
+    }
+  
+    .nav-btn .cf-svg {
+      width: 20px;
+      height: 20px;
+    }
+  
+    .nav-btn span {
+      font-size: 8px;
+    }
+  
+  }
+  
+  
+  /* PWA instalado */
+  
+  @media (display-mode: standalone) {
+  
+    .bottom-nav {
+      padding-bottom:
+        max(
+          8px,
+          env(safe-area-inset-bottom)
+        );
+    }
+  
+  }
+  
+  
+  /* Usuários que preferem menos animação */
+  
+  @media (prefers-reduced-motion: reduce) {
+  
+    .nav-btn,
+    .nav-btn .cf-svg {
+      transition: none;
+    }
+  
+  }
+  /* =========================================================
+   CICLOFIT — ESPAÇO PARA BOTTOM NAV
+   Evita que o conteúdo fique escondido atrás da barra
+   ========================================================= */
+
+body {
+  padding-bottom: calc(
+    72px + env(safe-area-inset-bottom)
+  );
+}
+
+/* Quando o PWA estiver instalado */
+@media (display-mode: standalone) {
+  body {
+    padding-bottom: calc(
+      84px + env(safe-area-inset-bottom)
+    );
+  }
+}
+
+/* Desktop — barra menor e flutuante */
+@media (min-width: 769px) {
+  body {
+    padding-bottom: 100px;
+  }
+}
+
+
+
+/* =========================================================
+   CICLOFIT — HOME PREMIUM 2.0
+   Etapa 1 — refinamento visual da tela inicial
+   Somente visual / sem alteração de lógica
+   ========================================================= */
+
+
+/* ---------------------------------------------------------
+   1. CABEÇALHO DA HOME
+   --------------------------------------------------------- */
+
+   #home .welcome {
+    position: relative;
+  
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+  
+    margin-bottom: 20px;
+    padding: 2px 2px 0;
+  }
+  
+  #home .welcome > div {
+    min-width: 0;
+  }
+  
+  #home .welcome .eyebrow {
+    display: inline-flex;
+    align-items: center;
+  
+    min-height: 22px;
+    padding: 5px 9px;
+  
+    border-radius: 999px;
+  
+    background: color-mix(
+      in srgb,
+      var(--accent) 9%,
+      var(--surface-2)
+    );
+  
+    border: 1px solid color-mix(
+      in srgb,
+      var(--accent) 18%,
+      var(--border)
+    );
+  
+    color: var(--muted);
+  
+    font-size: 9px;
+    font-weight: 900;
+    letter-spacing: .13em;
+  }
+  
+  #home .welcome h1 {
+    margin-top: 9px;
+    margin-bottom: 6px;
+  
+    font-size: clamp(26px, 4vw, 34px);
+    line-height: 1.08;
+    letter-spacing: -1.15px;
+  }
+  
+  #home .welcome p {
+    max-width: 560px;
+  
+    margin: 0;
+  
+    color: var(--muted);
+  
+    font-size: 13px;
+    line-height: 1.55;
+  }
+  
+  
+  /* ---------------------------------------------------------
+     2. TREINO DO DIA — HERO
+     --------------------------------------------------------- */
+  
+  #home .hero-card {
+    position: relative;
+  
+    isolation: isolate;
+  
+    overflow: hidden;
+  
+    min-height: 270px;
+  
+    margin-bottom: 28px;
+    padding: 25px;
+  
+    border: 1px solid rgba(183,245,0,.14);
+    border-radius: 26px;
+  
+    background:
+      radial-gradient(
+        circle at 88% 18%,
+        rgba(183,245,0,.17),
+        transparent 30%
+      ),
+      radial-gradient(
+        circle at 12% 110%,
+        rgba(76,159,230,.07),
+        transparent 34%
+      ),
+      linear-gradient(
+        145deg,
+        #0a120d 0%,
+        #101a13 58%,
+        #0c130e 100%
+      );
+  
+    box-shadow:
+      0 24px 60px rgba(0,0,0,.18),
+      inset 0 1px 0 rgba(255,255,255,.045);
+  }
+  
+  
+  /* brilho decorativo */
+  
+  #home .hero-card::before {
+    content: "";
+  
+    position: absolute;
+  
+    width: 280px;
+    height: 280px;
+  
+    right: -145px;
+    top: -150px;
+  
+    border-radius: 50%;
+  
+    background:
+      radial-gradient(
+        circle,
+        rgba(183,245,0,.16) 0%,
+        rgba(183,245,0,.055) 38%,
+        transparent 70%
+      );
+  
+    pointer-events: none;
+  
+    z-index: -1;
+  }
+  
+  
+  /* remove o círculo antigo mais pesado */
+  
+  #home .hero-card::after {
+    width: 170px;
+    height: 170px;
+  
+    right: -95px;
+    top: -95px;
+  
+    background:
+      radial-gradient(
+        circle,
+        rgba(183,245,0,.10),
+        transparent 68%
+      );
+  }
+  
+  
+  /* badge HOJE */
+  
+  #home .hero-today-badge {
+    top: 18px;
+    right: 18px;
+  
+    min-height: 26px;
+  
+    padding: 6px 10px;
+  
+    border: 1px solid rgba(183,245,0,.22);
+  
+    background: rgba(183,245,0,.09);
+  
+    color: var(--accent);
+  
+    font-size: 9px;
+    font-weight: 900;
+    letter-spacing: .12em;
+  
+    backdrop-filter: blur(8px);
+  }
+  
+  
+  /* ícone principal */
+  
+  #home .hero-icon {
+    width: 58px;
+    height: 58px;
+  
+    margin-bottom: 18px;
+  
+    border-radius: 18px;
+  
+    background:
+      linear-gradient(
+        145deg,
+        rgba(183,245,0,.13),
+        rgba(255,255,255,.055)
+      );
+  
+    border: 1px solid rgba(183,245,0,.16);
+  
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.06),
+      0 10px 24px rgba(0,0,0,.14);
+  
+    color: var(--accent);
+  }
+  
+  #home .hero-icon .cf-svg {
+    width: 29px;
+    height: 29px;
+  
+    stroke-width: 1.45;
+  
+    filter:
+      drop-shadow(
+        0 0 7px rgba(183,245,0,.22)
+      );
+  }
+  
+  
+  /* textos */
+  
+  #home .hero-copy {
+    max-width: 700px;
+  }
+  
+  #home .hero-copy .eyebrow {
+    color: rgba(255,255,255,.58);
+  
+    font-size: 9px;
+    font-weight: 900;
+    letter-spacing: .17em;
+  }
+  
+  #home .hero-copy h2 {
+    margin-top: 6px;
+    margin-bottom: 7px;
+  
+    color: #fff;
+  
+    font-size: clamp(23px, 4vw, 30px);
+    line-height: 1.1;
+    letter-spacing: -.8px;
+  }
+  
+  #home .hero-copy p {
+    max-width: 640px;
+  
+    color: rgba(255,255,255,.64);
+  
+    font-size: 12px;
+    line-height: 1.55;
+  }
+  
+  
+  /* ---------------------------------------------------------
+     3. INFORMAÇÕES DO TREINO
+     --------------------------------------------------------- */
+  
+  #home .hero-stats {
+    display: grid;
+  
+    grid-template-columns:
+      repeat(3, minmax(0, 1fr));
+  
+    gap: 8px;
+  
+    margin: 21px 0 15px;
+  }
+  
+  #home .hero-stats > div {
+    min-width: 0;
+  
+    padding: 12px 11px;
+  
+    border-radius: 14px;
+  
+    background:
+      rgba(255,255,255,.055);
+  
+    border: 1px solid rgba(255,255,255,.075);
+  
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.025);
+  }
+  
+  #home .hero-stats strong {
+    display: block;
+  
+    color: #fff;
+  
+    font-size: 15px;
+    font-weight: 900;
+    line-height: 1.2;
+  }
+  
+  #home .hero-stats span {
+    display: block;
+  
+    margin-top: 3px;
+  
+    color: rgba(255,255,255,.48);
+  
+    font-size: 8px;
+    font-weight: 800;
+  
+    text-transform: uppercase;
+    letter-spacing: .07em;
+  }
+  
+  
+  /* ---------------------------------------------------------
+     4. BOTÃO PRINCIPAL DO TREINO
+     --------------------------------------------------------- */
+  
+  #home #todayAction {
+    position: relative;
+  
+    min-height: 48px;
+  
+    border-radius: 14px;
+  
+    background:
+      linear-gradient(
+        135deg,
+        var(--accent) 0%,
+        var(--accent-2) 100%
+      );
+  
+    color: #172000;
+  
+    font-size: 11px;
+    font-weight: 950;
+  
+    letter-spacing: .06em;
+  
+    box-shadow:
+      0 10px 25px rgba(183,245,0,.17);
+  
+    transition:
+      transform .18s ease,
+      box-shadow .18s ease,
+      filter .18s ease;
+  }
+  
+  #home #todayAction:hover {
+    transform: translateY(-1px);
+  
+    box-shadow:
+      0 14px 30px rgba(183,245,0,.24);
+  
+    filter: brightness(1.025);
+  }
+  
+  #home #todayAction:active {
+    transform: scale(.985);
+  }
+  
+  
+  /* ---------------------------------------------------------
+     5. TÍTULOS DAS SEÇÕES
+     --------------------------------------------------------- */
+  
+  #home .section-head {
+    margin-top: 30px;
+    margin-bottom: 13px;
+  
+    min-height: 30px;
+  }
+  
+  #home .section-head h2 {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+  
+    margin-top: 4px;
+  
+    font-size: 18px;
+    line-height: 1.2;
+    letter-spacing: -.4px;
+  }
+  
+  #home .section-title-icon {
+    width: 18px;
+    height: 18px;
+  
+    color: var(--accent);
+  
+    stroke-width: 1.45;
+  }
+  
+  #home .section-head > .muted {
+    align-self: flex-end;
+  
+    font-size: 10px;
+    white-space: nowrap;
+  }
+  
+  
+  /* ---------------------------------------------------------
+     6. CALENDÁRIO SEMANAL
+     --------------------------------------------------------- */
+  
+  #home .week-card {
+    position: relative;
+  
+    padding: 12px;
+  
+    border-radius: 21px;
+  
+    background:
+      linear-gradient(
+        180deg,
+        color-mix(in srgb,var(--card) 99%,white 1%),
+        color-mix(in srgb,var(--card) 91%,var(--bg))
+      );
+  
+    border: 1px solid var(--border);
+  
+    box-shadow:
+      var(--shadow-soft);
+  }
+  
+  #home .week-card .day-grid {
+    gap: 6px;
+  }
+  
+  #home .week-card .day {
+    position: relative;
+  
+    min-height: 101px;
+  
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+  
+    padding: 10px 4px 8px;
+  
+    border-radius: 15px;
+  
+    background:
+      color-mix(
+        in srgb,
+        var(--surface-2) 88%,
+        var(--card)
+      );
+  
+    border: 1px solid var(--border);
+  
+    transition:
+      transform .18s ease,
+      border-color .18s ease,
+      box-shadow .18s ease,
+      background .18s ease;
+  }
+  
+  #home .week-card .day:hover {
+    transform: translateY(-1px);
+  
+    border-color:
+      color-mix(
+        in srgb,
+        var(--accent) 28%,
+        var(--border)
+      );
+  
+    box-shadow:
+      0 8px 20px rgba(17,29,20,.06);
+  }
+  
+  
+  /* dia atual */
+  
+  #home .week-card .day.today {
+    background:
+      linear-gradient(
+        160deg,
+        var(--accent) 0%,
+        var(--accent-2) 100%
+      );
+  
+    border-color: var(--accent);
+  
+    color: var(--accent-ink);
+  
+    box-shadow:
+      0 10px 24px rgba(183,245,0,.18);
+  }
+  
+  #home .week-card .day.today .icon {
+    background: rgba(255,255,255,.16);
+  
+    border-color: rgba(255,255,255,.22);
+  }
+  
+  
+  /* ícone do dia */
+  
+  #home .week-card .day .icon {
+    display: grid;
+    place-items: center;
+  
+    width: 31px;
+    height: 31px;
+  
+    margin: 7px 0 6px;
+  
+    border-radius: 10px;
+  
+    background: var(--card);
+  
+    border: 1px solid var(--border);
+  
+    font-size: 15px;
+  }
+  
+  
+  /* status */
+  
+  #home .week-card .day-status {
+    margin-top: auto;
+  
+    padding: 4px 6px;
+  
+    border-radius: 999px;
+  
+    background: color-mix(
+      in srgb,
+      var(--card) 90%,
+      transparent
+    );
+  
+    border: 1px solid color-mix(
+      in srgb,
+      var(--border) 80%,
+      transparent
+    );
+  
+    font-size: 7px;
+    font-weight: 900;
+  
+    line-height: 1;
+  }
+  
+  #home .week-card .day.today .day-status {
+    background: rgba(255,255,255,.18);
+  
+    border-color: rgba(255,255,255,.20);
+  }
+  
+  
+  /* ---------------------------------------------------------
+     7. RESUMO / INDICADORES
+     --------------------------------------------------------- */
+  
+  #home .grid-4 {
+    display: grid;
+  
+    grid-template-columns:
+      repeat(4, minmax(0, 1fr));
+  
+    gap: 9px;
+  }
+  
+  #home .mini-card {
+    min-width: 0;
+  
+    padding: 15px 10px 13px;
+  
+    border-radius: 17px;
+  
+    background:
+      linear-gradient(
+        180deg,
+        var(--card),
+        color-mix(in srgb,var(--card) 94%,var(--surface-2))
+      );
+  
+    border: 1px solid var(--border);
+  
+    box-shadow:
+      0 6px 20px rgba(17,29,20,.045);
+  
+    transition:
+      transform .18s ease,
+      box-shadow .18s ease,
+      border-color .18s ease;
+  }
+  
+  #home .mini-card:hover {
+    transform: translateY(-2px);
+  
+    border-color:
+      color-mix(
+        in srgb,
+        var(--accent) 20%,
+        var(--border)
+      );
+  
+    box-shadow:
+      0 12px 28px rgba(17,29,20,.08);
+  }
+  
+  #home .mini-icon {
+    display: grid;
+    place-items: center;
+  
+    width: 36px;
+    height: 36px;
+  
+    margin: 0 auto 8px;
+  
+    border-radius: 12px;
+  
+    border: 1px solid transparent;
+  }
+  
+  #home .mini-icon .cf-svg {
+    width: 18px;
+    height: 18px;
+  
+    stroke-width: 1.45;
+  }
+  
+  
+  /* cores das categorias — mantendo a identidade */
+  
+  #home .mini-icon.orange {
+    color: var(--accent);
+  
+    background: rgba(183,245,0,.09);
+  
+    border-color: rgba(183,245,0,.12);
+  }
+  
+  #home .mini-icon.blue {
+    color: var(--blue);
+  
+    background: rgba(76,159,230,.09);
+  
+    border-color: rgba(76,159,230,.12);
+  }
+  
+  #home .mini-icon.green {
+    color: var(--green);
+  
+    background: rgba(47,138,75,.09);
+  
+    border-color: rgba(47,138,75,.12);
+  }
+  
+  #home .mini-icon.purple {
+    color: var(--purple);
+  
+    background: rgba(139,115,217,.09);
+  
+    border-color: rgba(139,115,217,.12);
+  }
+  
+  #home .mini-card strong {
+    display: block;
+  
+    margin-top: 1px;
+  
+    font-size: 21px;
+    line-height: 1.1;
+    letter-spacing: -.5px;
+  }
+  
+  #home .mini-card small {
+    display: block;
+  
+    margin-top: 4px;
+  
+    color: var(--muted);
+  
+    font-size: 9px;
+    font-weight: 800;
+  
+    text-transform: uppercase;
+    letter-spacing: .05em;
+  }
+  
+  
+  /* ---------------------------------------------------------
+     8. LINK "VER EVOLUÇÃO"
+     --------------------------------------------------------- */
+  
+  #home .section-head .text-btn {
+    min-height: 30px;
+  
+    padding: 6px 9px;
+  
+    border-radius: 9px;
+  
+    background: color-mix(
+      in srgb,
+      var(--accent) 7%,
+      transparent
+    );
+  
+    border: 1px solid color-mix(
+      in srgb,
+      var(--accent) 13%,
+      transparent
+    );
+  
+    color: var(--accent);
+  
+    transition:
+      background .18s ease,
+      border-color .18s ease,
+      transform .18s ease;
+  }
+  
+  #home .section-head .text-btn:hover {
+    transform: translateY(-1px);
+  
+    background: color-mix(
+      in srgb,
+      var(--accent) 12%,
+      transparent
+    );
+  
+    border-color: color-mix(
+      in srgb,
+      var(--accent) 22%,
+      transparent
+    );
+  }
+  
+  
+  /* ---------------------------------------------------------
+     9. METAS
+     --------------------------------------------------------- */
+  
+  #home .goals-card {
+    position: relative;
+  
+    overflow: hidden;
+  
+    padding: 18px;
+  
+    border-radius: 20px;
+  
+    background:
+      linear-gradient(
+        180deg,
+        var(--card),
+        color-mix(
+          in srgb,
+          var(--card) 94%,
+          var(--surface-2)
+        )
+      );
+  }
+  
+  #home .goals-card::before {
+    content: "";
+  
+    position: absolute;
+  
+    left: 0;
+    top: 0;
+  
+    width: 3px;
+    height: 100%;
+  
+    background:
+      linear-gradient(
+        180deg,
+        var(--accent),
+        var(--accent-2)
+      );
+  
+    opacity: .8;
+  }
+  
+  #home .goal-row {
+    display: flex;
+  
+    align-items: center;
+    justify-content: space-between;
+  
+    gap: 14px;
+  
+    min-height: 38px;
+  }
+  
+  #home .goal-row > div {
+    min-width: 0;
+  }
+  
+  #home .goal-row strong {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  
+    font-size: 12px;
+    font-weight: 900;
+  }
+  
+  #home .goal-row strong .cf-svg {
+    width: 17px;
+    height: 17px;
+  
+    color: var(--accent);
+  
+    stroke-width: 1.45;
+  }
+  
+  #home .goal-row small {
+    display: block;
+  
+    margin-top: 2px;
+  
+    color: var(--muted);
+  
+    font-size: 9px;
+  }
+  
+  #home .goal-row > b {
+    flex: 0 0 auto;
+  
+    min-width: 42px;
+  
+    padding: 5px 7px;
+  
+    border-radius: 999px;
+  
+    background: rgba(183,245,0,.09);
+  
+    border: 1px solid rgba(183,245,0,.13);
+  
+    color: var(--accent);
+  
+    font-size: 10px;
+    font-weight: 900;
+  
+    text-align: center;
+  }
+  
+  #home .goals-card .progress {
+    position: relative;
+  
+    height: 8px;
+  
+    margin:
+      2px
+      0
+      12px;
+  
+    overflow: hidden;
+  
+    border-radius: 999px;
+  
+    background:
+      color-mix(
+        in srgb,
+        var(--muted) 14%,
+        var(--surface-2)
+      );
+  
+    box-shadow:
+      inset 0 1px 2px rgba(0,0,0,.08);
+  }
+  
+  #home .goals-card .progress i {
+    display: block;
+  
+    width: 0;
+    height: 100%;
+  
+    border-radius: inherit;
+  
+    background:
+      linear-gradient(
+        90deg,
+        var(--accent),
+        var(--accent-2)
+      );
+  
+    box-shadow:
+      0 0 12px rgba(183,245,0,.20);
+  
+    transition:
+      width .55s ease;
+  }
+  
+  
+  /* ---------------------------------------------------------
+     10. TEMA ESCURO
+     --------------------------------------------------------- */
+  
+  body[data-theme="dark"] #home .week-card,
+  body[data-theme="dark"] #home .mini-card,
+  body[data-theme="dark"] #home .goals-card {
+    box-shadow:
+      0 10px 30px rgba(0,0,0,.20);
+  }
+  
+  body[data-theme="dark"] #home .hero-card {
+    box-shadow:
+      0 28px 65px rgba(0,0,0,.34),
+      inset 0 1px 0 rgba(255,255,255,.035);
+  }
+  
+  body[data-theme="dark"] #home .welcome .eyebrow {
+    background: rgba(183,245,0,.055);
+  }
+  
+  
+  /* ---------------------------------------------------------
+     11. MOBILE
+     --------------------------------------------------------- */
+  
+  @media (max-width: 700px) {
+  
+    #home .welcome {
+      margin-bottom: 17px;
+    }
+  
+    #home .welcome h1 {
+      margin-top: 8px;
+  
+      font-size: 25px;
+      letter-spacing: -.85px;
+    }
+  
+    #home .welcome p {
+      max-width: 94%;
+  
+      font-size: 12px;
+    }
+  
+  
+    #home .hero-card {
+      min-height: 0;
+  
+      margin-bottom: 23px;
+      padding: 20px;
+  
+      border-radius: 22px;
+    }
+  
+    #home .hero-today-badge {
+      top: 15px;
+      right: 15px;
+    }
+  
+    #home .hero-icon {
+      width: 52px;
+      height: 52px;
+  
+      margin-bottom: 15px;
+  
+      border-radius: 16px;
+    }
+  
+    #home .hero-copy h2 {
+      max-width: 85%;
+  
+      font-size: 22px;
+      line-height: 1.12;
+    }
+  
+    #home .hero-copy p {
+      font-size: 11px;
+    }
+  
+  
+    #home .hero-stats {
+      gap: 6px;
+  
+      margin-top: 18px;
+    }
+  
+    #home .hero-stats > div {
+      padding: 10px 8px;
+  
+      border-radius: 12px;
+    }
+  
+    #home .hero-stats strong {
+      font-size: 13px;
+    }
+  
+    #home .hero-stats span {
+      font-size: 7px;
+    }
+  
+  
+    #home #todayAction {
+      min-height: 46px;
+    }
+  
+  
+    #home .section-head {
+      margin-top: 25px;
+      margin-bottom: 11px;
+    }
+  
+    #home .section-head h2 {
+      font-size: 17px;
+    }
+  
+    #home .section-head > .muted {
+      font-size: 8px;
+    }
+  
+  
+    #home .week-card {
+      padding: 9px;
+  
+      border-radius: 18px;
+    }
+  
+    #home .week-card .day-grid {
+      gap: 4px;
+    }
+  
+    #home .week-card .day {
+      min-height: 88px;
+  
+      padding:
+        8px
+        2px
+        7px;
+  
+      border-radius: 12px;
+    }
+  
+    #home .week-card .day .icon {
+      width: 28px;
+      height: 28px;
+  
+      margin-top: 6px;
+    }
+  
+    #home .week-card .day strong {
+      font-size: 7.5px;
+    }
+  
+    #home .week-card .day-status {
+      padding: 3px 5px;
+  
+      font-size: 6.3px;
+    }
+  
+  
+    #home .grid-4 {
+      gap: 6px;
+    }
+  
+    #home .mini-card {
+      padding:
+        12px
+        6px
+        11px;
+  
+      border-radius: 14px;
+    }
+  
+    #home .mini-icon {
+      width: 32px;
+      height: 32px;
+  
+      margin-bottom: 6px;
+  
+      border-radius: 10px;
+    }
+  
+    #home .mini-icon .cf-svg {
+      width: 16px;
+      height: 16px;
+    }
+  
+    #home .mini-card strong {
+      font-size: 18px;
+    }
+  
+    #home .mini-card small {
+      font-size: 7px;
+    }
+  
+  
+    #home .goals-card {
+      padding: 15px;
+  
+      border-radius: 18px;
+    }
+  
+    #home .goal-row strong {
+      font-size: 11px;
+    }
+  
+    #home .goal-row small {
+      font-size: 8px;
+    }
+  
+    #home .goal-row > b {
+      min-width: 39px;
+  
+      padding: 4px 6px;
+  
+      font-size: 9px;
+    }
+  }
+  
+  
+  /* ---------------------------------------------------------
+     12. TELAS MUITO PEQUENAS
+     --------------------------------------------------------- */
+  
+  @media (max-width: 360px) {
+  
+    #home .hero-card {
+      padding: 17px;
+    }
+  
+    #home .hero-copy h2 {
+      font-size: 20px;
+    }
+  
+    #home .hero-stats {
+      gap: 4px;
+    }
+  
+    #home .hero-stats > div {
+      padding:
+        9px
+        6px;
+    }
+  
+    #home .hero-stats strong {
+      font-size: 12px;
+    }
+  
+    #home .hero-stats span {
+      font-size: 6.5px;
+    }
+  
+    #home .week-card .day {
+      min-height: 82px;
+    }
+  
+    #home .week-card .day strong {
+      font-size: 6.8px;
+    }
+  
+    #home .grid-4 {
+      gap: 4px;
+    }
+  
+    #home .mini-card {
+      padding-left: 4px;
+      padding-right: 4px;
+    }
+  
+    #home .mini-card strong {
+      font-size: 17px;
+    }
+  
+    #home .mini-card small {
+      font-size: 6.5px;
+    }
+  }
+  
+  
+  /* ---------------------------------------------------------
+     13. REDUÇÃO DE MOVIMENTO
+     --------------------------------------------------------- */
+  
+  @media (prefers-reduced-motion: reduce) {
+  
+    #home .hero-card,
+    #home .mini-card,
+    #home .week-card .day,
+    #home #todayAction,
+    #home .goals-card .progress i {
+      transition: none !important;
+    }
+  }
+  /* =========================================================
+   CICLOFIT — TEMA CLARO PREMIUM 2.0
+   Correção de cores e contraste
+   Não altera lógica / JS / Supabase
+   ========================================================= */
+
+/* ---------------------------------------------------------
+   PALETA PRINCIPAL
+   --------------------------------------------------------- */
+
+body:not([data-theme="dark"]) {
+  --bg: #f4f7f3;
+  --card: #ffffff;
+  --surface-2: #edf2ed;
+
+  --text: #172019;
+  --muted: #66736a;
+
+  --border: #dce4dd;
+
+  --accent: #a9e900;
+  --accent-2: #8fd400;
+  --accent-ink: #182100;
+
+  --green: #2f8a4b;
+  --blue: #4c9fe6;
+  --purple: #8b73d9;
+  --danger: #d94747;
+
+  --dark: #101710;
+
+  --shadow:
+    0 14px 40px rgba(28, 45, 34, .075);
+
+  --shadow-soft:
+    0 7px 22px rgba(28, 45, 34, .055);
+
+  color: var(--text);
+
+  background:
+    radial-gradient(
+      circle at 8% -8%,
+      rgba(169,233,0,.075),
+      transparent 30%
+    ),
+    linear-gradient(
+      180deg,
+      #f8faf7 0%,
+      #f4f7f3 55%,
+      #eef3ee 100%
+    );
+}
+
+
+/* ---------------------------------------------------------
+   CABEÇALHO
+   --------------------------------------------------------- */
+
+body:not([data-theme="dark"]) .app-header {
+  background:
+    color-mix(
+      in srgb,
+      #ffffff 88%,
+      transparent
+    );
+
+  border-bottom:
+    1px solid
+    rgba(28,45,34,.09);
+
+  box-shadow:
+    0 6px 20px rgba(28,45,34,.035);
+}
+
+body:not([data-theme="dark"]) .logo {
+  color: #172019;
+}
+
+body:not([data-theme="dark"]) .logo span {
+  color: #80bd00;
+}
+
+body:not([data-theme="dark"]) .logo small,
+body:not([data-theme="dark"]) .header-subtitle {
+  color: #718078;
+}
+
+
+/* ---------------------------------------------------------
+   BOTÕES / ÍCONES
+   --------------------------------------------------------- */
+
+body:not([data-theme="dark"]) .icon-btn {
+  background: #ffffff;
+  color: #26332b;
+
+  border-color:
+    #dce4dd;
+
+  box-shadow:
+    0 5px 16px rgba(28,45,34,.055);
+}
+
+body:not([data-theme="dark"]) .icon-btn:hover {
+  background: #fbfdfb;
+
+  border-color:
+    color-mix(
+      in srgb,
+      var(--accent) 38%,
+      var(--border)
+    );
+}
+
+
+/* botão principal */
+
+body:not([data-theme="dark"]) .btn-primary,
+body:not([data-theme="dark"]) .chip.active,
+body:not([data-theme="dark"]) .fab {
+  background:
+    linear-gradient(
+      135deg,
+      #b7f500 0%,
+      #91d900 100%
+    );
+
+  color: #182100;
+
+  border-color: transparent;
+
+  box-shadow:
+    0 9px 22px rgba(143,217,0,.18);
+}
+
+
+/* botão secundário */
+
+body:not([data-theme="dark"]) .btn-light {
+  background: #ffffff;
+  color: var(--text);
+
+  border-color: var(--border);
+
+  box-shadow:
+    0 5px 16px rgba(28,45,34,.045);
+}
+
+
+/* ---------------------------------------------------------
+   CARDS GERAIS
+   --------------------------------------------------------- */
+
+body:not([data-theme="dark"]) .card,
+body:not([data-theme="dark"]) .mini-card,
+body:not([data-theme="dark"]) .metric-card,
+body:not([data-theme="dark"]) .ride-item,
+body:not([data-theme="dark"]) .workout-item,
+body:not([data-theme="dark"]) .profile-card,
+body:not([data-theme="dark"]) .quick-grid button {
+
+  background:
+    linear-gradient(
+      180deg,
+      #ffffff 0%,
+      #fbfcfb 100%
+    );
+
+  border-color:
+    #dce4dd;
+
+  box-shadow:
+    0 7px 22px rgba(28,45,34,.05);
+}
+
+body:not([data-theme="dark"]) .card:hover,
+body:not([data-theme="dark"]) .mini-card:hover,
+body:not([data-theme="dark"]) .metric-card:hover,
+body:not([data-theme="dark"]) .ride-item:hover {
+
+  border-color:
+    rgba(143,217,0,.30);
+
+  box-shadow:
+    0 13px 32px rgba(28,45,34,.075);
+}
+
+
+/* ---------------------------------------------------------
+   TEXTOS
+   --------------------------------------------------------- */
+
+body:not([data-theme="dark"]) .welcome h1,
+body:not([data-theme="dark"]) .page-intro h1,
+body:not([data-theme="dark"]) .section-head h2,
+body:not([data-theme="dark"]) h2,
+body:not([data-theme="dark"]) h3 {
+  color: #172019;
+}
+
+body:not([data-theme="dark"]) .welcome p,
+body:not([data-theme="dark"]) .page-intro p,
+body:not([data-theme="dark"]) .muted {
+  color: #66736a;
+}
+
+body:not([data-theme="dark"]) .eyebrow {
+  color: #69766e;
+}
+
+
+/* ---------------------------------------------------------
+   INPUTS
+   --------------------------------------------------------- */
+
+body:not([data-theme="dark"]) input,
+body:not([data-theme="dark"]) select,
+body:not([data-theme="dark"]) textarea {
+
+  background: #f8faf8;
+
+  color: #172019;
+
+  border-color:
+    #d8e1da;
+}
+
+body:not([data-theme="dark"]) input:focus,
+body:not([data-theme="dark"]) select:focus,
+body:not([data-theme="dark"]) textarea:focus {
+
+  background: #ffffff;
+
+  border-color:
+    #9bdb00;
+
+  box-shadow:
+    0 0 0 4px rgba(169,233,0,.12);
+}
+
+body:not([data-theme="dark"]) input::placeholder,
+body:not([data-theme="dark"]) textarea::placeholder {
+  color: #8a958d;
+}
+
+
+/* ---------------------------------------------------------
+   CALENDÁRIO
+   --------------------------------------------------------- */
+
+body:not([data-theme="dark"]) .week-card {
+
+  background:
+    linear-gradient(
+      180deg,
+      #ffffff,
+      #f8faf8
+    );
+
+  border-color:
+    #dce4dd;
+
+  box-shadow:
+    0 8px 25px rgba(28,45,34,.055);
+}
+
+body:not([data-theme="dark"]) .week-card .day {
+
+  background:
+    #f0f4f0;
+
+  border-color:
+    #dce4dd;
+
+  color:
+    #253229;
+}
+
+body:not([data-theme="dark"]) .week-card .day .icon {
+
+  background:
+    #ffffff;
+
+  border-color:
+    #dce4dd;
+}
+
+body:not([data-theme="dark"]) .week-card .day.today {
+
+  background:
+    linear-gradient(
+      160deg,
+      #b7f500,
+      #91d900
+    );
+
+  color:
+    #172100;
+
+  border-color:
+    #a1dc00;
+
+  box-shadow:
+    0 10px 24px rgba(143,217,0,.20);
+}
+
+body:not([data-theme="dark"]) .week-card .day.today .icon {
+
+  background:
+    rgba(255,255,255,.28);
+
+  border-color:
+    rgba(255,255,255,.35);
+}
+
+body:not([data-theme="dark"]) .week-card .day-status {
+
+  background:
+    #ffffff;
+
+  color:
+    #68746c;
+
+  border-color:
+    #e0e6e1;
+}
+
+
+/* ---------------------------------------------------------
+   INDICADORES
+   --------------------------------------------------------- */
+
+body:not([data-theme="dark"]) .mini-icon.orange {
+  background:
+    rgba(169,233,0,.12);
+
+  color:
+    #6d9f00;
+
+  border-color:
+    rgba(143,217,0,.16);
+}
+
+body:not([data-theme="dark"]) .mini-icon.blue {
+  background:
+    rgba(76,159,230,.10);
+
+  color:
+    #4389c5;
+}
+
+body:not([data-theme="dark"]) .mini-icon.green {
+  background:
+    rgba(47,138,75,.10);
+
+  color:
+    #2f8a4b;
+}
+
+body:not([data-theme="dark"]) .mini-icon.purple {
+  background:
+    rgba(139,115,217,.10);
+
+  color:
+    #765fc1;
+}
+
+
+/* ---------------------------------------------------------
+   METAS / PROGRESSO
+   --------------------------------------------------------- */
+
+body:not([data-theme="dark"]) .goals-card {
+
+  background:
+    linear-gradient(
+      180deg,
+      #ffffff,
+      #f9fbf9
+    );
+
+  border-color:
+    #dce4dd;
+}
+
+body:not([data-theme="dark"]) .goals-card .progress {
+
+  background:
+    #e4ebe5;
+
+  box-shadow:
+    inset 0 1px 2px rgba(28,45,34,.08);
+}
+
+body:not([data-theme="dark"]) .goals-card .progress i {
+
+  background:
+    linear-gradient(
+      90deg,
+      #b7f500,
+      #8fd900
+    );
+
+  box-shadow:
+    0 0 12px rgba(143,217,0,.20);
+}
+
+
+/* ---------------------------------------------------------
+   NAVEGAÇÃO INFERIOR
+   --------------------------------------------------------- */
+
+body:not([data-theme="dark"]) .bottom-nav {
+
+  background:
+    color-mix(
+      in srgb,
+      #ffffff 92%,
+      transparent
+    );
+
+  border-top:
+    1px solid
+    #dce4dd;
+
+  box-shadow:
+    0 -8px 24px rgba(28,45,34,.045);
+}
+
+body:not([data-theme="dark"]) .nav-btn {
+  color:
+    #718078;
+}
+
+body:not([data-theme="dark"]) .nav-btn.active {
+  color:
+    #78b500;
+}
+
+
+/* ---------------------------------------------------------
+   CHIPS / FILTROS
+   --------------------------------------------------------- */
+
+body:not([data-theme="dark"]) .chip {
+
+  background:
+    #eef3ee;
+
+  color:
+    #66736a;
+
+  border-color:
+    #dce4dd;
+}
+
+body:not([data-theme="dark"]) .chip.active {
+
+  background:
+    linear-gradient(
+      135deg,
+      #b7f500,
+      #91d900
+    );
+
+  color:
+    #182100;
+}
+
+
+/* ---------------------------------------------------------
+   MAPA
+   --------------------------------------------------------- */
+
+body:not([data-theme="dark"]) .real-map {
+  background:
+    #dfe8dc;
+}
+
+body:not([data-theme="dark"]) .map-empty {
+
+  background:
+    linear-gradient(
+      135deg,
+      #e5eee2,
+      #f3f6f1
+    );
+
+  color:
+    #27342c;
+}
+
+body:not([data-theme="dark"]) .map-empty span {
+  color:
+    #68766d;
+}
+
+
+/* ---------------------------------------------------------
+   MODAIS
+   --------------------------------------------------------- */
+
+body:not([data-theme="dark"]) .modal-content {
+
+  background:
+    #f4f7f3;
+
+  color:
+    #172019;
+}
+
+body:not([data-theme="dark"]) .close {
+
+  background:
+    #ffffff;
+
+  color:
+    #26332b;
+
+  border-color:
+    #dce4dd;
+}
+
+
+/* ---------------------------------------------------------
+   TIMER
+   --------------------------------------------------------- */
+
+body:not([data-theme="dark"]) .timer {
+
+  background:
+    linear-gradient(
+      145deg,
+      #111911,
+      #182219
+    );
+
+  color:
+    #ffffff;
+}
+
+
+/* ---------------------------------------------------------
+   PERFIL
+   --------------------------------------------------------- */
+
+body:not([data-theme="dark"]) .avatar {
+
+  background:
+    linear-gradient(
+      135deg,
+      #b7f500,
+      #91d900
+    );
+
+  color:
+    #182100;
+
+  box-shadow:
+    0 8px 22px rgba(143,217,0,.18);
+}
+
+
+/* ---------------------------------------------------------
+   ADMIN
+   --------------------------------------------------------- */
+
+body:not([data-theme="dark"]) .admin-topbar {
+
+  background:
+    rgba(255,255,255,.90);
+
+  border-color:
+    #dce4dd;
+
+  box-shadow:
+    0 8px 24px rgba(28,45,34,.05);
+}
+
+body:not([data-theme="dark"]) .admin-tabs {
+
+  background:
+    #edf2ed;
+
+  border-color:
+    #dce4dd;
+}
+
+body:not([data-theme="dark"]) .admin-tab {
+
+  color:
+    #68756d;
+}
+
+body:not([data-theme="dark"]) .admin-tab.active {
+
+  background:
+    #ffffff;
+
+  color:
+    #172019;
+
+  border-color:
+    #dce4dd;
+
+  box-shadow:
+    0 6px 16px rgba(28,45,34,.06);
+}
+
+
+/* ---------------------------------------------------------
+   AUTH / LOGIN
+   --------------------------------------------------------- */
+
+body:not([data-theme="dark"]) .auth-screen {
+
+  background:
+    radial-gradient(
+      circle at 50% -15%,
+      rgba(183,245,0,.12),
+      transparent 35%
+    ),
+    linear-gradient(
+      180deg,
+      #edf3eb 0%,
+      #f8faf7 100%
+    );
+}
+
+body:not([data-theme="dark"]) .auth-card {
+
+  background:
+    rgba(255,255,255,.94);
+
+  border-color:
+    #dce4dd;
+
+  box-shadow:
+    0 28px 80px rgba(28,45,34,.12);
+}
+
+body:not([data-theme="dark"]) .auth-tabs {
+
+  background:
+    #edf2ed;
+
+  border-color:
+    #dce4dd;
+}
+
+body:not([data-theme="dark"]) .auth-tab {
+
+  color:
+    #68756d;
+}
+
+body:not([data-theme="dark"]) .auth-tab.active {
+
+  background:
+    #ffffff;
+
+  color:
+    #172019;
+
+  border-color:
+    #dce4dd;
+}
+
+
+/* ---------------------------------------------------------
+   ACESSIBILIDADE
+   --------------------------------------------------------- */
+
+body:not([data-theme="dark"]) :focus-visible {
+
+  outline:
+    3px solid
+    rgba(143,217,0,.28);
+
+  outline-offset:
+    2px;
+}
+/* =========================================================
+   CICLOFIT — TREINO DO DIA NO TEMA CLARO
+   Mantém o hero claro somente no Light Mode
+   ========================================================= */
+
+   body:not([data-theme="dark"]) #home .hero-card {
+    background:
+      radial-gradient(
+        circle at 88% 15%,
+        rgba(183,245,0,.16),
+        transparent 30%
+      ),
+      radial-gradient(
+        circle at 8% 105%,
+        rgba(76,159,230,.055),
+        transparent 34%
+      ),
+      linear-gradient(
+        145deg,
+        #ffffff 0%,
+        #f7faf6 58%,
+        #eef4ed 100%
+      );
+  
+    color: #172019;
+  
+    border:
+      1px solid
+      rgba(143,217,0,.22);
+  
+    box-shadow:
+      0 18px 45px rgba(28,45,34,.08),
+      inset 0 1px 0 rgba(255,255,255,.80);
+  }
+  
+  
+  /* brilho decorativo */
+  
+  body:not([data-theme="dark"]) #home .hero-card::before {
+    background:
+      radial-gradient(
+        circle,
+        rgba(183,245,0,.13) 0%,
+        rgba(183,245,0,.04) 38%,
+        transparent 70%
+      );
+  }
+  
+  
+  /* badge HOJE */
+  
+  body:not([data-theme="dark"]) #home .hero-today-badge {
+    background:
+      rgba(169,233,0,.10);
+  
+    border-color:
+      rgba(143,217,0,.22);
+  
+    color:
+      #6d9f00;
+  }
+  
+  
+  /* ícone do treino */
+  
+  body:not([data-theme="dark"]) #home .hero-icon {
+  
+    background:
+      linear-gradient(
+        145deg,
+        rgba(183,245,0,.14),
+        rgba(28,45,34,.035)
+      );
+  
+    border-color:
+      rgba(143,217,0,.18);
+  
+    color:
+      #73a900;
+  
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.80),
+      0 8px 20px rgba(28,45,34,.06);
+  }
+  
+  
+  /* textos do treino */
+  
+  body:not([data-theme="dark"]) #home .hero-copy .eyebrow {
+    color:
+      #6d786f;
+  }
+  
+  body:not([data-theme="dark"]) #home .hero-copy h2 {
+    color:
+      #172019;
+  }
+  
+  body:not([data-theme="dark"]) #home .hero-copy p {
+    color:
+      #66736a;
+  }
+  
+  
+  /* informações do treino */
+  
+  body:not([data-theme="dark"]) #home .hero-stats > div {
+  
+    background:
+      rgba(28,45,34,.045);
+  
+    border-color:
+      rgba(28,45,34,.08);
+  }
+  
+  body:not([data-theme="dark"]) #home .hero-stats strong {
+    color:
+      #172019;
+  }
+  
+  body:not([data-theme="dark"]) #home .hero-stats span {
+    color:
+      #718078;
+  }
+  
+  
+  /* botão do treino */
+  
+  body:not([data-theme="dark"]) #home #todayAction {
+  
+    background:
+      linear-gradient(
+        135deg,
+        #b7f500 0%,
+        #91d900 100%
+      );
+  
+    color:
+      #182100;
+  
+    border-color:
+      transparent;
+  
+    box-shadow:
+      0 10px 24px rgba(143,217,0,.18);
+  }
+  
+  
+  /* =========================================================
+     MOBILE
+     ========================================================= */
+  
+  @media (max-width:700px) {
+  
+    body:not([data-theme="dark"]) #home .hero-card {
+      background:
+        radial-gradient(
+          circle at 90% 10%,
+          rgba(183,245,0,.14),
+          transparent 32%
+        ),
+        linear-gradient(
+          145deg,
+          #ffffff 0%,
+          #f5f9f4 100%
+        );
+    }
+  
+  }
+  /* =========================================================
+   CICLOFIT — TREINOS PREMIUM 2.0
+   Etapa 2 — Refinamento visual da área de Treinos
+   Somente CSS — não altera lógica, API ou Supabase
+   ========================================================= */
+
+
+/* =========================================================
+   CABEÇALHO DA PÁGINA
+   ========================================================= */
+
+#workouts .page-intro {
+  margin-bottom: 18px;
+}
+
+#workouts .page-intro h1 {
+  font-size: clamp(25px, 4vw, 32px);
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+  margin: 4px 0 7px;
+  font-weight: 900;
+}
+
+#workouts .page-intro p {
+  max-width: 560px;
+  font-size: 11px;
+  line-height: 1.55;
+  color: var(--muted);
+}
+
+
+/* pequena identificação da área */
+
+#workouts .page-intro .eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--accent);
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: .16em;
+}
+
+#workouts .page-intro .eyebrow::before {
+  content: "";
+  width: 18px;
+  height: 2px;
+  border-radius: 999px;
+  background: var(--accent);
+  box-shadow: 0 0 9px rgba(183,245,0,.22);
+}
+
+
+/* =========================================================
+   LABEL "SEUS TREINOS"
+   ========================================================= */
+
+#workouts .workout-section-label {
+  margin: 22px 2px 10px;
+}
+
+#workouts .workout-section-label span {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: .14em;
+  color: var(--muted);
+}
+
+#workouts .workout-section-label span::before {
+  content: "";
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 8px rgba(183,245,0,.45);
+}
+
+
+/* =========================================================
+   ÁREA "EXERCÍCIOS EM ANDAMENTO"
+   ========================================================= */
+
+#workouts .in-progress-wrap {
+  position: relative;
+  overflow: hidden;
+  padding: 17px;
+  border-radius: 21px;
+
+  background:
+    radial-gradient(
+      circle at 100% 0%,
+      rgba(183,245,0,.10),
+      transparent 32%
+    ),
+    linear-gradient(
+      145deg,
+      color-mix(in srgb,var(--card) 98%,white 2%),
+      var(--card)
+    );
+
+  border-color: color-mix(
+    in srgb,
+    var(--accent) 20%,
+    var(--border)
+  );
+
+  box-shadow: var(--shadow-soft);
+}
+
+
+/* brilho decorativo */
+
+#workouts .in-progress-wrap::before {
+  content: "";
+  position: absolute;
+  width: 170px;
+  height: 170px;
+  right: -90px;
+  top: -90px;
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(183,245,0,.12),
+      transparent 68%
+    );
+
+  pointer-events: none;
+}
+
+
+#workouts .in-progress-wrap .card-head {
+  position: relative;
+  z-index: 1;
+  margin-bottom: 11px;
+}
+
+#workouts .in-progress-wrap .card-head h3 {
+  font-size: 15px;
+  font-weight: 850;
+  letter-spacing: -.01em;
+}
+
+
+/* =========================================================
+   CARD DE TREINO EM ANDAMENTO
+   ========================================================= */
+
+#workouts .in-progress-card {
+  position: relative;
+
+  min-height: 72px;
+  padding: 11px;
+
+  border-radius: 16px;
+
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb,var(--card) 96%,white 4%),
+      var(--surface-2)
+    );
+
+  border: 1px solid var(--border);
+
+  box-shadow:
+    0 7px 20px rgba(17,29,20,.045);
+
+  transition:
+    transform .18s ease,
+    border-color .18s ease,
+    box-shadow .18s ease;
+}
+
+#workouts .in-progress-card:hover {
+  transform: translateY(-2px);
+
+  border-color:
+    color-mix(
+      in srgb,
+      var(--accent) 26%,
+      var(--border)
+    );
+
+  box-shadow:
+    0 12px 26px rgba(17,29,20,.08);
+}
+
+
+/* ícone */
+
+#workouts .in-progress-icon {
+  width: 45px;
+  height: 45px;
+
+  border-radius: 14px;
+
+  display: grid;
+  place-items: center;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(183,245,0,.12),
+      var(--surface-2)
+    );
+
+  border: 1px solid
+    color-mix(
+      in srgb,
+      var(--accent) 18%,
+      var(--border)
+    );
+
+  color: var(--accent);
+}
+
+#workouts .in-progress-icon svg {
+  width: 23px;
+  height: 23px;
+}
+
+
+/* indicador EM ANDAMENTO */
+
+#workouts .in-progress-top span {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+
+  font-size: 8px;
+  font-weight: 900;
+  letter-spacing: .10em;
+  color: var(--accent);
+}
+
+#workouts .in-progress-top span::before {
+  content: "";
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 8px rgba(183,245,0,.5);
+}
+
+
+/* progresso */
+
+#workouts .in-progress-bar {
+  height: 5px;
+  margin-top: 8px;
+
+  background:
+    color-mix(
+      in srgb,
+      var(--border) 72%,
+      transparent
+    );
+
+  border-radius: 999px;
+}
+
+#workouts .in-progress-bar i {
+  background:
+    linear-gradient(
+      90deg,
+      var(--accent),
+      var(--accent-2)
+    );
+
+  box-shadow:
+    0 0 10px rgba(183,245,0,.22);
+}
+
+
+/* botão continuar */
+
+#workouts .in-progress-card .mini-action {
+  min-height: 36px;
+  padding: 8px 12px;
+
+  border-radius: 11px;
+
+  font-size: 9px;
+  font-weight: 850;
+
+  background: var(--surface-2);
+  color: var(--text);
+
+  border: 1px solid var(--border);
+
+  transition:
+    background .18s ease,
+    border-color .18s ease,
+    transform .18s ease;
+}
+
+#workouts .in-progress-card .mini-action:hover {
+  background:
+    color-mix(
+      in srgb,
+      var(--accent) 12%,
+      var(--surface-2)
+    );
+
+  border-color:
+    color-mix(
+      in srgb,
+      var(--accent) 35%,
+      var(--border)
+    );
+
+  transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   LISTA DE TREINOS
+   ========================================================= */
+
+#workouts .workout-list {
+  display: grid;
+  gap: 13px;
+}
+
+
+/* =========================================================
+   CARD PRINCIPAL DE TREINO
+   ========================================================= */
+
+#workouts .workout-item {
+  position: relative;
+  overflow: hidden;
+
+  min-height: 128px;
+
+  grid-template-columns:
+    58px minmax(0,1fr) auto;
+
+  gap: 15px;
+
+  padding: 16px 17px;
+
+  border-radius: 21px;
+
+  background:
+    linear-gradient(
+      145deg,
+      color-mix(in srgb,var(--card) 98%,white 2%),
+      var(--card)
+    );
+
+  border: 1px solid var(--border);
+
+  box-shadow: var(--shadow-soft);
+
+  transition:
+    transform .18s ease,
+    box-shadow .18s ease,
+    border-color .18s ease;
+}
+
+
+/* linha lateral de destaque */
+
+#workouts .workout-item::before {
+  content: "";
+
+  position: absolute;
+  left: 0;
+  top: 18px;
+  bottom: 18px;
+
+  width: 3px;
+
+  border-radius: 0 999px 999px 0;
+
+  background:
+    linear-gradient(
+      180deg,
+      var(--accent),
+      color-mix(
+        in srgb,
+        var(--accent) 45%,
+        transparent
+      )
+    );
+
+  opacity: .9;
+}
+
+
+/* hover */
+
+#workouts .workout-item:hover {
+  transform: translateY(-2px);
+
+  border-color:
+    color-mix(
+      in srgb,
+      var(--accent) 25%,
+      var(--border)
+    );
+
+  box-shadow:
+    0 15px 34px rgba(17,29,20,.08);
+}
+
+
+/* =========================================================
+   ÍCONE DO TREINO
+   ========================================================= */
+
+#workouts .workout-item .workout-icon {
+  width: 58px;
+  height: 58px;
+
+  border-radius: 17px;
+
+  display: grid;
+  place-items: center;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(183,245,0,.12),
+      var(--surface-2)
+    );
+
+  border: 1px solid
+    color-mix(
+      in srgb,
+      var(--accent) 18%,
+      var(--border)
+    );
+
+  color: var(--accent);
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.05);
+}
+
+#workouts .workout-item .workout-icon svg {
+  width: 27px;
+  height: 27px;
+}
+
+
+/* =========================================================
+   CONTEÚDO DO TREINO
+   ========================================================= */
+
+#workouts .workout-main {
+  min-width: 0;
+}
+
+#workouts .workout-main h3 {
+  margin: 4px 0 5px;
+
+  font-size: 16px;
+  line-height: 1.2;
+  letter-spacing: -.025em;
+  font-weight: 850;
+
+  color: var(--text);
+}
+
+#workouts .workout-main p {
+  margin: 0 0 9px;
+
+  max-width: 620px;
+
+  font-size: 10px;
+  line-height: 1.5;
+
+  color: var(--muted);
+}
+
+
+/* =========================================================
+   TOPO DO CARD / STATUS
+   ========================================================= */
+
+#workouts .workout-topline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 8px;
+  min-width: 0;
+}
+
+#workouts .workout-tag {
+  display: inline-flex;
+  align-items: center;
+
+  max-width: 55%;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  padding: 5px 8px;
+
+  border-radius: 999px;
+
+  background:
+    color-mix(
+      in srgb,
+      var(--accent) 8%,
+      var(--surface-2)
+    );
+
+  border: 1px solid
+    color-mix(
+      in srgb,
+      var(--accent) 14%,
+      var(--border)
+    );
+
+  color: var(--accent);
+
+  font-size: 8px;
+  font-weight: 900;
+  letter-spacing: .08em;
+}
+
+
+/* status */
+
+#workouts .validity-ok,
+#workouts .validity-expired {
+  flex-shrink: 0;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+
+  font-size: 8px;
+  font-weight: 900;
+  letter-spacing: .05em;
+}
+
+#workouts .validity-ok {
+  color: var(--green);
+}
+
+#workouts .validity-expired {
+  color: #d85a5a;
+}
+
+
+/* =========================================================
+   META DO TREINO
+   ========================================================= */
+
+#workouts .workout-meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+
+  font-size: 9px;
+  font-weight: 800;
+
+  color: var(--muted);
+}
+
+#workouts .workout-meta > span:not(.meta-icon-text) {
+  opacity: .55;
+}
+
+#workouts .meta-icon-text {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+#workouts .meta-icon-text svg {
+  width: 13px;
+  height: 13px;
+
+  color: var(--accent);
+}
+
+
+/* =========================================================
+   BOTÃO DO TREINO
+   ========================================================= */
+
+#workouts .workout-open {
+  min-width: 106px;
+  min-height: 44px;
+
+  border-radius: 13px;
+
+  font-size: 10px;
+  font-weight: 900;
+
+  white-space: nowrap;
+}
+
+#workouts .workout-open:not(:disabled) {
+  box-shadow:
+    0 9px 21px rgba(143,217,0,.16);
+}
+
+#workouts .workout-open:not(:disabled):hover {
+  transform: translateY(-1px);
+
+  box-shadow:
+    0 13px 26px rgba(143,217,0,.24);
+}
+
+
+/* =========================================================
+   TREINO BLOQUEADO / CONCLUÍDO
+   ========================================================= */
+
+#workouts .workout-item.workout-locked {
+  opacity: .72;
+}
+
+#workouts .workout-item.workout-locked:hover {
+  transform: none;
+
+  border-color: var(--border);
+
+  box-shadow: var(--shadow-soft);
+}
+
+#workouts .workout-item.workout-locked .workout-icon {
+  opacity: .7;
+
+  background:
+    var(--surface-2);
+}
+
+#workouts .workout-item.workout-locked::before {
+  opacity: .25;
+}
+
+
+/* botão bloqueado */
+
+#workouts .workout-open:disabled {
+  min-width: 106px;
+
+  background: var(--surface-2);
+  color: var(--muted);
+
+  border: 1px solid var(--border);
+
+  opacity: .85;
+}
+
+
+/* =========================================================
+   TREINO DE BIKE
+   ========================================================= */
+
+#workouts .workout-item.workout-bike,
+#workouts .workout-item:has(.workout-tag) {
+  --workout-bike-accent: #69b9ff;
+}
+
+
+/*
+   Quando o card possui o contexto de Bike,
+   usamos um detalhe azul discreto sem alterar
+   a identidade verde do CicloFit.
+*/
+
+#workouts .workout-item.workout-bike::before {
+  background:
+    linear-gradient(
+      180deg,
+      #69b9ff,
+      rgba(105,185,255,.35)
+    );
+}
+
+#workouts .workout-item.workout-bike .workout-icon {
+  color: #69b9ff;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(105,185,255,.12),
+      var(--surface-2)
+    );
+
+  border-color:
+    rgba(105,185,255,.20);
+}
+
+
+/* =========================================================
+   TREINO PERSONALIZADO
+   ========================================================= */
+
+#workouts .workout-item.workout-custom::before {
+  background:
+    linear-gradient(
+      180deg,
+      var(--purple),
+      color-mix(
+        in srgb,
+        var(--purple) 35%,
+        transparent
+      )
+    );
+}
+
+#workouts .workout-item.workout-custom .workout-icon {
+  color: var(--purple);
+
+  background:
+    linear-gradient(
+      145deg,
+      color-mix(
+        in srgb,
+        var(--purple) 10%,
+        var(--surface-2)
+      ),
+      var(--surface-2)
+    );
+
+  border-color:
+    color-mix(
+      in srgb,
+      var(--purple) 20%,
+      var(--border)
+    );
+}
+
+
+/* =========================================================
+   ESTADO VAZIO
+   ========================================================= */
+
+#workouts .workout-list > .card {
+  padding: 22px;
+
+  border-radius: 18px;
+
+  text-align: center;
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--card),
+      var(--surface-2)
+    );
+}
+
+#workouts .workout-list > .card .muted {
+  font-size: 10px;
+}
+
+
+/* =========================================================
+   TEMA CLARO
+   ========================================================= */
+
+body:not([data-theme="dark"]) #workouts .workout-item {
+  background:
+    linear-gradient(
+      145deg,
+      #ffffff 0%,
+      #f8faf7 100%
+    );
+
+  box-shadow:
+    0 12px 30px rgba(28,45,34,.055);
+}
+
+body:not([data-theme="dark"]) #workouts .workout-item:hover {
+  box-shadow:
+    0 17px 36px rgba(28,45,34,.09);
+}
+
+body:not([data-theme="dark"]) #workouts .workout-icon {
+  background:
+    linear-gradient(
+      145deg,
+      rgba(183,245,0,.13),
+      #eef4ed
+    );
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.85);
+}
+
+body:not([data-theme="dark"]) #workouts .in-progress-wrap {
+  background:
+    radial-gradient(
+      circle at 100% 0%,
+      rgba(183,245,0,.12),
+      transparent 30%
+    ),
+    linear-gradient(
+      145deg,
+      #ffffff,
+      #f4f8f3
+    );
+}
+
+body:not([data-theme="dark"]) #workouts .in-progress-card {
+  background:
+    linear-gradient(
+      180deg,
+      #ffffff,
+      #f5f8f4
+    );
+
+  box-shadow:
+    0 7px 20px rgba(28,45,34,.045);
+}
+
+
+/* =========================================================
+   TEMA ESCURO
+   ========================================================= */
+
+body[data-theme="dark"] #workouts .workout-item {
+  background:
+    linear-gradient(
+      145deg,
+      #111a14 0%,
+      #0d140f 100%
+    );
+
+  border-color:
+    rgba(255,255,255,.07);
+}
+
+body[data-theme="dark"] #workouts .workout-item:hover {
+  border-color:
+    rgba(183,245,0,.22);
+
+  box-shadow:
+    0 17px 38px rgba(0,0,0,.30);
+}
+
+body[data-theme="dark"] #workouts .workout-icon {
+  background:
+    linear-gradient(
+      145deg,
+      rgba(183,245,0,.10),
+      #111912
+    );
+
+  border-color:
+    rgba(183,245,0,.14);
+}
+
+body[data-theme="dark"] #workouts .in-progress-wrap {
+  background:
+    radial-gradient(
+      circle at 100% 0%,
+      rgba(183,245,0,.08),
+      transparent 32%
+    ),
+    linear-gradient(
+      145deg,
+      #111a14,
+      #0d140f
+    );
+}
+
+
+/* =========================================================
+   RESPONSIVIDADE — TABLET
+   ========================================================= */
+
+@media (max-width: 850px) {
+
+  #workouts .workout-item {
+    grid-template-columns:
+      54px minmax(0,1fr) auto;
+
+    gap: 13px;
+    padding: 15px;
+  }
+
+  #workouts .workout-item .workout-icon {
+    width: 54px;
+    height: 54px;
+  }
+
+  #workouts .workout-open {
+    min-width: 96px;
+  }
+
+}
+
+
+/* =========================================================
+   RESPONSIVIDADE — MOBILE
+   ========================================================= */
+
+@media (max-width: 620px) {
+
+  #workouts .page-intro {
+    margin-bottom: 15px;
+  }
+
+  #workouts .page-intro h1 {
+    font-size: 26px;
+  }
+
+  #workouts .page-intro p {
+    font-size: 10px;
+  }
+
+
+  /* card principal */
+
+  #workouts .workout-item {
+    grid-template-columns:
+      48px minmax(0,1fr);
+
+    gap: 11px;
+
+    min-height: 0;
+
+    padding: 14px;
+
+    border-radius: 18px;
+  }
+
+  #workouts .workout-item::before {
+    top: 15px;
+    bottom: 15px;
+  }
+
+
+  /* ícone */
+
+  #workouts .workout-item .workout-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+  }
+
+  #workouts .workout-item .workout-icon svg {
+    width: 23px;
+    height: 23px;
+  }
+
+
+  /* conteúdo */
+
+  #workouts .workout-main h3 {
+    font-size: 14px;
+  }
+
+  #workouts .workout-main p {
+    font-size: 9px;
+    margin-bottom: 7px;
+  }
+
+
+  /* botão ocupa toda a largura abaixo */
+
+  #workouts .workout-open {
+    grid-column: 1 / -1;
+
+    width: 100%;
+
+    min-height: 42px;
+
+    margin-top: 2px;
+  }
+
+
+  /* status */
+
+  #workouts .workout-topline {
+    align-items: flex-start;
+  }
+
+  #workouts .workout-tag {
+    max-width: 48%;
+  }
+
+
+  /* meta */
+
+  #workouts .workout-meta {
+    font-size: 8px;
+    gap: 5px;
+  }
+
+
+  /* andamento */
+
+  #workouts .in-progress-wrap {
+    padding: 14px;
+    border-radius: 18px;
+  }
+
+  #workouts .in-progress-card {
+    grid-template-columns:
+      42px minmax(0,1fr);
+
+    gap: 10px;
+
+    padding: 10px;
+  }
+
+  #workouts .in-progress-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+  }
+
+  #workouts .in-progress-card .mini-action {
+    grid-column: 1 / -1;
+    width: 100%;
+  }
+
+}
+
+
+/* =========================================================
+   TELAS MUITO PEQUENAS
+   ========================================================= */
+
+@media (max-width: 390px) {
+
+  #workouts .workout-item {
+    padding: 12px;
+  }
+
+  #workouts .workout-main h3 {
+    font-size: 13px;
+  }
+
+  #workouts .workout-main p {
+    font-size: 8.5px;
+  }
+
+  #workouts .workout-meta {
+    font-size: 7.5px;
+  }
+
+  #workouts .workout-tag,
+  #workouts .validity-ok,
+  #workouts .validity-expired {
+    font-size: 7px;
+  }
+
+}
+
+
+/* =========================================================
+   ACESSIBILIDADE — REDUÇÃO DE MOVIMENTO
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+  #workouts .workout-item,
+  #workouts .in-progress-card,
+  #workouts .workout-open,
+  #workouts .in-progress-card .mini-action {
+    transition: none !important;
+  }
+
+  #workouts .workout-item:hover,
+  #workouts .in-progress-card:hover {
+    transform: none;
+  }
+
+}
+/* =========================================================
+   CICLOFIT — PEDAL / CICLISMO PREMIUM 2.0
+   Etapa 3 — Refinamento visual
+   SOMENTE CSS
+   ========================================================= */
+
+
+/* =========================================================
+   CABEÇALHO
+   ========================================================= */
+
+   #cycling .page-intro {
+    margin-bottom: 19px;
+  }
+  
+  #cycling .page-intro h1 {
+    font-size: clamp(26px, 4vw, 33px);
+    line-height: 1.05;
+    letter-spacing: -.04em;
+    margin: 4px 0 7px;
+    font-weight: 900;
+  }
+  
+  #cycling .page-intro p {
+    max-width: 590px;
+    font-size: 11px;
+    line-height: 1.55;
+    color: var(--muted);
+  }
+  
+  #cycling .page-intro .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+  
+    color: #69b9ff;
+  
+    font-size: 9px;
+    font-weight: 900;
+    letter-spacing: .16em;
+  }
+  
+  #cycling .page-intro .eyebrow::before {
+    content: "";
+  
+    width: 18px;
+    height: 2px;
+  
+    border-radius: 999px;
+  
+    background: #69b9ff;
+  
+    box-shadow:
+      0 0 9px rgba(105,185,255,.28);
+  }
+  
+  
+  /* =========================================================
+     CARD — NOVO PEDAL
+     ========================================================= */
+  
+  #cycling .ride-form-card {
+    position: relative;
+    overflow: hidden;
+  
+    padding: 20px;
+  
+    border-radius: 23px;
+  
+    background:
+      radial-gradient(
+        circle at 100% 0%,
+        rgba(105,185,255,.09),
+        transparent 29%
+      ),
+      radial-gradient(
+        circle at 0% 100%,
+        rgba(183,245,0,.055),
+        transparent 31%
+      ),
+      linear-gradient(
+        145deg,
+        color-mix(in srgb,var(--card) 98%,white 2%),
+        var(--card)
+      );
+  
+    border-color:
+      color-mix(
+        in srgb,
+        #69b9ff 16%,
+        var(--border)
+      );
+  
+    box-shadow: var(--shadow-soft);
+  }
+  
+  
+  /* brilho decorativo */
+  
+  #cycling .ride-form-card::before {
+    content: "";
+  
+    position: absolute;
+  
+    width: 180px;
+    height: 180px;
+  
+    right: -100px;
+    top: -100px;
+  
+    border-radius: 50%;
+  
+    background:
+      radial-gradient(
+        circle,
+        rgba(105,185,255,.11),
+        transparent 68%
+      );
+  
+    pointer-events: none;
+  }
+  
+  
+  /* =========================================================
+     CABEÇALHO DO FORMULÁRIO
+     ========================================================= */
+  
+  #cycling .ride-form-card .card-head {
+    position: relative;
+    z-index: 1;
+  
+    margin-bottom: 16px;
+  }
+  
+  #cycling .ride-form-card .card-head h3 {
+    margin-top: 3px;
+  
+    font-size: 18px;
+    font-weight: 900;
+    letter-spacing: -.025em;
+  }
+  
+  #cycling .ride-form-card .card-head .eyebrow {
+    color: #69b9ff;
+  }
+  
+  #cycling .ride-form-card .card-head > span {
+    padding: 6px 9px;
+  
+    border-radius: 999px;
+  
+    background:
+      color-mix(
+        in srgb,
+        var(--surface-2) 88%,
+        transparent
+      );
+  
+    border: 1px solid var(--border);
+  
+    font-size: 8px;
+    font-weight: 800;
+  
+    color: var(--muted);
+  }
+  
+  
+  /* =========================================================
+     ABAS GPX / MANUAL
+     ========================================================= */
+  
+  #cycling .ride-mode-tabs {
+    position: relative;
+  
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  
+    gap: 4px;
+  
+    padding: 4px;
+  
+    margin-bottom: 16px;
+  
+    border-radius: 15px;
+  
+    background: var(--surface-2);
+  
+    border: 1px solid var(--border);
+  }
+  
+  
+  #cycling .ride-mode-btn {
+    min-height: 43px;
+  
+    border: 1px solid transparent;
+    border-radius: 11px;
+  
+    background: transparent;
+  
+    color: var(--muted);
+  
+    font-size: 10px;
+    font-weight: 850;
+  
+    cursor: pointer;
+  
+    transition:
+      background .18s ease,
+      color .18s ease,
+      border-color .18s ease,
+      box-shadow .18s ease,
+      transform .18s ease;
+  }
+  
+  
+  #cycling .ride-mode-btn:hover {
+    color: var(--text);
+  }
+  
+  
+  #cycling .ride-mode-btn.active {
+    background: var(--card);
+  
+    color: var(--text);
+  
+    border-color: var(--border);
+  
+    box-shadow:
+      0 7px 17px rgba(17,29,20,.07);
+  }
+  
+  
+  #cycling .ride-mode-btn:first-child.active {
+    color: #69aee8;
+  }
+  
+  
+  #cycling .ride-mode-btn svg {
+    width: 16px;
+    height: 16px;
+  
+    margin-right: 5px;
+  
+    vertical-align: -3px;
+  }
+  
+  
+  /* =========================================================
+     DATA
+     ========================================================= */
+  
+  #cycling .ride-form-card > label {
+    display: block;
+  
+    margin-bottom: 12px;
+  
+    font-size: 10px;
+    font-weight: 850;
+  
+    color: var(--muted);
+  }
+  
+  #cycling #rideDate {
+    margin-top: 6px;
+  }
+  
+  
+  /* =========================================================
+     ÁREA GPX
+     ========================================================= */
+  
+  #cycling .ride-gpx-action {
+    position: relative;
+  
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  
+    gap: 14px;
+  
+    padding: 14px;
+  
+    margin: 5px 0 9px;
+  
+    border-radius: 16px;
+  
+    background:
+      linear-gradient(
+        145deg,
+        color-mix(in srgb,#69b9ff 5%,var(--surface-2)),
+        var(--surface-2)
+      );
+  
+    border: 1px solid
+      color-mix(
+        in srgb,
+        #69b9ff 18%,
+        var(--border)
+      );
+  
+    transition:
+      border-color .18s ease,
+      box-shadow .18s ease,
+      transform .18s ease;
+  }
+  
+  
+  #cycling .ride-gpx-action:hover {
+    transform: translateY(-1px);
+  
+    border-color:
+      color-mix(
+        in srgb,
+        #69b9ff 30%,
+        var(--border)
+      );
+  
+    box-shadow:
+      0 9px 22px rgba(17,29,20,.055);
+  }
+  
+  
+  #cycling .ride-gpx-action > div {
+    min-width: 0;
+  }
+  
+  
+  #cycling .ride-gpx-action strong {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  
+    margin-bottom: 3px;
+  
+    font-size: 11px;
+    font-weight: 850;
+  
+    color: var(--text);
+  }
+  
+  
+  #cycling .ride-gpx-action strong svg {
+    width: 17px;
+    height: 17px;
+  
+    color: #69b9ff;
+  }
+  
+  
+  #cycling .ride-gpx-action small {
+    display: block;
+  
+    max-width: 440px;
+  
+    font-size: 9px;
+    line-height: 1.45;
+  
+    color: var(--muted);
+  }
+  
+  
+  /* botão selecionar */
+  
+  #cycling .ride-gpx-action .btn {
+    flex-shrink: 0;
+  
+    min-height: 42px;
+  
+    padding: 10px 14px;
+  
+    border-radius: 12px;
+  
+    font-size: 9px;
+    font-weight: 900;
+  }
+  
+  
+  /* =========================================================
+     STATUS DO GPX
+     ========================================================= */
+  
+  #cycling .gpx-hint {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+  
+    min-height: 24px;
+  
+    margin: 0 0 12px;
+  
+    font-size: 9px;
+    line-height: 1.4;
+  
+    color: var(--muted);
+  }
+  
+  
+  #cycling .gpx-hint::before {
+    content: "";
+  
+    width: 6px;
+    height: 6px;
+  
+    flex-shrink: 0;
+  
+    border-radius: 50%;
+  
+    background: var(--muted);
+  
+    opacity: .55;
+  }
+  
+  
+  /* =========================================================
+     FORMULÁRIO MANUAL
+     ========================================================= */
+  
+  #cycling .manual-ride-fields {
+    padding: 12px;
+  
+    margin-bottom: 11px;
+  
+    border-radius: 15px;
+  
+    background:
+      color-mix(
+        in srgb,
+        var(--surface-2) 72%,
+        transparent
+      );
+  
+    border: 1px solid var(--border);
+  }
+  
+  
+  #cycling .manual-ride-fields .form-grid {
+    margin-bottom: 8px;
+  }
+  
+  
+  #cycling .manual-ride-fields input {
+    background: var(--card);
+  }
+  
+  
+  /* =========================================================
+     BOTÃO SALVAR
+     ========================================================= */
+  
+  #cycling #saveRide {
+    position: relative;
+  
+    min-height: 49px;
+  
+    border-radius: 14px;
+  
+    font-size: 10px;
+    font-weight: 900;
+  
+    letter-spacing: .01em;
+  
+    box-shadow:
+      0 12px 25px rgba(143,217,0,.18);
+  }
+  
+  
+  #cycling #saveRide:not(:disabled):hover {
+    transform: translateY(-1px);
+  
+    box-shadow:
+      0 16px 30px rgba(143,217,0,.25);
+  }
+  
+  
+  #cycling #saveRide:disabled {
+    box-shadow: none;
+  }
+  
+  
+  /* =========================================================
+     HISTÓRICO
+     ========================================================= */
+  
+  #cycling .section-head {
+    margin: 26px 2px 11px;
+  }
+  
+  
+  #cycling .section-head h2 {
+    margin: 3px 0 0;
+  
+    font-size: 19px;
+    line-height: 1.1;
+  
+    letter-spacing: -.025em;
+  
+    font-weight: 900;
+  }
+  
+  
+  #cycling .section-head .eyebrow {
+    color: #69b9ff;
+  }
+  
+  
+  /* =========================================================
+     CARD DE PEDAL
+     ========================================================= */
+  
+  #cycling .ride-item {
+    position: relative;
+    overflow: hidden;
+  
+    padding: 17px;
+  
+    margin-bottom: 10px;
+  
+    border-radius: 19px;
+  
+    background:
+      linear-gradient(
+        145deg,
+        color-mix(in srgb,var(--card) 98%,white 2%),
+        var(--card)
+      );
+  
+    border: 1px solid var(--border);
+  
+    box-shadow: var(--shadow-soft);
+  
+    transition:
+      transform .18s ease,
+      box-shadow .18s ease,
+      border-color .18s ease;
+  }
+  
+  
+  #cycling .ride-item::before {
+    content: "";
+  
+    position: absolute;
+  
+    left: 0;
+    top: 17px;
+    bottom: 17px;
+  
+    width: 3px;
+  
+    border-radius: 0 999px 999px 0;
+  
+    background:
+      linear-gradient(
+        180deg,
+        #69b9ff,
+        rgba(105,185,255,.25)
+      );
+  }
+  
+  
+  #cycling .ride-item:hover {
+    transform: translateY(-2px);
+  
+    border-color:
+      color-mix(
+        in srgb,
+        #69b9ff 23%,
+        var(--border)
+      );
+  
+    box-shadow:
+      0 15px 32px rgba(17,29,20,.08);
+  }
+  
+  
+  /* =========================================================
+     TOPO DO PEDAL
+     ========================================================= */
+  
+  #cycling .ride-top {
+    align-items: center;
+  
+    padding-left: 2px;
+  }
+  
+  
+  #cycling .ride-top strong {
+    font-size: 13px;
+    font-weight: 900;
+  
+    letter-spacing: -.015em;
+  }
+  
+  
+  #cycling .ride-top > span {
+    padding: 5px 8px;
+  
+    border-radius: 999px;
+  
+    background:
+      rgba(105,185,255,.08);
+  
+    border: 1px solid
+      rgba(105,185,255,.15);
+  
+    color: #69aee8;
+  
+    font-size: 8px;
+    font-weight: 900;
+  }
+  
+  
+  /* =========================================================
+     MÉTRICAS DO PEDAL
+     ========================================================= */
+  
+  #cycling .ride-meta {
+    display: grid;
+  
+    grid-template-columns:
+      repeat(4,1fr);
+  
+    gap: 7px;
+  
+    margin-top: 12px;
+  }
+  
+  
+  #cycling .ride-meta span {
+    min-width: 0;
+  
+    padding: 10px 7px;
+  
+    border-radius: 12px;
+  
+    background: var(--surface-2);
+  
+    border: 1px solid
+      color-mix(
+        in srgb,
+        var(--border) 88%,
+        transparent
+      );
+  
+    text-align: center;
+  
+    font-size: 8px;
+  
+    color: var(--muted);
+  }
+  
+  
+  #cycling .ride-meta b {
+    display: block;
+  
+    margin-top: 3px;
+  
+    font-size: 13px;
+    font-weight: 900;
+  
+    letter-spacing: -.015em;
+  
+    color: var(--text);
+  }
+  
+  
+  /* primeira métrica */
+  
+  #cycling .ride-meta span:first-child b {
+    color: #69aee8;
+  }
+  
+  
+  /* =========================================================
+     OBSERVAÇÃO
+     ========================================================= */
+  
+  #cycling .ride-note {
+    margin-top: 10px;
+  
+    padding: 9px 10px;
+  
+    border-radius: 10px;
+  
+    background:
+      color-mix(
+        in srgb,
+        var(--surface-2) 70%,
+        transparent
+      );
+  
+    font-size: 9px;
+    line-height: 1.45;
+  
+    color: var(--muted);
+  }
+  
+  
+  /* =========================================================
+     AÇÕES DO HISTÓRICO
+     ========================================================= */
+  
+  #cycling .ride-actions {
+    margin-top: 10px;
+  
+    display: flex;
+    justify-content: flex-end;
+  
+    gap: 6px;
+  }
+  
+  
+  #cycling .ride-actions .mini-action {
+    min-height: 31px;
+  
+    padding: 6px 10px;
+  
+    border-radius: 9px;
+  
+    background: var(--surface-2);
+  
+    border: 1px solid var(--border);
+  
+    color: var(--muted);
+  
+    font-size: 8px;
+    font-weight: 850;
+  
+    transition:
+      color .18s ease,
+      background .18s ease,
+      border-color .18s ease;
+  }
+  
+  
+  #cycling .ride-actions .mini-action:hover {
+    color: var(--text);
+  
+    background:
+      color-mix(
+        in srgb,
+        var(--accent) 8%,
+        var(--surface-2)
+      );
+  
+    border-color:
+      color-mix(
+        in srgb,
+        var(--accent) 25%,
+        var(--border)
+      );
+  }
+  
+  
+  /* =========================================================
+     MAPA / GPX
+     ========================================================= */
+  
+  #cycling .gpx-map-card {
+    position: relative;
+  
+    overflow: hidden;
+  
+    padding: 11px;
+  
+    border-radius: 21px;
+  
+    background:
+      linear-gradient(
+        145deg,
+        color-mix(in srgb,var(--card) 98%,white 2%),
+        var(--card)
+      );
+  
+    border: 1px solid var(--border);
+  
+    box-shadow: var(--shadow-soft);
+  }
+  
+  
+  #cycling .gpx-map-header {
+    padding: 6px 5px 10px;
+  }
+  
+  
+  #cycling .gpx-map-header h3 {
+    font-size: 15px;
+    font-weight: 900;
+    letter-spacing: -.02em;
+  }
+  
+  
+  #cycling .gpx-map-header .eyebrow {
+    color: #69b9ff;
+  }
+  
+  
+  /* =========================================================
+     MÉTRICAS DO GPX
+     ========================================================= */
+  
+  #cycling .gpx-info-grid {
+    gap: 8px;
+  }
+  
+  
+  #cycling .gpx-info-grid > div {
+    position: relative;
+  
+    padding: 11px;
+  
+    border-radius: 13px;
+  
+    background: var(--surface-2);
+  
+    border: 1px solid var(--border);
+  
+    transition:
+      border-color .18s ease,
+      transform .18s ease;
+  }
+  
+  
+  #cycling .gpx-info-grid > div:hover {
+    transform: translateY(-1px);
+  
+    border-color:
+      color-mix(
+        in srgb,
+        #69b9ff 20%,
+        var(--border)
+      );
+  }
+  
+  
+  #cycling .gpx-info-grid small {
+    font-size: 8px;
+    font-weight: 700;
+  
+    color: var(--muted);
+  }
+  
+  
+  #cycling .gpx-info-grid strong {
+    margin-top: 4px;
+  
+    font-size: 15px;
+    font-weight: 900;
+  
+    letter-spacing: -.02em;
+  
+    color: var(--text);
+  }
+  
+  
+  /* =========================================================
+     DIVISOR
+     ========================================================= */
+  
+  #cycling .map-divider {
+    margin: 11px 2px;
+  
+    background:
+      color-mix(
+        in srgb,
+        var(--border) 90%,
+        transparent
+      );
+  }
+  
+  
+  /* =========================================================
+     MAPA REAL
+     ========================================================= */
+  
+  #cycling .gpx-map-card .real-map {
+    min-height: 360px;
+  
+    border-radius: 16px;
+  
+    overflow: hidden;
+  
+    border: 1px solid var(--border);
+  
+    box-shadow:
+      inset 0 0 0 1px rgba(255,255,255,.025);
+  }
+  
+  
+  /* =========================================================
+     ESTADO VAZIO DO HISTÓRICO
+     ========================================================= */
+  
+  #cycling #rideHistory:empty::before {
+    content: "Nenhum pedal registrado ainda.";
+  
+    display: block;
+  
+    padding: 27px 18px;
+  
+    border-radius: 18px;
+  
+    background:
+      linear-gradient(
+        145deg,
+        var(--card),
+        var(--surface-2)
+      );
+  
+    border: 1px dashed var(--border);
+  
+    text-align: center;
+  
+    font-size: 10px;
+  
+    color: var(--muted);
+  }
+  
+  
+  /* =========================================================
+     TEMA CLARO
+     ========================================================= */
+  
+  body:not([data-theme="dark"]) #cycling .ride-form-card {
+    background:
+      radial-gradient(
+        circle at 100% 0%,
+        rgba(105,185,255,.075),
+        transparent 29%
+      ),
+      radial-gradient(
+        circle at 0% 100%,
+        rgba(183,245,0,.05),
+        transparent 31%
+      ),
+      linear-gradient(
+        145deg,
+        #ffffff,
+        #f5f9f4
+      );
+  
+    box-shadow:
+      0 15px 35px rgba(28,45,34,.06);
+  }
+  
+  
+  body:not([data-theme="dark"]) #cycling .ride-gpx-action {
+    background:
+      linear-gradient(
+        145deg,
+        #f3f8fb,
+        #eef3ee
+      );
+  
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.85);
+  }
+  
+  
+  body:not([data-theme="dark"]) #cycling .ride-item {
+    background:
+      linear-gradient(
+        145deg,
+        #ffffff,
+        #f7faf6
+      );
+  
+    box-shadow:
+      0 12px 29px rgba(28,45,34,.055);
+  }
+  
+  
+  body:not([data-theme="dark"]) #cycling .ride-meta span,
+  body:not([data-theme="dark"]) #cycling .gpx-info-grid > div {
+    background:
+      #f0f4ef;
+  }
+  
+  
+  body:not([data-theme="dark"]) #cycling .gpx-map-card {
+    background:
+      linear-gradient(
+        145deg,
+        #ffffff,
+        #f6f9f5
+      );
+  }
+  
+  
+  /* =========================================================
+     TEMA ESCURO
+     ========================================================= */
+  
+  body[data-theme="dark"] #cycling .ride-form-card {
+    background:
+      radial-gradient(
+        circle at 100% 0%,
+        rgba(105,185,255,.07),
+        transparent 30%
+      ),
+      radial-gradient(
+        circle at 0% 100%,
+        rgba(183,245,0,.045),
+        transparent 30%
+      ),
+      linear-gradient(
+        145deg,
+        #111a14,
+        #0d140f
+      );
+  
+    border-color:
+      rgba(105,185,255,.12);
+  }
+  
+  
+  body[data-theme="dark"] #cycling .ride-gpx-action {
+    background:
+      linear-gradient(
+        145deg,
+        #101a15,
+        #0d1510
+      );
+  
+    border-color:
+      rgba(105,185,255,.13);
+  }
+  
+  
+  body[data-theme="dark"] #cycling .ride-item {
+    background:
+      linear-gradient(
+        145deg,
+        #111a14,
+        #0d140f
+      );
+  
+    border-color:
+      rgba(255,255,255,.07);
+  }
+  
+  
+  body[data-theme="dark"] #cycling .ride-meta span,
+  body[data-theme="dark"] #cycling .gpx-info-grid > div {
+    background:
+      #111912;
+  
+    border-color:
+      rgba(255,255,255,.06);
+  }
+  
+  
+  body[data-theme="dark"] #cycling .gpx-map-card {
+    background:
+      linear-gradient(
+        145deg,
+        #111a14,
+        #0d140f
+      );
+  }
+  
+  
+  /* =========================================================
+     TABLET
+     ========================================================= */
+  
+  @media (max-width: 850px) {
+  
+    #cycling .ride-meta {
+      grid-template-columns:
+        repeat(4,1fr);
+    }
+  
+    #cycling .gpx-map-card .real-map {
+      min-height: 340px;
+    }
+  
+  }
+  
+  
+  /* =========================================================
+     MOBILE
+     ========================================================= */
+  
+  @media (max-width: 620px) {
+  
+    #cycling .page-intro {
+      margin-bottom: 15px;
+    }
+  
+    #cycling .page-intro h1 {
+      font-size: 27px;
+    }
+  
+    #cycling .page-intro p {
+      font-size: 10px;
+    }
+  
+  
+    #cycling .ride-form-card {
+      padding: 14px;
+  
+      border-radius: 19px;
+    }
+  
+  
+    #cycling .ride-form-card .card-head {
+      align-items: flex-start;
+    }
+  
+  
+    #cycling .ride-form-card .card-head > span {
+      max-width: 125px;
+  
+      text-align: right;
+    }
+  
+  
+    #cycling .ride-gpx-action {
+      align-items: flex-start;
+  
+      flex-direction: column;
+  
+      gap: 10px;
+    }
+  
+  
+    #cycling .ride-gpx-action .btn {
+      width: 100%;
+    }
+  
+  
+    #cycling .ride-mode-btn {
+      min-height: 41px;
+    }
+  
+  
+    #cycling .ride-meta {
+      grid-template-columns:
+        repeat(2,1fr);
+  
+      gap: 6px;
+    }
+  
+  
+    #cycling .ride-meta span {
+      padding: 9px 6px;
+    }
+  
+  
+    #cycling .ride-item {
+      padding: 15px;
+  
+      border-radius: 17px;
+    }
+  
+  
+    #cycling .ride-top {
+      align-items: flex-start;
+    }
+  
+  
+    #cycling .ride-top strong {
+      font-size: 12px;
+    }
+  
+  
+    #cycling .ride-actions {
+      display: grid;
+  
+      grid-template-columns: 1fr 1fr;
+    }
+  
+  
+    #cycling .ride-actions .mini-action {
+      width: 100%;
+    }
+  
+  
+    #cycling .gpx-map-card {
+      padding: 9px;
+  
+      border-radius: 18px;
+    }
+  
+  
+    #cycling .gpx-map-card .real-map {
+      min-height: 310px;
+  
+      height: 310px;
+    }
+  
+  
+    #cycling .gpx-info-grid {
+      grid-template-columns:
+        repeat(2,1fr);
+    }
+  
+  
+    #cycling .gpx-info-grid > div {
+      padding: 10px;
+    }
+  
+  
+    #cycling .section-head {
+      margin-top: 23px;
+    }
+  
+  }
+  
+  
+  /* =========================================================
+     TELAS MUITO PEQUENAS
+     ========================================================= */
+  
+  @media (max-width: 390px) {
+  
+    #cycling .ride-form-card {
+      padding: 12px;
+    }
+  
+    #cycling .ride-form-card .card-head h3 {
+      font-size: 16px;
+    }
+  
+    #cycling .ride-meta b {
+      font-size: 12px;
+    }
+  
+    #cycling .ride-meta span {
+      font-size: 7.5px;
+    }
+  
+    #cycling .gpx-info-grid strong {
+      font-size: 13px;
+    }
+  
+    #cycling .gpx-info-grid small {
+      font-size: 7.5px;
+    }
+  
+  }
+  
+  
+  /* =========================================================
+     ACESSIBILIDADE
+     ========================================================= */
+  
+  @media (prefers-reduced-motion: reduce) {
+  
+    #cycling .ride-item,
+    #cycling .ride-gpx-action,
+    #cycling .gpx-info-grid > div,
+    #cycling .ride-mode-btn,
+    #cycling #saveRide {
+      transition: none !important;
+    }
+  
+    #cycling .ride-item:hover,
+    #cycling .ride-gpx-action:hover,
+    #cycling .gpx-info-grid > div:hover {
+      transform: none;
+    }
+  
+  }
+  /* =========================================================
+   CICLOFIT — EVOLUÇÃO / PERFORMANCE PREMIUM 2.0
+   Etapa 4 — Refinamento visual
+   SOMENTE CSS
+   ========================================================= */
+
+
+/* =========================================================
+   1. CABEÇALHO DA PÁGINA
+   ========================================================= */
+
+#progress .page-intro {
+  margin-bottom: 16px;
+}
+
+#progress .page-intro .eyebrow {
+  color: var(--accent);
+  font-weight: 800;
+  letter-spacing: .14em;
+}
+
+#progress .page-intro h1 {
+  margin: 4px 0 5px;
+  font-size: clamp(27px, 4vw, 34px);
+  letter-spacing: -.045em;
+}
+
+#progress .page-intro p {
+  max-width: 560px;
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+
+/* =========================================================
+   2. HERO DE PERFORMANCE
+   ========================================================= */
+
+#progress .progress-hero {
+  position: relative;
+  overflow: hidden;
+
+  min-height: 156px;
+  padding: 24px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+
+  border-radius: 24px;
+
+  background:
+    radial-gradient(
+      circle at 85% 20%,
+      rgba(183,245,0,.18),
+      transparent 32%
+    ),
+    radial-gradient(
+      circle at 10% 110%,
+      rgba(90,160,100,.10),
+      transparent 38%
+    ),
+    linear-gradient(
+      145deg,
+      #182019 0%,
+      #101512 100%
+    );
+
+  border: 1px solid rgba(255,255,255,.07);
+
+  box-shadow:
+    0 20px 50px rgba(0,0,0,.18),
+    inset 0 1px 0 rgba(255,255,255,.04);
+
+  margin-bottom: 12px;
+}
+
+#progress .progress-hero::before {
+  content: "";
+  position: absolute;
+  width: 180px;
+  height: 180px;
+  right: -80px;
+  top: -100px;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(183,245,0,.14),
+      transparent 68%
+    );
+
+  pointer-events: none;
+}
+
+#progress .progress-hero > div:first-child {
+  position: relative;
+  z-index: 1;
+}
+
+#progress .progress-hero .eyebrow {
+  display: block;
+  margin-bottom: 7px;
+
+  color: rgba(255,255,255,.55);
+
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: .14em;
+}
+
+#progress .progress-hero strong {
+  display: block;
+
+  margin: 0;
+
+  color: #fff;
+
+  font-size: clamp(36px, 6vw, 48px);
+  line-height: .95;
+  letter-spacing: -.055em;
+}
+
+#progress .progress-hero > div:first-child > span:last-child {
+  display: block;
+
+  margin-top: 7px;
+
+  color: rgba(255,255,255,.58);
+
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+
+/* =========================================================
+   3. ANEL DE PROGRESSO
+   ========================================================= */
+
+#progress .ring {
+  position: relative;
+  z-index: 2;
+
+  flex: 0 0 auto;
+
+  width: 104px;
+  height: 104px;
+
+  border-radius: 50%;
+
+  display: grid;
+  place-items: center;
+
+  background:
+    conic-gradient(
+      var(--accent) 0deg,
+      var(--accent) 0deg,
+      rgba(255,255,255,.10) 0deg,
+      rgba(255,255,255,.10) 360deg
+    );
+
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,.04),
+    0 0 28px rgba(183,245,0,.08);
+}
+
+#progress .ring::after {
+  content: "";
+
+  position: absolute;
+  inset: 9px;
+
+  border-radius: 50%;
+
+  background:
+    linear-gradient(
+      145deg,
+      #182019,
+      #101512
+    );
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.04);
+}
+
+#progress .ring span {
+  position: relative;
+  z-index: 3;
+
+  color: #fff;
+
+  font-size: 15px;
+  font-weight: 900;
+  letter-spacing: -.02em;
+}
+
+
+/* =========================================================
+   4. GRID DE MÉTRICAS
+   ========================================================= */
+
+#progress .grid-3 {
+  display: grid;
+
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+
+  gap: 9px;
+
+  margin-bottom: 12px;
+}
+
+#progress .metric-card {
+  position: relative;
+
+  min-height: 86px;
+
+  padding: 15px;
+
+  border-radius: 17px;
+
+  background: var(--card);
+
+  border: 1px solid var(--border);
+
+  box-shadow:
+    0 8px 24px rgba(0,0,0,.045),
+    inset 0 1px 0 rgba(255,255,255,.35);
+
+  transition:
+    transform .2s ease,
+    box-shadow .2s ease,
+    border-color .2s ease;
+}
+
+#progress .metric-card::before {
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+  left: 14px;
+  right: 14px;
+
+  height: 2px;
+
+  border-radius: 0 0 4px 4px;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(183,245,0,.85),
+      rgba(183,245,0,.08)
+    );
+
+  opacity: .7;
+}
+
+#progress .metric-card:hover {
+  transform: translateY(-2px);
+
+  border-color:
+    rgba(143,217,0,.28);
+
+  box-shadow:
+    0 13px 30px rgba(0,0,0,.07),
+    0 0 0 1px rgba(143,217,0,.04);
+}
+
+#progress .metric-card small {
+  display: block;
+
+  color: var(--muted);
+
+  font-size: 9px;
+  font-weight: 700;
+
+  text-transform: uppercase;
+  letter-spacing: .07em;
+}
+
+#progress .metric-card strong {
+  display: block;
+
+  margin-top: 8px;
+
+  color: var(--text);
+
+  font-size: 23px;
+  line-height: 1;
+
+  font-weight: 900;
+
+  letter-spacing: -.045em;
+}
+
+
+/* =========================================================
+   5. CARDS DE GRÁFICOS
+   ========================================================= */
+
+#progress .chart-card {
+  position: relative;
+
+  overflow: hidden;
+
+  margin-bottom: 12px;
+
+  border-radius: 20px;
+
+  background: var(--card);
+
+  border: 1px solid var(--border);
+
+  box-shadow:
+    0 10px 30px rgba(0,0,0,.045);
+}
+
+#progress .chart-card .card-head {
+  min-height: 36px;
+
+  margin-bottom: 10px;
+}
+
+#progress .chart-card .card-head > div {
+  min-width: 0;
+}
+
+#progress .chart-card .card-head .eyebrow {
+  display: block;
+
+  margin-bottom: 3px;
+
+  color: var(--accent);
+
+  font-size: 8px;
+  font-weight: 800;
+
+  letter-spacing: .13em;
+}
+
+#progress .chart-card .card-head h3 {
+  color: var(--text);
+
+  font-size: 15px;
+  font-weight: 800;
+}
+
+#progress .chart-card .card-head > span {
+  flex: 0 0 auto;
+
+  padding: 5px 9px;
+
+  border-radius: 999px;
+
+  background: var(--surface-2);
+
+  color: var(--muted);
+
+  font-size: 9px;
+  font-weight: 800;
+}
+
+#progress .chart-card canvas {
+  display: block;
+
+  width: 100%;
+  height: auto;
+
+  min-height: 150px;
+}
+
+
+/* =========================================================
+   6. RECORDES PESSOAIS
+   ========================================================= */
+
+#progress > .card {
+  margin-bottom: 12px;
+
+  border-radius: 20px;
+
+  background: var(--card);
+
+  border: 1px solid var(--border);
+
+  box-shadow:
+    0 10px 30px rgba(0,0,0,.045);
+}
+
+#progress > .card .card-head h3 {
+  color: var(--text);
+
+  font-size: 15px;
+  font-weight: 800;
+}
+
+#progress > .card .card-head > span {
+  padding: 5px 9px;
+
+  border-radius: 999px;
+
+  background: var(--surface-2);
+
+  color: var(--muted);
+
+  font-size: 9px;
+  font-weight: 800;
+}
+
+
+/* =========================================================
+   7. LINHAS DE RECORDES
+   ========================================================= */
+
+#progress .pr-row {
+  min-height: 58px;
+
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  padding: 10px 2px;
+
+  border-bottom:
+    1px solid var(--border);
+}
+
+#progress .pr-row:last-child {
+  border-bottom: 0;
+}
+
+#progress .pr-row > span {
+  width: 36px;
+  height: 36px;
+
+  flex: 0 0 36px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 12px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(183,245,0,.13),
+      rgba(183,245,0,.035)
+    );
+
+  border: 1px solid rgba(143,217,0,.15);
+
+  color: var(--accent);
+
+  font-size: 16px;
+}
+
+#progress .pr-row div {
+  min-width: 0;
+}
+
+#progress .pr-row small {
+  margin-bottom: 3px;
+
+  color: var(--muted);
+
+  font-size: 9px;
+  font-weight: 600;
+}
+
+#progress .pr-row b {
+  color: var(--text);
+
+  font-size: 12px;
+  font-weight: 850;
+}
+
+#progress .pr-row > b {
+  margin-left: auto;
+
+  padding: 6px 9px;
+
+  border-radius: 8px;
+
+  background: var(--surface-2);
+
+  white-space: nowrap;
+}
+
+
+/* =========================================================
+   8. HISTÓRICO DE TREINOS
+   ========================================================= */
+
+#progress #history {
+  display: grid;
+  gap: 7px;
+}
+
+#progress #history > * {
+  transition:
+    transform .18s ease,
+    border-color .18s ease;
+}
+
+#progress #history > *:hover {
+  transform: translateX(2px);
+}
+
+
+/* =========================================================
+   9. BOTÕES DE BACKUP
+   ========================================================= */
+
+#progress .button-row {
+  display: grid;
+
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+
+  gap: 9px;
+
+  margin-top: 2px;
+}
+
+#progress .button-row .btn {
+  min-height: 46px;
+
+  justify-content: center;
+
+  border-radius: 14px;
+
+  font-size: 11px;
+  font-weight: 800;
+
+  transition:
+    transform .18s ease,
+    box-shadow .18s ease,
+    border-color .18s ease;
+}
+
+#progress .button-row .btn:hover {
+  transform: translateY(-1px);
+}
+
+#progress .button-row .btn-light {
+  background: var(--card);
+
+  border: 1px solid var(--border);
+
+  color: var(--text);
+
+  box-shadow:
+    0 7px 20px rgba(0,0,0,.04);
+}
+
+#progress .button-row .btn-light:hover {
+  border-color:
+    rgba(143,217,0,.32);
+
+  box-shadow:
+    0 10px 24px rgba(0,0,0,.07),
+    0 0 0 1px rgba(143,217,0,.04);
+}
+
+
+/* =========================================================
+   10. ESTADO VAZIO
+   ========================================================= */
+
+#progress #prList:empty::before {
+  content: "Nenhum recorde pessoal registrado ainda.";
+
+  display: block;
+
+  padding: 20px 10px;
+
+  color: var(--muted);
+
+  text-align: center;
+
+  font-size: 11px;
+}
+
+#progress #history:empty::before {
+  content: "Seus treinos aparecerão aqui.";
+
+  display: block;
+
+  padding: 22px 10px;
+
+  color: var(--muted);
+
+  text-align: center;
+
+  font-size: 11px;
+}
+
+
+/* =========================================================
+   11. LIGHT MODE
+   ========================================================= */
+
+body:not([data-theme="dark"]) #progress .progress-hero {
+  background:
+    radial-gradient(
+      circle at 88% 15%,
+      rgba(183,245,0,.17),
+      transparent 31%
+    ),
+    radial-gradient(
+      circle at 5% 110%,
+      rgba(87,155,100,.07),
+      transparent 35%
+    ),
+    linear-gradient(
+      145deg,
+      #ffffff 0%,
+      #f4f8f3 60%,
+      #edf3ec 100%
+    );
+
+  border-color:
+    rgba(143,217,0,.18);
+
+  box-shadow:
+    0 18px 45px rgba(28,45,34,.08),
+    inset 0 1px 0 rgba(255,255,255,.8);
+}
+
+body:not([data-theme="dark"]) #progress .progress-hero::before {
+  background:
+    radial-gradient(
+      circle,
+      rgba(183,245,0,.13),
+      transparent 68%
+    );
+}
+
+body:not([data-theme="dark"]) #progress .progress-hero .eyebrow {
+  color: #6b776e;
+}
+
+body:not([data-theme="dark"]) #progress .progress-hero strong {
+  color: #172019;
+}
+
+body:not([data-theme="dark"]) #progress .progress-hero > div:first-child > span:last-child {
+  color: #69766d;
+}
+
+body:not([data-theme="dark"]) #progress .ring {
+  background:
+    conic-gradient(
+      #8fd900 0deg,
+      #8fd900 0deg,
+      #dfe7df 0deg,
+      #dfe7df 360deg
+    );
+
+  box-shadow:
+    0 0 0 1px rgba(28,45,34,.04),
+    0 10px 24px rgba(28,45,34,.07);
+}
+
+body:not([data-theme="dark"]) #progress .ring::after {
+  background:
+    linear-gradient(
+      145deg,
+      #ffffff,
+      #f2f6f1
+    );
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.9);
+}
+
+body:not([data-theme="dark"]) #progress .ring span {
+  color: #172019;
+}
+
+body:not([data-theme="dark"]) #progress .metric-card {
+  background: #ffffff;
+
+  border-color: #dce5dd;
+
+  box-shadow:
+    0 8px 24px rgba(28,45,34,.045),
+    inset 0 1px 0 rgba(255,255,255,.9);
+}
+
+body:not([data-theme="dark"]) #progress .metric-card strong {
+  color: #172019;
+}
+
+body:not([data-theme="dark"]) #progress .chart-card,
+body:not([data-theme="dark"]) #progress > .card {
+  background: #ffffff;
+
+  border-color: #dce5dd;
+
+  box-shadow:
+    0 10px 28px rgba(28,45,34,.045);
+}
+
+body:not([data-theme="dark"]) #progress .chart-card .card-head h3,
+body:not([data-theme="dark"]) #progress > .card .card-head h3 {
+  color: #172019;
+}
+
+body:not([data-theme="dark"]) #progress .chart-card .card-head > span,
+body:not([data-theme="dark"]) #progress > .card .card-head > span,
+body:not([data-theme="dark"]) #progress .pr-row > b {
+  background: #edf2ed;
+
+  color: #647168;
+}
+
+body:not([data-theme="dark"]) #progress .pr-row > span {
+  background:
+    linear-gradient(
+      145deg,
+      rgba(183,245,0,.13),
+      rgba(183,245,0,.035)
+    );
+
+  border-color:
+    rgba(143,217,0,.18);
+
+  color: #709e00;
+}
+
+body:not([data-theme="dark"]) #progress .pr-row b {
+  color: #172019;
+}
+
+body:not([data-theme="dark"]) #progress .button-row .btn-light {
+  background: #ffffff;
+
+  border-color: #dce5dd;
+
+  color: #172019;
+}
+
+
+/* =========================================================
+   12. DARK MODE
+   ========================================================= */
+
+body[data-theme="dark"] #progress .progress-hero {
+  background:
+    radial-gradient(
+      circle at 88% 15%,
+      rgba(183,245,0,.16),
+      transparent 31%
+    ),
+    linear-gradient(
+      145deg,
+      #151c17,
+      #0d120f
+    );
+
+  border-color:
+    rgba(255,255,255,.065);
+}
+
+body[data-theme="dark"] #progress .metric-card,
+body[data-theme="dark"] #progress .chart-card,
+body[data-theme="dark"] #progress > .card {
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.025),
+      rgba(255,255,255,.012)
+    );
+
+  border-color:
+    rgba(255,255,255,.075);
+
+  box-shadow:
+    0 12px 32px rgba(0,0,0,.18),
+    inset 0 1px 0 rgba(255,255,255,.025);
+}
+
+body[data-theme="dark"] #progress .metric-card:hover {
+  border-color:
+    rgba(183,245,0,.20);
+}
+
+body[data-theme="dark"] #progress .chart-card .card-head > span,
+body[data-theme="dark"] #progress > .card .card-head > span,
+body[data-theme="dark"] #progress .pr-row > b {
+  background:
+    rgba(255,255,255,.055);
+
+  color:
+    rgba(255,255,255,.58);
+}
+
+body[data-theme="dark"] #progress .pr-row {
+  border-color:
+    rgba(255,255,255,.07);
+}
+
+body[data-theme="dark"] #progress .pr-row > span {
+  background:
+    rgba(183,245,0,.08);
+
+  border-color:
+    rgba(183,245,0,.14);
+}
+
+
+/* =========================================================
+   13. TABLET
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+  #progress .grid-3 {
+    grid-template-columns:
+      repeat(3, minmax(0, 1fr));
+  }
+
+  #progress .progress-hero {
+    min-height: 148px;
+  }
+
+}
+
+
+/* =========================================================
+   14. MOBILE
+   ========================================================= */
+
+@media (max-width: 700px) {
+
+  #progress .page-intro {
+    margin-bottom: 13px;
+  }
+
+  #progress .page-intro h1 {
+    font-size: 28px;
+  }
+
+  #progress .progress-hero {
+    min-height: 142px;
+
+    padding: 20px;
+
+    border-radius: 21px;
+
+    gap: 12px;
+  }
+
+  #progress .progress-hero strong {
+    font-size: 37px;
+  }
+
+  #progress .ring {
+    width: 88px;
+    height: 88px;
+  }
+
+  #progress .ring::after {
+    inset: 8px;
+  }
+
+  #progress .grid-3 {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+
+    gap: 8px;
+  }
+
+  #progress .metric-card {
+    min-height: 80px;
+
+    padding: 13px;
+  }
+
+  #progress .metric-card strong {
+    font-size: 21px;
+  }
+
+  #progress .chart-card,
+  #progress > .card {
+    border-radius: 18px;
+  }
+
+  #progress .chart-card canvas {
+    min-height: 135px;
+  }
+
+}
+
+
+/* =========================================================
+   15. CELULARES PEQUENOS
+   ========================================================= */
+
+@media (max-width: 430px) {
+
+  #progress .progress-hero {
+    padding: 18px;
+
+    min-height: 132px;
+  }
+
+  #progress .progress-hero strong {
+    font-size: 32px;
+  }
+
+  #progress .progress-hero > div:first-child > span:last-child {
+    font-size: 10px;
+  }
+
+  #progress .ring {
+    width: 78px;
+    height: 78px;
+  }
+
+  #progress .ring::after {
+    inset: 7px;
+  }
+
+  #progress .ring span {
+    font-size: 13px;
+  }
+
+  #progress .metric-card {
+    min-height: 76px;
+
+    padding: 12px;
+  }
+
+  #progress .metric-card strong {
+    font-size: 19px;
+  }
+
+  #progress .metric-card small {
+    font-size: 8px;
+  }
+
+  #progress .button-row {
+    grid-template-columns: 1fr;
+  }
+
+}
+
+
+/* =========================================================
+   16. REDUÇÃO DE MOVIMENTO
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+  #progress .metric-card,
+  #progress .button-row .btn,
+  #progress #history > * {
+    transition: none;
+  }
+
+  #progress .metric-card:hover,
+  #progress .button-row .btn:hover,
+  #progress #history > *:hover {
+    transform: none;
+  }
+
+}
+/* =========================================================
+   CICLOFIT — PERFIL PREMIUM 2.0
+   Etapa 5 — Refinamento visual
+   SOMENTE CSS
+   ========================================================= */
+
+
+/* =========================================================
+   1. CABEÇALHO
+   ========================================================= */
+
+   #profile .page-intro {
+    margin-bottom: 16px;
+  }
+  
+  #profile .page-intro .eyebrow {
+    color: var(--accent);
+    font-weight: 800;
+    letter-spacing: .14em;
+  }
+  
+  #profile .page-intro h1 {
+    margin: 4px 0 5px;
+    font-size: clamp(27px, 4vw, 34px);
+    letter-spacing: -.045em;
+  }
+  
+  #profile .page-intro p {
+    margin: 0;
+    max-width: 560px;
+    color: var(--muted);
+    line-height: 1.55;
+  }
+  
+  
+  /* =========================================================
+     2. CARD PRINCIPAL DO PERFIL
+     ========================================================= */
+  
+  #profile .profile-card {
+    position: relative;
+    overflow: hidden;
+  
+    display: flex;
+    align-items: center;
+    gap: 18px;
+  
+    min-height: 142px;
+  
+    margin-bottom: 12px;
+    padding: 22px;
+  
+    border-radius: 24px;
+  
+    background:
+      radial-gradient(
+        circle at 92% 12%,
+        rgba(183,245,0,.16),
+        transparent 32%
+      ),
+      radial-gradient(
+        circle at 5% 110%,
+        rgba(90,160,100,.08),
+        transparent 36%
+      ),
+      linear-gradient(
+        145deg,
+        #182019,
+        #101512
+      );
+  
+    border: 1px solid rgba(255,255,255,.07);
+  
+    box-shadow:
+      0 20px 48px rgba(0,0,0,.17),
+      inset 0 1px 0 rgba(255,255,255,.04);
+  }
+  
+  #profile .profile-card::before {
+    content: "";
+  
+    position: absolute;
+  
+    width: 190px;
+    height: 190px;
+  
+    right: -100px;
+    top: -100px;
+  
+    border-radius: 50%;
+  
+    background:
+      radial-gradient(
+        circle,
+        rgba(183,245,0,.13),
+        transparent 68%
+      );
+  
+    pointer-events: none;
+  }
+  
+  
+  /* =========================================================
+     3. AVATAR
+     ========================================================= */
+  
+  #profile .profile-card .avatar {
+    position: relative;
+    z-index: 2;
+  
+    width: 82px;
+    height: 82px;
+  
+    flex: 0 0 82px;
+  
+    display: grid;
+    place-items: center;
+  
+    border-radius: 50%;
+  
+    background:
+      linear-gradient(
+        145deg,
+        #b7f500,
+        #82c900
+      );
+  
+    color: #162000;
+  
+    border: 4px solid rgba(255,255,255,.12);
+  
+    box-shadow:
+      0 0 0 1px rgba(183,245,0,.16),
+      0 12px 28px rgba(0,0,0,.20),
+      0 0 25px rgba(183,245,0,.10);
+  
+    font-size: 24px;
+    font-weight: 950;
+    letter-spacing: -.04em;
+  
+    overflow: hidden;
+  }
+  
+  #profile .profile-card .avatar img {
+    width: 100%;
+    height: 100%;
+  
+    display: block;
+  
+    object-fit: cover;
+  
+    border-radius: inherit;
+  }
+  
+  
+  /* =========================================================
+     4. TEXTO DO PERFIL
+     ========================================================= */
+  
+  #profile .profile-head-copy {
+    position: relative;
+    z-index: 2;
+  
+    min-width: 0;
+  }
+  
+  #profile .profile-head-copy h2 {
+    margin: 0;
+  
+    color: #fff;
+  
+    font-size: 22px;
+    line-height: 1.1;
+  
+    font-weight: 900;
+  
+    letter-spacing: -.035em;
+  }
+  
+  #profile .profile-head-copy p {
+    margin: 6px 0 13px;
+  
+    max-width: 430px;
+  
+    color: rgba(255,255,255,.58);
+  
+    font-size: 11px;
+    line-height: 1.5;
+  }
+  
+  
+  /* =========================================================
+     5. BOTÃO DA FOTO
+     ========================================================= */
+  
+  #profile .photo-upload {
+    display: inline-flex;
+    width: auto;
+  }
+  
+  #profile .photo-upload .btn {
+    min-height: 34px;
+  
+    padding: 7px 12px;
+  
+    border-radius: 10px;
+  
+    background:
+      rgba(255,255,255,.06);
+  
+    border:
+      1px solid rgba(255,255,255,.10);
+  
+    color: rgba(255,255,255,.78);
+  
+    font-size: 10px;
+    font-weight: 800;
+  }
+  
+  #profile .photo-upload .btn:hover {
+    border-color:
+      rgba(183,245,0,.28);
+  
+    color: #fff;
+  
+    background:
+      rgba(183,245,0,.08);
+  }
+  
+  #profile .photo-upload .cf-svg {
+    width: 15px;
+    height: 15px;
+  }
+  
+  
+  /* =========================================================
+     6. CARDS INTERNOS
+     ========================================================= */
+  
+  #profile > .card:not(.profile-card) {
+    margin-bottom: 12px;
+  
+    border-radius: 20px;
+  
+    background: var(--card);
+  
+    border: 1px solid var(--border);
+  
+    box-shadow:
+      0 10px 30px rgba(0,0,0,.045);
+  }
+  
+  #profile > .card:not(.profile-card) .section-label {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+  
+    margin-bottom: 15px;
+  
+    color: var(--text);
+  
+    font-size: 12px;
+    font-weight: 850;
+  
+    letter-spacing: -.01em;
+  }
+  
+  #profile > .card:not(.profile-card) .section-label::before {
+    content: "";
+  
+    width: 3px;
+    height: 18px;
+  
+    flex: 0 0 3px;
+  
+    border-radius: 99px;
+  
+    background:
+      linear-gradient(
+        180deg,
+        var(--accent),
+        rgba(183,245,0,.25)
+      );
+  }
+  
+  #profile > .card:not(.profile-card) .section-label .cf-svg {
+    width: 16px;
+    height: 16px;
+  
+    color: var(--accent);
+  }
+  
+  
+  /* =========================================================
+     7. CAMPOS DO PERFIL
+     ========================================================= */
+  
+  #profile .form-grid {
+    gap: 10px;
+  }
+  
+  #profile .form-grid label {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  
+    color: var(--muted);
+  
+    font-size: 9px;
+    font-weight: 750;
+  
+    letter-spacing: .02em;
+  }
+  
+  #profile .form-grid input,
+  #profile .form-grid select {
+    width: 100%;
+  
+    min-height: 44px;
+  
+    padding: 0 12px;
+  
+    border-radius: 12px;
+  
+    background: var(--surface-2);
+  
+    border: 1px solid var(--border);
+  
+    color: var(--text);
+  
+    font-size: 11px;
+    font-weight: 650;
+  
+    outline: none;
+  
+    transition:
+      border-color .18s ease,
+      box-shadow .18s ease,
+      background .18s ease;
+  }
+  
+  #profile .form-grid input::placeholder {
+    color: var(--muted);
+  
+    opacity: .65;
+  }
+  
+  #profile .form-grid input:hover,
+  #profile .form-grid select:hover {
+    border-color:
+      rgba(143,217,0,.25);
+  }
+  
+  #profile .form-grid input:focus,
+  #profile .form-grid select:focus {
+    border-color:
+      rgba(143,217,0,.55);
+  
+    box-shadow:
+      0 0 0 3px rgba(183,245,0,.08);
+  }
+  
+  #profile .form-grid input[readonly] {
+    cursor: default;
+  
+    opacity: .75;
+  }
+  
+  
+  /* =========================================================
+     8. BOTÃO SALVAR
+     ========================================================= */
+  
+  #profile #saveProfile {
+    min-height: 47px;
+  
+    margin-top: 14px;
+  
+    border-radius: 14px;
+  
+    font-size: 11px;
+    font-weight: 900;
+  
+    box-shadow:
+      0 10px 24px rgba(143,217,0,.12);
+  
+    transition:
+      transform .18s ease,
+      box-shadow .18s ease;
+  }
+  
+  #profile #saveProfile:hover {
+    transform: translateY(-1px);
+  
+    box-shadow:
+      0 13px 28px rgba(143,217,0,.18);
+  }
+  
+  #profile #saveProfile:active {
+    transform: translateY(0);
+  }
+  
+  
+  /* =========================================================
+     9. ZONAS DE FREQUÊNCIA CARDÍACA
+     ========================================================= */
+  
+  #profile #zones {
+    display: grid;
+    gap: 7px;
+  }
+  
+  #profile #zones > * {
+    position: relative;
+  
+    min-height: 46px;
+  
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  
+    padding: 9px 11px;
+  
+    border-radius: 12px;
+  
+    background: var(--surface-2);
+  
+    border: 1px solid var(--border);
+  }
+  
+  #profile #zones > *::before {
+    content: "";
+  
+    width: 3px;
+    height: 22px;
+  
+    flex: 0 0 3px;
+  
+    border-radius: 99px;
+  
+    background: var(--accent);
+  }
+  
+  #profile #zones strong,
+  #profile #zones b {
+    color: var(--text);
+  }
+  
+  #profile #zones small,
+  #profile #zones span {
+    color: var(--muted);
+  }
+  
+  
+  /* =========================================================
+     10. LIGHT MODE
+     ========================================================= */
+  
+  body:not([data-theme="dark"]) #profile .profile-card {
+    background:
+      radial-gradient(
+        circle at 92% 12%,
+        rgba(183,245,0,.16),
+        transparent 32%
+      ),
+      radial-gradient(
+        circle at 5% 110%,
+        rgba(90,160,100,.06),
+        transparent 36%
+      ),
+      linear-gradient(
+        145deg,
+        #ffffff 0%,
+        #f5f9f4 62%,
+        #edf3ec 100%
+      );
+  
+    border-color:
+      rgba(143,217,0,.18);
+  
+    box-shadow:
+      0 18px 45px rgba(28,45,34,.08),
+      inset 0 1px 0 rgba(255,255,255,.85);
+  }
+  
+  body:not([data-theme="dark"]) #profile .profile-card::before {
+    background:
+      radial-gradient(
+        circle,
+        rgba(183,245,0,.12),
+        transparent 68%
+      );
+  }
+  
+  body:not([data-theme="dark"]) #profile .profile-head-copy h2 {
+    color: #172019;
+  }
+  
+  body:not([data-theme="dark"]) #profile .profile-head-copy p {
+    color: #68756c;
+  }
+  
+  body:not([data-theme="dark"]) #profile .photo-upload .btn {
+    background: rgba(28,45,34,.045);
+  
+    border-color:
+      rgba(28,45,34,.09);
+  
+    color: #536057;
+  }
+  
+  body:not([data-theme="dark"]) #profile .photo-upload .btn:hover {
+    background:
+      rgba(183,245,0,.08);
+  
+    border-color:
+      rgba(143,217,0,.25);
+  
+    color: #425039;
+  }
+  
+  body:not([data-theme="dark"]) #profile > .card:not(.profile-card) {
+    background: #fff;
+  
+    border-color: #dce5dd;
+  
+    box-shadow:
+      0 10px 28px rgba(28,45,34,.045);
+  }
+  
+  body:not([data-theme="dark"]) #profile .form-grid input,
+  body:not([data-theme="dark"]) #profile .form-grid select {
+    background: #f3f6f3;
+  
+    border-color: #dce5dd;
+  
+    color: #172019;
+  }
+  
+  body:not([data-theme="dark"]) #profile .form-grid input:focus,
+  body:not([data-theme="dark"]) #profile .form-grid select:focus {
+    background: #fff;
+  
+    border-color:
+      rgba(112,169,0,.52);
+  
+    box-shadow:
+      0 0 0 3px rgba(143,217,0,.08);
+  }
+  
+  body:not([data-theme="dark"]) #profile #zones > * {
+    background: #f2f5f2;
+  
+    border-color: #dce5dd;
+  }
+  
+  body:not([data-theme="dark"]) #profile #zones > *::before {
+    background: #8fd900;
+  }
+  
+  
+  /* =========================================================
+     11. DARK MODE
+     ========================================================= */
+  
+  body[data-theme="dark"] #profile .profile-card {
+    background:
+      radial-gradient(
+        circle at 90% 10%,
+        rgba(183,245,0,.14),
+        transparent 32%
+      ),
+      linear-gradient(
+        145deg,
+        #151c17,
+        #0d120f
+      );
+  
+    border-color:
+      rgba(255,255,255,.065);
+  }
+  
+  body[data-theme="dark"] #profile > .card:not(.profile-card) {
+    background:
+      linear-gradient(
+        145deg,
+        rgba(255,255,255,.025),
+        rgba(255,255,255,.012)
+      );
+  
+    border-color:
+      rgba(255,255,255,.075);
+  
+    box-shadow:
+      0 12px 32px rgba(0,0,0,.18),
+      inset 0 1px 0 rgba(255,255,255,.025);
+  }
+  
+  body[data-theme="dark"] #profile .form-grid input,
+  body[data-theme="dark"] #profile .form-grid select {
+    background:
+      rgba(255,255,255,.035);
+  
+    border-color:
+      rgba(255,255,255,.08);
+  
+    color: #f2f5f2;
+  }
+  
+  body[data-theme="dark"] #profile .form-grid input:focus,
+  body[data-theme="dark"] #profile .form-grid select:focus {
+    border-color:
+      rgba(183,245,0,.42);
+  
+    box-shadow:
+      0 0 0 3px rgba(183,245,0,.07);
+  }
+  
+  body[data-theme="dark"] #profile #zones > * {
+    background:
+      rgba(255,255,255,.035);
+  
+    border-color:
+      rgba(255,255,255,.075);
+  }
+  
+  
+  /* =========================================================
+     12. TABLET
+     ========================================================= */
+  
+  @media (max-width: 900px) {
+  
+    #profile .profile-card {
+      min-height: 132px;
+    }
+  
+  }
+  
+  
+  /* =========================================================
+     13. MOBILE
+     ========================================================= */
+  
+  @media (max-width: 700px) {
+  
+    #profile .page-intro {
+      margin-bottom: 13px;
+    }
+  
+    #profile .page-intro h1 {
+      font-size: 28px;
+    }
+  
+    #profile .profile-card {
+      min-height: 128px;
+  
+      padding: 18px;
+  
+      gap: 14px;
+  
+      border-radius: 21px;
+    }
+  
+    #profile .profile-card .avatar {
+      width: 68px;
+      height: 68px;
+  
+      flex-basis: 68px;
+  
+      font-size: 20px;
+    }
+  
+    #profile .profile-head-copy h2 {
+      font-size: 19px;
+    }
+  
+    #profile .profile-head-copy p {
+      margin: 5px 0 10px;
+  
+      font-size: 10px;
+    }
+  
+    #profile > .card:not(.profile-card) {
+      border-radius: 18px;
+    }
+  
+    #profile .form-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  
+  }
+  
+  
+  /* =========================================================
+     14. CELULAR PEQUENO
+     ========================================================= */
+  
+  @media (max-width: 430px) {
+  
+    #profile .profile-card {
+      align-items: flex-start;
+  
+      padding: 16px;
+  
+      gap: 12px;
+    }
+  
+    #profile .profile-card .avatar {
+      width: 60px;
+      height: 60px;
+  
+      flex-basis: 60px;
+  
+      font-size: 18px;
+    }
+  
+    #profile .profile-head-copy h2 {
+      font-size: 17px;
+    }
+  
+    #profile .profile-head-copy p {
+      font-size: 9px;
+    }
+  
+    #profile .photo-upload .btn {
+      min-height: 32px;
+  
+      padding: 6px 9px;
+  
+      font-size: 9px;
+    }
+  
+    #profile .form-grid {
+      grid-template-columns: 1fr;
+    }
+  
+    #profile .form-grid input,
+    #profile .form-grid select {
+      min-height: 43px;
+    }
+  
+  }
+  
+  
+  /* =========================================================
+     15. ACESSIBILIDADE
+     ========================================================= */
+  
+  @media (prefers-reduced-motion: reduce) {
+  
+    #profile .form-grid input,
+    #profile .form-grid select,
+    #profile #saveProfile,
+    #profile .photo-upload .btn {
+      transition: none;
+    }
+  
+    #profile #saveProfile:hover {
+      transform: none;
+    }
+  
+  }
+  /* =========================================================
+   CICLOFIT — ADMIN
+   ETAPA 6A — CABEÇALHO PREMIUM
+   SOMENTE ÁREA ADMINISTRATIVA
+   ========================================================= */
+
+#adminPanel .admin-topbar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+
+  margin-bottom:18px;
+  padding:14px 16px;
+
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:20px;
+
+  box-shadow:
+    0 10px 30px rgba(17,29,20,.06),
+    inset 0 1px 0 rgba(255,255,255,.55);
+}
+
+#adminPanel .admin-brand{
+  display:flex;
+  align-items:center;
+  min-width:0;
+}
+
+#adminPanel .admin-brand img{
+  display:block;
+  width:auto;
+  height:38px;
+  max-width:170px;
+  object-fit:contain;
+}
+
+#adminPanel .admin-topbar-actions{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  flex:0 0 auto;
+}
+
+#adminPanel .admin-theme-btn,
+#adminPanel .admin-logout-icon{
+  width:42px;
+  height:42px;
+  min-width:42px;
+  min-height:42px;
+
+  display:grid;
+  place-items:center;
+
+  padding:0;
+  border-radius:13px;
+}
+
+#adminPanel .admin-theme-btn{
+  background:var(--surface-2);
+  border:1px solid var(--border);
+  color:var(--text);
+}
+
+#adminPanel .admin-logout-icon{
+  background:var(--card);
+  border:1px solid var(--border);
+  color:var(--text);
+}
+
+#adminPanel .admin-theme-btn:hover,
+#adminPanel .admin-logout-icon:hover{
+  transform:translateY(-1px);
+
+  border-color:
+    color-mix(
+      in srgb,
+      var(--accent) 28%,
+      var(--border)
+    );
+
+  box-shadow:
+    0 8px 20px rgba(17,29,20,.08);
+}
+
+#adminPanel .admin-theme-btn .cf-svg,
+#adminPanel .admin-logout-icon .cf-svg{
+  width:18px;
+  height:18px;
+}
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media(max-width:620px){
+
+  #adminPanel .admin-topbar{
+    margin-bottom:14px;
+    padding:11px 12px;
+    border-radius:17px;
+  }
+
+  #adminPanel .admin-brand img{
+    height:32px;
+    max-width:145px;
+  }
+
+  #adminPanel .admin-topbar-actions{
+    gap:6px;
+  }
+
+  #adminPanel .admin-theme-btn,
+  #adminPanel .admin-logout-icon{
+    width:38px;
+    height:38px;
+    min-width:38px;
+    min-height:38px;
+    border-radius:11px;
+  }
+
+  #adminPanel .admin-theme-btn .cf-svg,
+  #adminPanel .admin-logout-icon .cf-svg{
+    width:17px;
+    height:17px;
+  }
+}
+
+/* =========================================================
+   DARK MODE
+   ========================================================= */
+
+body[data-theme="dark"] #adminPanel .admin-topbar{
+  background:
+    linear-gradient(
+      145deg,
+      color-mix(in srgb,var(--card) 98%,white 2%),
+      var(--card)
+    );
+
+  box-shadow:
+    0 16px 40px rgba(0,0,0,.22),
+    inset 0 1px 0 rgba(255,255,255,.025);
+}
+/* =========================================================
+   CicloFit — Login iPhone / PWA
+   Ajuste de altura e ocupação vertical
+   Visual only — sem alteração de lógica
+   ========================================================= */
+
+   @media (max-width: 620px){
+
+    .auth-screen{
+      min-height: 100svh;
+      height: 100svh;
+      box-sizing: border-box;
+      padding:
+        max(8px, env(safe-area-inset-top))
+        10px
+        max(10px, env(safe-area-inset-bottom));
+      align-items: flex-start;
+      justify-content: flex-start;
+      overflow-y: auto;
+    }
+  
+    .auth-card{
+      width: min(100%, 430px);
+      max-height: none;
+      height: auto;
+      margin: 0 auto;
+      padding: 8px 10px 12px;
+      border-radius: 24px;
+    }
+  
+    .auth-logo{
+      width: 128px;
+      height: 128px;
+      margin-bottom: 4px;
+    }
+  
+    .auth-welcome{
+      font-size: 18px;
+      line-height: 1.1;
+      margin-top: 0;
+    }
+  
+    .auth-welcome strong{
+      font-size: 34px;
+      line-height: 1;
+    }
+  
+    .auth-tagline{
+      font-size: 14px;
+      margin: 6px 0 10px;
+    }
+  
+    .auth-tabs{
+      margin-top: 8px;
+      margin-bottom: 10px;
+    }
+  
+    .auth-tab{
+      min-height: 46px;
+      padding: 8px 6px;
+      font-size: 13px;
+    }
+  
+    .auth-field{
+      margin-bottom: 8px !important;
+    }
+  
+    .auth-card .auth-input-wrap input{
+      min-height: 52px;
+      height: 52px;
+      font-size: 16px !important;
+    }
+  
+    .auth-submit{
+      min-height: 52px;
+      height: 52px;
+      margin-top: 4px;
+      font-size: 16px !important;
+    }
+  
+    .auth-hint{
+      margin-top: 7px;
+      font-size: 10px;
+    }
+  
+    .auth-login-tools{
+      margin-top: 9px;
+    }
+  
+    .auth-footer-mark{
+      margin-top: 8px;
+    }
+  }
+  
+  /* iPhone em modo aplicativo instalado */
+  @media (display-mode: standalone) and (max-width: 620px){
+  
+    .auth-screen{
+      min-height: 100svh;
+      height: 100svh;
+      padding-top: max(8px, env(safe-area-inset-top));
+      padding-bottom: max(8px, env(safe-area-inset-bottom));
+    }
+  
+    .auth-card{
+      padding-top: 5px;
+      padding-bottom: 10px;
+    }
+  
+    .auth-logo{
+      width: 122px;
+      height: 122px;
+    }
+  
+    .auth-welcome strong{
+      font-size: 33px;
+    }
+  }
+  /* =========================================================
+   CicloFit — Login Mobile / iPhone
+   Ajuste final de posicionamento e navegação
+   Somente visual — sem alteração de estrutura ou lógica
+   ========================================================= */
+
+/* A navegação principal não deve aparecer durante o login */
+body:has(#authScreen[style*="display: flex"]) .bottom-nav{
+  display:none !important;
+}
+
+/* Login mobile */
+@media (max-width:620px){
+
+  #authScreen.auth-screen{
+    min-height:100svh;
+    height:100svh;
+    box-sizing:border-box;
+    padding:
+      max(12px, env(safe-area-inset-top))
+      10px
+      max(12px, env(safe-area-inset-bottom));
+    align-items:flex-start;
+    justify-content:flex-start;
+    overflow-y:auto;
+  }
+
+  #authScreen .auth-card{
+    width:min(100%, 430px);
+    max-height:none;
+    height:auto;
+    margin:clamp(18px, 3.5vh, 34px) auto 0;
+    padding:8px 10px 12px;
+    border-radius:24px;
+  }
+
+  #authScreen .auth-logo{
+    width:122px;
+    height:122px;
+    margin-bottom:4px;
+  }
+
+  #authScreen .auth-welcome{
+    margin-top:0;
+    font-size:18px;
+    line-height:1.1;
+  }
+
+  #authScreen .auth-welcome strong{
+    font-size:33px;
+    line-height:1;
+  }
+
+  #authScreen .auth-tagline{
+    font-size:14px;
+    margin:6px 0 10px;
+  }
+
+  #authScreen .auth-tabs{
+    margin-top:8px;
+    margin-bottom:10px;
+  }
+
+  #authScreen .auth-tab{
+    min-height:46px;
+    padding:8px 6px;
+    font-size:13px;
+  }
+
+  #authScreen .auth-field{
+    margin-bottom:8px !important;
+  }
+
+  #authScreen .auth-card .auth-input-wrap input{
+    min-height:52px;
+    height:52px;
+    font-size:16px !important;
+  }
+
+  #authScreen .auth-submit{
+    min-height:52px;
+    height:52px;
+    margin-top:4px;
+    font-size:16px !important;
+  }
+
+  #authScreen .auth-hint{
+    margin-top:7px;
+    font-size:10px;
+  }
+
+  #authScreen .auth-login-tools{
+    margin-top:9px;
+  }
+
+  #authScreen .auth-footer-mark{
+    margin-top:8px;
+  }
+}
+
+/* =========================================================
+   iPhone / PWA instalado
+   ========================================================= */
+
+@media (display-mode:standalone) and (max-width:620px){
+
+  #authScreen.auth-screen{
+    min-height:100svh;
+    height:100svh;
+    padding-top:max(10px, env(safe-area-inset-top));
+    padding-bottom:max(10px, env(safe-area-inset-bottom));
+  }
+
+  #authScreen .auth-card{
+    margin-top:clamp(20px, 3.8vh, 38px);
+    padding-top:5px;
+    padding-bottom:10px;
+  }
+
+  #authScreen .auth-logo{
+    width:122px;
+    height:122px;
+  }
+
+  #authScreen .auth-welcome strong{
+    font-size:33px;
+  }
+}
+/* =========================================================
+   CicloFit — Login Mobile / iPhone
+   Ajuste final
+   Somente apresentação
+   ========================================================= */
+
+   @media (max-width: 700px){
+
+    /*
+     * O authScreen original já é fixed e ocupa a tela.
+     * Aqui apenas garantimos o dimensionamento correto.
+     */
+    #authScreen.auth-screen{
+      position: fixed !important;
+      inset: 0 !important;
+  
+      width: 100% !important;
+      height: 100dvh !important;
+      min-height: 100dvh !important;
+  
+      box-sizing: border-box !important;
+  
+      align-items: flex-start !important;
+      justify-content: flex-start !important;
+  
+      padding:
+        max(12px, env(safe-area-inset-top))
+        10px
+        max(12px, env(safe-area-inset-bottom)) !important;
+  
+      overflow: hidden !important;
+  
+      z-index: 99999 !important;
+    }
+  
+    /*
+     * Card centralizado e responsivo.
+     */
+    #authScreen .auth-card{
+      width: calc(100% - 20px) !important;
+      max-width: 560px !important;
+      min-width: 0 !important;
+  
+      height: auto !important;
+      max-height: calc(100dvh - 30px) !important;
+  
+      margin:
+        clamp(18px, 3.5vh, 34px)
+        auto
+        0 !important;
+  
+      box-sizing: border-box !important;
+  
+      overflow-y: auto !important;
+    }
+  
+    /*
+     * Mantém os efeitos visuais originais
+     * do fundo do login.
+     */
+    #authScreen .auth-bg-glow,
+    #authScreen .auth-bg-photo,
+    #authScreen .auth-bg-lines,
+    #authScreen::before,
+    #authScreen::after{
+      pointer-events: none !important;
+    }
+  
+    /*
+     * Impede que a navegação inferior fique visível
+     * sobre a tela de autenticação.
+     *
+     * NÃO usa :has().
+     */
+    #authScreen[style*="display: flex"] ~ .bottom-nav{
+      display: none !important;
+    }
+  
+    /*
+     * Mantém os campos ocupando toda a largura.
+     */
+    #authScreen .auth-field,
+    #authScreen .auth-input-wrap{
+      width: 100% !important;
+      box-sizing: border-box !important;
+    }
+  
+    #authScreen .auth-input-wrap input{
+      width: 100% !important;
+      box-sizing: border-box !important;
+    }
+  
+    #authScreen .auth-submit{
+      width: 100% !important;
+      box-sizing: border-box !important;
+    }
+  }
+  
+  
+  /* =========================================================
+     iPhone / PWA
+     ========================================================= */
+  
+  @media (display-mode: standalone) and (max-width: 700px){
+  
+    #authScreen.auth-screen{
+      height: 100dvh !important;
+      min-height: 100dvh !important;
+  
+      padding-top:
+        max(10px, env(safe-area-inset-top)) !important;
+  
+      padding-bottom:
+        max(10px, env(safe-area-inset-bottom)) !important;
+    }
+  
+    #authScreen .auth-card{
+      width: calc(100% - 20px) !important;
+      max-width: 560px !important;
+  
+      margin-left: auto !important;
+      margin-right: auto !important;
+    }
+  }
+  
+    /*
+     * CARD DE LOGIN
+     *
+     * A largura agora é calculada diretamente
+     * pela largura disponível da tela.
+     */
+    #authScreen.auth-screen .auth-card{
+      position: relative !important;
+  
+      width: calc(100% - 20px) !important;
+      max-width: 430px !important;
+      min-width: 0 !important;
+  
+      height: auto !important;
+      max-height: none !important;
+  
+      flex: 0 0 auto !important;
+  
+      box-sizing: border-box !important;
+  
+      margin:
+        clamp(18px, 3.5vh, 34px)
+        auto
+        0 !important;
+  
+      padding:
+        8px 10px 12px !important;
+  
+      border-radius: 24px !important;
+  
+      z-index: 2 !important;
+    }
+  
+    /* Logo */
+    #authScreen .auth-logo{
+      width: 122px !important;
+      height: 122px !important;
+      max-width: 100% !important;
+      margin-left: auto !important;
+      margin-right: auto !important;
+    }
+  
+    /* Título */
+    #authScreen .auth-welcome{
+      text-align: center !important;
+    }
+  
+    #authScreen .auth-tagline{
+      text-align: center !important;
+    }
+  
+    /* Abas */
+    #authScreen .auth-tabs{
+      width: 100% !important;
+    }
+  
+    #authScreen .auth-tab{
+      min-width: 0 !important;
+    }
+  
+    /* Campos */
+    #authScreen .auth-field,
+    #authScreen .auth-input-wrap{
+      width: 100% !important;
+      max-width: none !important;
+      box-sizing: border-box !important;
+    }
+  
+    #authScreen .auth-card .auth-input-wrap input{
+      width: 100% !important;
+      box-sizing: border-box !important;
+      min-height: 52px !important;
+      height: 52px !important;
+      font-size: 16px !important;
+    }
+  
+    /* Botão */
+    #authScreen .auth-submit{
+      width: 100% !important;
+      box-sizing: border-box !important;
+      min-height: 52px !important;
+      height: 52px !important;
+    }
+  }
+  
+  
+  /* =========================================================
+     iPhone / PWA instalado
+     ========================================================= */
+  
+  @media
+  (display-mode: standalone)
+  and (max-width: 700px){
+  
+    #authScreen.auth-screen{
+      width: 100% !important;
+      height: 100dvh !important;
+      min-height: 100dvh !important;
+  
+      padding-top:
+        max(10px, env(safe-area-inset-top)) !important;
+  
+      padding-bottom:
+        max(10px, env(safe-area-inset-bottom)) !important;
+    }
+  
+    #authScreen.auth-screen .auth-card{
+      width: calc(100% - 20px) !important;
+      max-width: 430px !important;
+  
+      margin-top:
+        clamp(20px, 3.8vh, 38px) !important;
+  
+      margin-left: auto !important;
+      margin-right: auto !important;
+    }
+  
+    body:has(#authScreen.auth-screen){
+      overflow: hidden !important;
+      height: 100dvh !important;
+    }
+  }
+
+/* =========================================================
+   PWA instalado no iPhone
+   ========================================================= */
+
+@media
+(display-mode: standalone)
+and (max-width: 700px){
+
+  #authScreen.auth-screen{
+    height: 100dvh !important;
+    min-height: 100dvh !important;
+
+    padding-top:
+      max(10px, env(safe-area-inset-top)) !important;
+
+    padding-bottom:
+      max(10px, env(safe-area-inset-bottom)) !important;
+  }
+
+  body:has(#authScreen.auth-screen){
+    overflow: hidden !important;
+    height: 100dvh !important;
+  }
+}
+/* =========================================================
+   CicloFit — Controle de rolagem no Login Mobile/PWA
+   Somente apresentação
+   ========================================================= */
+
+   @media (max-width: 700px){
+
+    /*
+     * Enquanto a tela de login estiver aberta,
+     * bloqueia a rolagem do documento que fica atrás dela.
+     */
+    html:has(#authScreen[style*="display: flex"]),
+    body:has(#authScreen[style*="display: flex"]){
+      width:100% !important;
+      height:100% !important;
+      min-height:100% !important;
+  
+      overflow:hidden !important;
+      overscroll-behavior:none !important;
+  
+      padding-bottom:0 !important;
+    }
+  
+    /*
+     * A própria tela de login ocupa exatamente
+     * a área disponível do aparelho.
+     */
+    #authScreen.auth-screen{
+      position:fixed !important;
+      inset:0 !important;
+  
+      width:100% !important;
+      height:100dvh !important;
+      min-height:100dvh !important;
+  
+      overflow:hidden !important;
+  
+      overscroll-behavior:none !important;
+  
+      box-sizing:border-box !important;
+    }
+  
+    /*
+     * O card pode ter rolagem interna somente se,
+     * em uma tela muito pequena, o conteúdo realmente
+     * ultrapassar a altura disponível.
+     */
+    #authScreen .auth-card{
+      box-sizing:border-box !important;
+      max-width:560px !important;
+  
+      overflow-x:hidden !important;
+      overflow-y:auto !important;
+  
+      overscroll-behavior:contain !important;
+  
+      scrollbar-width:none !important;
+    }
+  
+    #authScreen .auth-card::-webkit-scrollbar{
+      display:none !important;
+    }
+  }
+  
+  
+  /* =========================================================
+     PWA instalado — iPhone / Android
+     ========================================================= */
+  
+  @media (display-mode:standalone) and (max-width:700px){
+  
+    html:has(#authScreen[style*="display: flex"]),
+    body:has(#authScreen[style*="display: flex"]){
+      overflow:hidden !important;
+      height:100dvh !important;
+      min-height:100dvh !important;
+      padding-bottom:0 !important;
+    }
+  
+    #authScreen.auth-screen{
+      height:100dvh !important;
+      min-height:100dvh !important;
+      overflow:hidden !important;
+    }
+  }
+  /* =========================================================
+   CicloFit — LOGIN DESKTOP RESPONSIVO 3.0
+   Correção final de layout
+   Não altera HTML, JS ou funcionalidades
+   ========================================================= */
+
+@media (min-width: 901px) {
+
+  #authScreen.auth-screen {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    padding: 24px 4vw !important;
+    overflow: hidden !important;
+    box-sizing: border-box !important;
+  }
+
+  #authScreen .auth-card {
+    width: min(1100px, 92vw) !important;
+    max-width: none !important;
+
+    min-height: 0 !important;
+    height: auto !important;
+    max-height: calc(100dvh - 48px) !important;
+
+    padding: 32px 54px 22px !important;
+
+    display: grid !important;
+
+    grid-template-columns:
+      minmax(300px, 1fr)
+      minmax(400px, 560px) !important;
+
+    grid-template-rows:
+      auto
+      auto
+      auto
+      auto
+      auto
+      auto !important;
+
+    column-gap: 64px !important;
+    row-gap: 0 !important;
+
+    align-items: center !important;
+
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+
+    box-sizing: border-box !important;
+  }
+
+  /* =====================================================
+     COLUNA ESQUERDA
+     ===================================================== */
+
+  #authScreen .auth-logo {
+    grid-column: 1 !important;
+    grid-row: 1 / span 2 !important;
+
+    width: clamp(230px, 25vw, 320px) !important;
+    height: clamp(230px, 25vw, 320px) !important;
+
+    margin: 0 auto !important;
+
+    align-self: center !important;
+  }
+
+  #authScreen .auth-welcome {
+    grid-column: 1 !important;
+    grid-row: 3 !important;
+
+    width: 100% !important;
+
+    margin: 8px 0 0 !important;
+
+    text-align: center !important;
+
+    font-size: clamp(22px, 2vw, 28px) !important;
+  }
+
+  #authScreen .auth-welcome strong {
+    font-size: clamp(42px, 4vw, 56px) !important;
+  }
+
+  #authScreen .auth-tagline {
+    grid-column: 1 !important;
+    grid-row: 4 !important;
+
+    width: 100% !important;
+
+    margin: 8px 0 0 !important;
+
+    text-align: center !important;
+
+    font-size: clamp(15px, 1.4vw, 18px) !important;
+  }
+
+
+  /* =====================================================
+     COLUNA DIREITA — AUTENTICAÇÃO
+     ===================================================== */
+
+  #authScreen .auth-tabs {
+    grid-column: 2 !important;
+    grid-row: 1 !important;
+
+    width: 100% !important;
+    max-width: none !important;
+
+    margin: 0 0 16px !important;
+
+    align-self: end !important;
+  }
+
+  #authScreen .auth-form {
+    grid-column: 2 !important;
+    grid-row: 2 !important;
+
+    width: 100% !important;
+    max-width: none !important;
+
+    margin: 0 !important;
+
+    align-self: center !important;
+  }
+
+  #authScreen .auth-field {
+    margin-bottom: 11px !important;
+  }
+
+  #authScreen .auth-card .auth-input-wrap input {
+    min-height: 58px !important;
+
+    font-size: 17px !important;
+  }
+
+  #authScreen .auth-submit {
+    min-height: 58px !important;
+
+    margin-top: 3px !important;
+  }
+
+
+  /* =====================================================
+     HINT
+     ===================================================== */
+
+  #authScreen .auth-hint {
+    grid-column: 2 !important;
+    grid-row: 3 !important;
+
+    width: 100% !important;
+
+    margin: 8px 0 0 !important;
+
+    text-align: center !important;
+  }
+
+
+  /* =====================================================
+     ALTERNAR TEMA
+     ===================================================== */
+
+  #authScreen .auth-login-tools {
+    grid-column: 2 !important;
+    grid-row: 4 !important;
+
+    width: 100% !important;
+
+    margin: 10px 0 0 !important;
+
+    display: flex !important;
+
+    align-items: center !important;
+    justify-content: center !important;
+
+    gap: 8px !important;
+  }
+
+
+  /* =====================================================
+     ERRO
+     ===================================================== */
+
+  #authScreen .auth-error {
+    grid-column: 2 !important;
+    grid-row: 5 !important;
+
+    width: 100% !important;
+
+    margin: 8px 0 0 !important;
+
+    text-align: center !important;
+  }
+
+
+  /* =====================================================
+     RODAPÉ
+     ===================================================== */
+
+  #authScreen .auth-footer-mark {
+    grid-column: 1 / -1 !important;
+    grid-row: 6 !important;
+
+    width: 100% !important;
+
+    margin: 16px 0 0 !important;
+  }
+}
+
+
+/* =========================================================
+   DESKTOP COM POUCA ALTURA
+   ========================================================= */
+
+@media (min-width: 901px) and (max-height: 760px) {
+
+  #authScreen.auth-screen {
+    padding: 12px 3vw !important;
+  }
+
+  #authScreen .auth-card {
+    max-height: calc(100dvh - 24px) !important;
+
+    padding: 20px 42px 16px !important;
+
+    column-gap: 48px !important;
+  }
+
+  #authScreen .auth-logo {
+    width: 210px !important;
+    height: 210px !important;
+  }
+
+  #authScreen .auth-welcome {
+    font-size: 21px !important;
+  }
+
+  #authScreen .auth-welcome strong {
+    font-size: 42px !important;
+  }
+
+  #authScreen .auth-tagline {
+    font-size: 15px !important;
+
+    margin-top: 5px !important;
+  }
+
+  #authScreen .auth-tabs {
+    margin-bottom: 10px !important;
+  }
+
+  #authScreen .auth-tab {
+    min-height: 50px !important;
+  }
+
+  #authScreen .auth-field {
+    margin-bottom: 8px !important;
+  }
+
+  #authScreen .auth-card .auth-input-wrap input,
+  #authScreen .auth-submit {
+    min-height: 54px !important;
+  }
+
+  #authScreen .auth-hint {
+    margin-top: 6px !important;
+  }
+
+  #authScreen .auth-login-tools {
+    margin-top: 6px !important;
+  }
+
+  #authScreen .auth-footer-mark {
+    margin-top: 10px !important;
+  }
+}
+
+
+/* =========================================================
+   TABLET / NOTEBOOK EM PAISAGEM
+   ========================================================= */
+
+@media (min-width: 701px) and (max-width: 900px) {
+
+  #authScreen.auth-screen {
+    padding: 18px 14px !important;
+
+    overflow: hidden !important;
+  }
+
+  #authScreen .auth-card {
+    width: min(620px, 94vw) !important;
+
+    max-height: calc(100dvh - 36px) !important;
+
+    display: block !important;
+
+    padding: 20px 24px !important;
+
+    text-align: center !important;
+  }
+
+  #authScreen .auth-logo {
+    width: clamp(170px, 30vw, 230px) !important;
+    height: clamp(170px, 30vw, 230px) !important;
+
+    margin: 0 auto 8px !important;
+  }
+
+  #authScreen .auth-welcome {
+    font-size: 22px !important;
+  }
+
+  #authScreen .auth-welcome strong {
+    font-size: 40px !important;
+  }
+
+  #authScreen .auth-tagline {
+    font-size: 15px !important;
+
+    margin: 7px 0 15px !important;
+  }
+
+  #authScreen .auth-tabs,
+  #authScreen .auth-form,
+  #authScreen .auth-hint,
+  #authScreen .auth-error,
+  #authScreen .auth-login-tools {
+    width: 100% !important;
+
+    max-width: 560px !important;
+
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+
+  #authScreen .auth-tabs {
+    margin-bottom: 14px !important;
+  }
+
+  #authScreen .auth-footer-mark {
+    width: 100% !important;
+
+    margin-top: 14px !important;
+  }
+}
+/* =========================================================
+   CicloFit — CORREÇÃO FINAL DO CARD DE LOGIN DESKTOP
+   Visual apenas. Não altera IDs, autenticação ou lógica.
+   ========================================================= */
+
+   @media (min-width: 701px){
+
+    #authScreen.auth-screen{
+      box-sizing:border-box;
+      width:100%;
+      height:100dvh;
+      min-height:100dvh;
+      padding:24px clamp(20px,4vw,64px);
+      overflow:hidden;
+    }
+  
+    #authScreen .auth-card{
+      box-sizing:border-box;
+      width:min(1120px,94vw);
+      height:min(720px,calc(100dvh - 48px));
+      min-height:0;
+      max-height:none;
+      margin:0 auto;
+      padding:38px clamp(34px,4vw,64px) 28px;
+  
+      display:grid;
+      grid-template-columns:minmax(300px,0.92fr) minmax(380px,0.98fr);
+      grid-template-rows:auto auto 1fr auto;
+  
+      column-gap:clamp(44px,6vw,88px);
+      row-gap:0;
+      align-items:center;
+  
+      overflow:hidden;
+      text-align:left;
+    }
+  
+    /* =======================================================
+       COLUNA ESQUERDA
+       ======================================================= */
+  
+    #authScreen .auth-logo{
+      grid-column:1;
+      grid-row:1 / span 2;
+  
+      align-self:center;
+      justify-self:center;
+  
+      width:clamp(220px,24vw,310px);
+      height:clamp(220px,24vw,310px);
+  
+      margin:0;
+    }
+  
+    #authScreen .auth-welcome{
+      grid-column:1;
+      grid-row:3;
+  
+      align-self:end;
+      justify-self:center;
+  
+      width:100%;
+      margin:0;
+  
+      text-align:center;
+      font-size:22px;
+      line-height:1.15;
+    }
+  
+    #authScreen .auth-tagline{
+      grid-column:1;
+      grid-row:4;
+  
+      align-self:start;
+      justify-self:center;
+  
+      width:100%;
+      margin:8px 0 0;
+  
+      text-align:center;
+      font-size:15px;
+    }
+  
+    /* =======================================================
+       COLUNA DIREITA
+       ======================================================= */
+  
+    #authScreen .auth-tabs{
+      grid-column:2;
+      grid-row:1;
+  
+      align-self:end;
+  
+      width:100%;
+      margin:0 0 14px;
+    }
+  
+    #authScreen .auth-form{
+      grid-column:2;
+      grid-row:2;
+  
+      align-self:start;
+  
+      width:100%;
+      margin:0;
+    }
+  
+    #authScreen .auth-field{
+      margin-top:0;
+      margin-bottom:12px;
+    }
+  
+    #authScreen .auth-field + .auth-field{
+      margin-top:0;
+    }
+  
+    #authScreen .auth-card .auth-input-wrap input{
+      min-height:58px;
+      font-size:16px !important;
+    }
+  
+    #authScreen .auth-submit{
+      min-height:58px;
+      margin-top:4px;
+    }
+  
+    #authScreen .auth-hint{
+      grid-column:2;
+      grid-row:3;
+  
+      align-self:start;
+  
+      width:100%;
+      margin:10px 0 0;
+  
+      text-align:center;
+    }
+  
+    #authScreen .auth-error{
+      grid-column:2;
+      grid-row:3;
+  
+      align-self:end;
+  
+      width:100%;
+      margin:0;
+  
+      text-align:center;
+    }
+  
+    #authScreen .auth-login-tools{
+      grid-column:2;
+      grid-row:4;
+  
+      align-self:start;
+  
+      width:100%;
+      margin:8px 0 0;
+    }
+  
+    /* Linha decorativa inferior */
+    #authScreen .auth-footer-mark{
+      grid-column:1 / -1;
+      grid-row:4;
+  
+      align-self:end;
+  
+      width:100%;
+      margin:0;
+  
+      pointer-events:none;
+    }
+  }
+  
+  
+  /* =========================================================
+     NOTEBOOKS / MONITORES COM POUCA ALTURA
+     ========================================================= */
+  
+  @media (min-width:701px) and (max-height:760px){
+  
+    #authScreen.auth-screen{
+      padding:14px 3vw;
+    }
+  
+    #authScreen .auth-card{
+      width:min(1040px,94vw);
+      height:calc(100dvh - 28px);
+  
+      padding:22px 42px 18px;
+  
+      column-gap:52px;
+    }
+  
+    #authScreen .auth-logo{
+      width:190px;
+      height:190px;
+    }
+  
+    #authScreen .auth-welcome{
+      font-size:19px;
+    }
+  
+    #authScreen .auth-tagline{
+      font-size:13px;
+      margin-top:5px;
+    }
+  
+    #authScreen .auth-tabs{
+      margin-bottom:9px;
+    }
+  
+    #authScreen .auth-tab{
+      min-height:46px;
+      padding:8px;
+    }
+  
+    #authScreen .auth-field{
+      margin-bottom:8px;
+    }
+  
+    #authScreen .auth-card .auth-input-wrap input{
+      min-height:50px;
+    }
+  
+    #authScreen .auth-submit{
+      min-height:50px;
+    }
+  
+    #authScreen .auth-hint{
+      margin-top:6px;
+      font-size:10px;
+    }
+  
+    #authScreen .auth-login-tools{
+      margin-top:4px;
+    }
+  }
+  
+  
+  /* =========================================================
+     MONITORES MUITO LARGOS
+     ========================================================= */
+  
+  @media (min-width:1400px){
+  
+    #authScreen .auth-card{
+      width:min(1180px,92vw);
+      column-gap:96px;
+    }
+  
+    #authScreen .auth-logo{
+      width:320px;
+      height:320px;
+    }
+  }
