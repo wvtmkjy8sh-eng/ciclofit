@@ -7626,7 +7626,7 @@ body:has(#authScreen[style*="display: flex"]) .bottom-nav{
       margin-right: auto !important;
     }
   
-    body:has(#authScreen.auth-screen){
+    body:has(#authScreen.auth-screen:not([style*="display: none"])){
       overflow: hidden !important;
       height: 100dvh !important;
     }
@@ -7651,7 +7651,7 @@ and (max-width: 700px){
       max(10px, env(safe-area-inset-bottom)) !important;
   }
 
-  body:has(#authScreen.auth-screen){
+  body:has(#authScreen.auth-screen:not([style*="display: none"])){
     overflow: hidden !important;
     height: 100dvh !important;
   }
@@ -8700,5 +8700,123 @@ and (max-width: 700px){
     column-gap:clamp(44px,6vw,88px) !important;
     align-items:start !important;
     text-align:left !important;
+  }
+}
+
+/* =========================================================
+   PWA iOS/Android — restaura a rolagem do documento
+   depois do login. O overlay #authScreen permanece no DOM
+   com display:none; regras standalone antigas travavam
+   html/body com overflow:hidden o tempo todo.
+   ========================================================= */
+
+html:has(#authScreen[style*="display: none"]),
+body:has(#authScreen[style*="display: none"]) {
+  height: auto !important;
+  max-height: none !important;
+  min-height: 0 !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  overscroll-behavior-y: auto !important;
+  -webkit-overflow-scrolling: touch;
+}
+
+html:has(#authScreen[style*="display: none"]) main,
+html:has(#authScreen[style*="display: none"]) #adminPanel {
+  min-height: 0 !important;
+}
+
+@media (display-mode: standalone), (display-mode: fullscreen), (display-mode: minimal-ui) {
+  html:has(#authScreen.auth-screen:not([style*="display: none"])) #authScreen.auth-screen {
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* =========================================================
+   Espaçamento profissional — login, aluno e admin
+   Visual only. Não altera IDs, HTML ou autenticação.
+   ========================================================= */
+
+/* Safe area só onde faz sentido (não aplica notch no rodapé da nav) */
+header.app-header,
+#adminPanel .admin-topbar {
+  padding-top: max(10px, env(safe-area-inset-top));
+}
+.bottom-nav {
+  padding-top: 8px !important;
+  padding-bottom: max(8px, env(safe-area-inset-bottom)) !important;
+}
+
+/* Aluno: espaço só o suficiente para a nav fixa */
+html:has(#authScreen[style*="display: none"]) body:not(.admin-mode) {
+  padding-bottom: calc(76px + env(safe-area-inset-bottom)) !important;
+}
+
+/* Admin esconde a bottom-nav — não reservar 90px vazios no fim */
+body.admin-mode {
+  padding-bottom: calc(20px + env(safe-area-inset-bottom)) !important;
+}
+#adminPanel.admin-panel {
+  padding-bottom: 8px;
+}
+#adminPanel .admin-tab-panel.active {
+  padding-bottom: 4px;
+}
+
+/* ---------- LOGIN: centraliza o card e respeita o notch ---------- */
+#authScreen.auth-screen {
+  align-items: center !important;
+  justify-content: center !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  padding:
+    max(18px, env(safe-area-inset-top))
+    14px
+    max(18px, env(safe-area-inset-bottom)) !important;
+}
+
+#authScreen .auth-card {
+  margin: auto !important;
+}
+
+@media (max-width: 700px) {
+  #authScreen.auth-screen .auth-card {
+    width: min(100%, 430px) !important;
+    max-width: 430px !important;
+    margin: 12px auto !important;
+    padding: 14px 14px 18px !important;
+  }
+
+  #authScreen .auth-logo {
+    width: min(112px, 28vw) !important;
+    height: min(112px, 28vw) !important;
+    margin: 0 auto 6px !important;
+  }
+
+  #authScreen .auth-welcome {
+    margin-top: 2px !important;
+  }
+
+  #authScreen .auth-tagline {
+    margin: 4px 0 10px !important;
+  }
+}
+
+@media (min-width: 901px) {
+  #authScreen.auth-screen .auth-card {
+    width: min(980px, 92vw) !important;
+    max-width: 980px !important;
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+    padding: 28px 48px 24px !important;
+    align-items: center !important;
+  }
+
+  #authScreen .auth-logo {
+    width: clamp(180px, 18vw, 240px) !important;
+    height: clamp(180px, 18vw, 240px) !important;
   }
 }
