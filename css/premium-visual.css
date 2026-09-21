@@ -8710,27 +8710,39 @@ and (max-width: 700px){
    html/body com overflow:hidden o tempo todo.
    ========================================================= */
 
-html:has(#authScreen[style*="display: none"]),
-body:has(#authScreen[style*="display: none"]) {
-  height: auto !important;
-  max-height: none !important;
-  min-height: 0 !important;
-  overflow-x: hidden !important;
-  overflow-y: auto !important;
-  overscroll-behavior-y: auto !important;
-  -webkit-overflow-scrolling: touch;
-}
-
 html:has(#authScreen[style*="display: none"]) main,
 html:has(#authScreen[style*="display: none"]) #adminPanel {
   min-height: 0 !important;
 }
 
-@media (display-mode: standalone), (display-mode: fullscreen), (display-mode: minimal-ui) {
-  html:has(#authScreen.auth-screen:not([style*="display: none"])) #authScreen.auth-screen {
+/* Mobile / iOS: o DOCUMENTO precisa rolar (html overflow:hidden quebra o WebKit) */
+@media (max-width: 700px) {
+  html:has(#authScreen[style*="display: none"]),
+  html:has(#authScreen[style*="display: none"]) body {
+    height: auto !important;
+    max-height: none !important;
+    min-height: 0 !important;
     overflow-x: hidden !important;
     overflow-y: auto !important;
+    overscroll-behavior-y: auto !important;
     -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* Desktop: uma barra só no body (evita barra dupla) */
+
+@media (display-mode: standalone), (display-mode: fullscreen), (display-mode: minimal-ui) {
+  /* Mobile PWA: após o login o documento rola. No desktop o overlay
+     de login NÃO deve ganhar overflow-y:auto (isso cria a barra feia). */
+  @media (max-width: 700px) {
+    html:has(#authScreen[style*="display: none"]),
+    html:has(#authScreen[style*="display: none"]) body {
+      overflow-x: hidden !important;
+      overflow-y: auto !important;
+      height: auto !important;
+      max-height: none !important;
+      -webkit-overflow-scrolling: touch;
+    }
   }
 }
 
@@ -8739,24 +8751,32 @@ html:has(#authScreen[style*="display: none"]) #adminPanel {
    Visual only. Não altera IDs, HTML ou autenticação.
    ========================================================= */
 
-/* Safe area só onde faz sentido (não aplica notch no rodapé da nav) */
+/* Safe area: o body já reserva o notch.
+   Cabeçalhos e a nav não devem somar o mesmo inset de novo. */
+header,
 header.app-header,
+.topbar,
+.navbar,
 #adminPanel .admin-topbar {
-  padding-top: max(10px, env(safe-area-inset-top));
-}
-.bottom-nav {
   padding-top: 8px !important;
-  padding-bottom: max(8px, env(safe-area-inset-bottom)) !important;
 }
 
-/* Aluno: espaço só o suficiente para a nav fixa */
-html:has(#authScreen[style*="display: none"]) body:not(.admin-mode) {
+.bottom-nav,
+#adminPanel .admin-tabs {
+  padding-top: 6px !important;
+  padding-bottom: max(10px, env(safe-area-inset-bottom)) !important;
+}
+
+/* Aluno e admin: espaço para a barra inferior */
+html:has(#authScreen[style*="display: none"]) body:not(.admin-mode),
+body.admin-mode {
   padding-bottom: calc(76px + env(safe-area-inset-bottom)) !important;
 }
-
-/* Admin esconde a bottom-nav — não reservar 90px vazios no fim */
-body.admin-mode {
-  padding-bottom: calc(20px + env(safe-area-inset-bottom)) !important;
+@media (min-width: 769px) {
+  html:has(#authScreen[style*="display: none"]) body:not(.admin-mode),
+  body.admin-mode {
+    padding-bottom: 100px !important;
+  }
 }
 #adminPanel.admin-panel {
   padding-bottom: 8px;
@@ -8818,5 +8838,577 @@ body.admin-mode {
   #authScreen .auth-logo {
     width: clamp(180px, 18vw, 240px) !important;
     height: clamp(180px, 18vw, 240px) !important;
+  }
+}
+
+/* Desktop login: overlay cobre a tela sem barra dupla */
+@media (min-width: 701px) {
+  html:has(body.auth-open) body {
+    overflow: hidden !important;
+    height: 100% !important;
+    padding-bottom: 0 !important;
+  }
+
+  html:has(body.auth-open) #authScreen.auth-screen {
+    overflow: hidden !important;
+  }
+
+  html:has(body.auth-open) #authScreen .auth-card {
+    overflow: visible !important;
+  }
+}
+
+/* =========================================================
+   Rolagem: bloqueada SOMENTE no login (body.auth-open).
+   Nas demais abas o documento volta a rolar.
+   ========================================================= */
+
+html:has(body.auth-open),
+body.auth-open {
+  overflow: hidden !important;
+  height: 100% !important;
+  max-height: 100% !important;
+  min-height: 0 !important;
+  overscroll-behavior: none;
+  scrollbar-width: none !important;
+}
+
+body.auth-open #authScreen.auth-screen {
+  overflow: hidden !important;
+  overscroll-behavior: none !important;
+  scrollbar-width: none !important;
+}
+
+html:has(body.auth-open)::-webkit-scrollbar,
+body.auth-open::-webkit-scrollbar,
+html:has(body.auth-open) #authScreen.auth-screen::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+/* PWA desktop: a titlebar do app reduz a área útil.
+   100dvh + overflow-y:auto no overlay cria barra e “buraco” no fim. */
+@media (display-mode: standalone), (display-mode: fullscreen), (display-mode: minimal-ui), (display-mode: window-controls-overlay) {
+  @media (min-width: 701px) {
+    html:has(body.auth-open),
+    html:has(body.auth-open) body,
+    html:has(body.auth-open) #authScreen.auth-screen {
+      width: 100% !important;
+      height: 100% !important;
+      max-height: 100% !important;
+      min-height: 0 !important;
+      overflow: hidden !important;
+      overscroll-behavior: none !important;
+      scrollbar-width: none !important;
+    }
+
+    html:has(body.auth-open) #authScreen.auth-screen {
+      inset: 0 !important;
+      padding:
+        max(16px, env(safe-area-inset-top, 0px))
+        14px
+        max(16px, env(safe-area-inset-bottom, 0px)) !important;
+    }
+
+    html:has(body.auth-open) #authScreen .auth-card {
+      max-height: calc(100% - 8px) !important;
+      overflow: visible !important;
+    }
+  }
+}
+
+html:has(body:not(.auth-open)),
+html:has(body:not(.auth-open)) body {
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  height: auto !important;
+  max-height: none !important;
+  min-height: 0 !important;
+  overscroll-behavior-y: auto !important;
+  -webkit-overflow-scrolling: touch;
+}
+
+#authScreen[style*="display: none"] {
+  display: none !important;
+  pointer-events: none !important;
+}
+
+/* =========================================================
+   Admin: rodapé idêntico à navegação do aluno
+   Mantém .admin-tabs / .admin-tab e data-admin-tab.
+   ========================================================= */
+
+#adminPanel .admin-tabs {
+  position: fixed !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  top: auto !important;
+  z-index: 1000 !important;
+
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  align-items: stretch !important;
+  justify-items: stretch !important;
+
+  width: auto !important;
+  max-width: none !important;
+  height: auto !important;
+  min-height: 64px !important;
+  margin: 0 !important;
+
+  padding:
+    6px
+    max(8px, env(safe-area-inset-right))
+    max(10px, env(safe-area-inset-bottom))
+    max(8px, env(safe-area-inset-left)) !important;
+
+  box-sizing: border-box !important;
+  gap: 0 !important;
+  overflow: hidden !important;
+
+  background: color-mix(in srgb, var(--card) 94%, transparent) !important;
+  border: 0 !important;
+  border-top: 1px solid var(--border) !important;
+  border-radius: 0 !important;
+  box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.10) !important;
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+  isolation: isolate;
+}
+
+#adminPanel .admin-tab {
+  position: relative !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  min-height: 50px !important;
+  height: 100% !important;
+  max-height: 100% !important;
+  align-self: stretch !important;
+
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 4px !important;
+
+  padding: 6px 4px !important;
+  margin: 0 !important;
+
+  border: 0 !important;
+  border-radius: 16px !important;
+  background: transparent !important;
+  box-shadow: none !important;
+
+  color: var(--muted) !important;
+  font-family: inherit !important;
+  font-size: 10px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.01em !important;
+  line-height: 1 !important;
+  text-transform: none !important;
+  white-space: nowrap !important;
+
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transform: none !important;
+  transition:
+    color 0.2s ease,
+    background 0.2s ease,
+    transform 0.15s ease !important;
+}
+
+#adminPanel .admin-tabs > .admin-tab:nth-child(n) {
+  transform: none !important;
+}
+
+#adminPanel .admin-tabs {
+  overflow: hidden !important;
+}
+
+@media (hover: hover) {
+  #adminPanel .admin-tabs > .admin-tab:nth-child(n):hover {
+    transform: translateY(-1px) !important;
+  }
+}
+
+@media (hover: none) {
+  #adminPanel .admin-tabs > .admin-tab:nth-child(n):hover {
+    transform: none !important;
+  }
+}
+
+/* Avisos: mesmo alinhamento das outras abas (sem “suspensão”) */
+#adminPanel .admin-tab[data-admin-tab="notifications"],
+#adminPanel .admin-tab[data-admin-tab="notifications"].active,
+#adminPanel .admin-tab[data-admin-tab="notifications"]:hover,
+#adminPanel .admin-tab[data-admin-tab="notifications"]:focus,
+#adminPanel .admin-tab[data-admin-tab="notifications"]:active {
+  transform: none !important;
+  translate: 0 !important;
+  top: auto !important;
+  margin: 0 !important;
+  align-self: stretch !important;
+  position: relative !important;
+}
+
+#adminPanel .admin-tab[data-admin-tab="notifications"].active .cf-svg {
+  transform: none !important;
+}
+
+#adminPanel .admin-tabs > .admin-tab:nth-child(n):active {
+  transform: scale(0.94) !important;
+}
+
+#adminPanel .admin-tab .cf-svg {
+  width: 21px !important;
+  height: 21px !important;
+  flex: 0 0 auto;
+  stroke-width: 1.6;
+  transition:
+    transform 0.2s ease,
+    filter 0.2s ease;
+}
+
+#adminPanel .admin-tab span {
+  display: block;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 9px !important;
+  line-height: 1;
+  font-weight: 800 !important;
+  letter-spacing: 0.01em;
+}
+
+#adminPanel .admin-tab:hover {
+  transform: none !important;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  #adminPanel .admin-tab:hover {
+    transform: translateY(-1px) !important;
+  }
+
+  #adminPanel .admin-tab[data-admin-tab="notifications"]:hover {
+    transform: none !important;
+  }
+}
+
+#adminPanel .admin-tab:active {
+  transform: scale(0.94) !important;
+}
+
+#adminPanel .admin-tab.active {
+  color: var(--accent) !important;
+  background: rgba(183, 245, 0, 0.075) !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+#adminPanel .admin-tab.active::before {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 50%;
+  width: 24px;
+  height: 3px;
+  transform: translateX(-50%);
+  border-radius: 999px;
+  background: var(--accent);
+  box-shadow: 0 0 8px rgba(183, 245, 0, 0.35);
+}
+
+#adminPanel .admin-tab.active .cf-svg {
+  filter: drop-shadow(0 0 5px rgba(183, 245, 0, 0.28));
+}
+
+body:not([data-theme="dark"]) #adminPanel .admin-tabs {
+  background: color-mix(in srgb, #ffffff 92%, transparent) !important;
+  border-top-color: #dce4dd !important;
+  box-shadow: 0 -8px 24px rgba(28, 45, 34, 0.045) !important;
+}
+
+body:not([data-theme="dark"]) #adminPanel .admin-tab {
+  color: #718078 !important;
+}
+
+body:not([data-theme="dark"]) #adminPanel .admin-tab.active {
+  color: #78b500 !important;
+}
+
+@media (min-width: 769px) {
+  #adminPanel .admin-tabs {
+    left: 50% !important;
+    right: auto !important;
+    bottom: 18px !important;
+    width: min(620px, calc(100% - 40px)) !important;
+    height: 66px !important;
+    min-height: 66px !important;
+    transform: translateX(-50%) !important;
+    border: 1px solid var(--border) !important;
+    border-radius: 22px !important;
+    padding:
+      5px
+      7px
+      max(5px, env(safe-area-inset-bottom))
+      7px !important;
+    box-shadow: 0 18px 50px rgba(0, 0, 0, 0.16) !important;
+  }
+
+  #adminPanel .admin-tab {
+    min-height: 54px !important;
+  }
+}
+
+@media (max-width: 360px) {
+  #adminPanel .admin-tabs {
+    height: 68px !important;
+    min-height: 68px !important;
+  }
+
+  #adminPanel .admin-tab {
+    min-height: 52px !important;
+    padding-left: 2px !important;
+    padding-right: 2px !important;
+  }
+
+  #adminPanel .admin-tab .cf-svg {
+    width: 20px !important;
+    height: 20px !important;
+  }
+
+  #adminPanel .admin-tab span {
+    font-size: 8px !important;
+  }
+}
+
+@media (display-mode: standalone) {
+  #adminPanel .admin-tabs {
+    padding-bottom: 0 !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #adminPanel .admin-tab,
+  #adminPanel .admin-tab .cf-svg {
+    transition: none !important;
+  }
+}
+
+/* =========================================================
+   Logo + cabeçalhos + rodapé do aluno — espaçamento harmônico
+   Visual only. Não altera IDs, JS ou estrutura das telas.
+   ========================================================= */
+
+header.app-header {
+  padding-top: 6px !important;
+  padding-bottom: 4px !important;
+}
+
+.header-top {
+  min-height: 0 !important;
+  align-items: center;
+  padding-top: 2px !important;
+  padding-bottom: 6px !important;
+}
+
+.app-brand-logo,
+.app-brand-logo img,
+#adminPanel .admin-topbar .admin-brand,
+#adminPanel .admin-topbar .admin-brand img {
+  width: 52px !important;
+  height: 52px !important;
+  min-width: 52px !important;
+  min-height: 52px !important;
+  max-width: 52px !important;
+  max-height: 52px !important;
+}
+
+#adminPanel.admin-panel {
+  padding-top: 12px !important;
+  padding-left: 14px !important;
+  padding-right: 14px !important;
+}
+
+#adminPanel .admin-topbar {
+  min-height: 0 !important;
+  margin: 0 0 12px !important;
+  padding: 8px 12px !important;
+  border-radius: 18px !important;
+}
+
+#adminPanel .admin-theme-btn,
+#adminPanel .admin-logout-icon {
+  width: 40px !important;
+  height: 40px !important;
+  min-width: 40px !important;
+  min-height: 40px !important;
+}
+
+.app-header .icon-btn {
+  width: 40px;
+  height: 40px;
+}
+
+#home .welcome {
+  margin-top: 4px;
+}
+
+@media (max-width: 700px) {
+  body:not(.auth-open) {
+    padding-bottom: calc(90px + env(safe-area-inset-bottom)) !important;
+  }
+
+  .bottom-nav {
+    height: auto !important;
+    min-height: 64px !important;
+    padding-top: 6px !important;
+    padding-bottom: max(10px, env(safe-area-inset-bottom)) !important;
+  }
+
+  .nav-btn {
+    min-height: 50px;
+  }
+
+  #home .week-card {
+    margin-bottom: 8px;
+  }
+}
+
+@media (min-width: 701px) {
+  .app-brand-logo,
+  .app-brand-logo img,
+  #adminPanel .admin-topbar .admin-brand,
+  #adminPanel .admin-topbar .admin-brand img {
+    width: 56px !important;
+    height: 56px !important;
+    min-width: 56px !important;
+    min-height: 56px !important;
+    max-width: 56px !important;
+    max-height: 56px !important;
+  }
+
+  #adminPanel .admin-topbar {
+    padding: 8px 14px !important;
+  }
+}
+
+/* PWA iOS: inset só na BARRA (como o Safari). env() no último botão
+   (Avisos) faz o menu subir e deixar um vão acima do home indicator. */
+:root {
+  --cf-safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+@media (max-width: 768px) {
+  /* Evita a página encolher em Avisos (iOS PWA sobe a barra fixa).
+     Precisa ganhar de html:has(...) #adminPanel { min-height:0 }. */
+  html:has(#authScreen[style*="display: none"]) body.admin-mode,
+  html:has(#authScreen[style*="display: none"]) #adminPanel.admin-panel {
+    min-height: 100svh !important;
+    min-height: -webkit-fill-available;
+  }
+
+  #adminPanel .admin-tabs {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: stretch !important;
+    justify-content: stretch !important;
+    height: auto !important;
+    min-height: 56px !important;
+    max-height: none !important;
+    overflow: hidden !important;
+    padding-top: 4px !important;
+    padding-right: max(8px, env(safe-area-inset-right)) !important;
+    padding-left: max(8px, env(safe-area-inset-left)) !important;
+    padding-bottom: var(--cf-safe-bottom) !important;
+    box-sizing: border-box !important;
+    transform: translate3d(0, 0, 0) !important;
+    -webkit-transform: translate3d(0, 0, 0) !important;
+  }
+
+  #adminPanel .admin-tab,
+  #adminPanel .admin-tab.active,
+  #adminPanel .admin-tab:last-child,
+  #adminPanel .admin-tab[data-admin-tab="notifications"],
+  #adminPanel .admin-tab[data-admin-tab="notifications"].active,
+  #adminPanel .admin-tab[data-admin-tab="notifications"]:hover,
+  #adminPanel .admin-tab[data-admin-tab="notifications"]:focus,
+  #adminPanel .admin-tab[data-admin-tab="notifications"]:active,
+  #adminPanel .admin-tab[data-admin-tab="notifications"]:focus-visible {
+    flex: 1 1 0 !important;
+    align-self: stretch !important;
+    width: auto !important;
+    height: 56px !important;
+    min-height: 56px !important;
+    max-height: 56px !important;
+    margin: 0 !important;
+    padding: 6px 4px 8px !important;
+    transform: none !important;
+    -webkit-transform: none !important;
+    translate: none !important;
+    top: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    left: auto !important;
+    inset: auto !important;
+    position: relative !important;
+    box-sizing: border-box !important;
+    scroll-margin: 0 !important;
+    scroll-margin-bottom: 0 !important;
+  }
+
+  #adminPanel .admin-tab[data-admin-tab="notifications"] .cf-svg,
+  #adminPanel .admin-tab[data-admin-tab="notifications"].active .cf-svg {
+    transform: none !important;
+    -webkit-transform: none !important;
+  }
+
+  #adminPanel .admin-tab.active::before {
+    top: 4px !important;
+  }
+}
+
+@media (display-mode: standalone), (display-mode: fullscreen) {
+  @media (max-width: 768px) {
+    html:has(#authScreen[style*="display: none"]) body.admin-mode,
+    html:has(#authScreen[style*="display: none"]) #adminPanel.admin-panel {
+      min-height: 100svh !important;
+      min-height: -webkit-fill-available;
+    }
+
+    #adminPanel.admin-panel {
+      box-sizing: border-box !important;
+    }
+
+    #adminPanel .admin-tabs {
+      position: fixed !important;
+      left: 0 !important;
+      right: 0 !important;
+      bottom: 0 !important;
+      top: auto !important;
+      height: auto !important;
+      min-height: 56px !important;
+      max-height: none !important;
+      padding-bottom: var(--cf-safe-bottom) !important;
+      transform: translate3d(0, 0, 0) !important;
+      -webkit-transform: translate3d(0, 0, 0) !important;
+    }
+
+    #adminPanel .admin-tab,
+    #adminPanel .admin-tab.active,
+    #adminPanel .admin-tab:last-child,
+    #adminPanel .admin-tab[data-admin-tab="notifications"],
+    #adminPanel .admin-tab[data-admin-tab="notifications"].active,
+    #adminPanel .admin-tab[data-admin-tab="notifications"]:focus {
+      height: 56px !important;
+      min-height: 56px !important;
+      max-height: 56px !important;
+      padding: 6px 4px 8px !important;
+      margin: 0 !important;
+      transform: none !important;
+    }
   }
 }

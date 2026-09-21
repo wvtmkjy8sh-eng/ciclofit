@@ -1060,8 +1060,8 @@ function renderAdminWorkouts(){
 }
 function renderAdminNotifications(){const n=adminNotifs();$('#adminNotificationCount').textContent=n.filter(x=>!x.read).length;$('#adminNotifications').innerHTML=n.length?n.slice(0,20).map(x=>`<div class="admin-row"><div><strong>${esc(x.title)}</strong><small>${esc(x.body)} · ${new Date(x.date).toLocaleString('pt-BR')}</small></div><button class="mini-action" onclick="markAdminNotification('${x.id}')">${x.read?'Lida':'Marcar lida'}</button></div>`).join(''):'<div class="muted">Nenhum aviso.</div>'}
 function markAdminNotification(id){const n=adminNotifs();const x=n.find(a=>String(a.id)===String(id));if(x)x.read=true;saveAdminNotifs(n);renderAdminNotifications()}
-function showAdmin(){document.body.classList.add('admin-mode');document.querySelector('main')?.style.setProperty('display','none');document.querySelector('.app-header')?.style.setProperty('display','none');document.querySelector('.bottom-nav')?.style.setProperty('display','none');$('#quickAdd')?.style.setProperty('display','none');$('#adminPanel').classList.add('active');$('#authScreen').style.display='none';renderAdminStudents();renderAdminWorkouts();renderCustomWorkoutList();renderAdminNotifications();checkWorkoutValidity();setAdminTab('students');refreshAdminUsersFromCloud().catch(e=>console.warn('Falha ao atualizar alunos online',e));clearInterval(adminRefreshTimer);adminRefreshTimer=setInterval(()=>refreshAdminUsersFromCloud().catch(e=>console.warn('Falha ao atualizar alunos online',e)),3000)}
-function showStudent(){document.body.classList.remove('admin-mode');document.querySelector('.app-header')?.style.removeProperty('display');document.querySelector('main')?.style.removeProperty('display');document.querySelector('.bottom-nav')?.style.removeProperty('display');$('#quickAdd')?.style.removeProperty('display');$('#adminPanel').classList.remove('active');$('#authScreen').style.display='none';renderStudentAssigned();refresh()}
+function showAdmin(){document.body.classList.add('admin-mode');document.querySelector('main')?.style.setProperty('display','none');document.querySelector('.app-header')?.style.setProperty('display','none');document.querySelector('.bottom-nav')?.style.setProperty('display','none');$('#quickAdd')?.style.setProperty('display','none');$('#adminPanel').classList.add('active');$('#authScreen').style.display='none';document.body.classList.remove('auth-open');renderAdminStudents();renderAdminWorkouts();renderCustomWorkoutList();renderAdminNotifications();checkWorkoutValidity();setAdminTab('students');refreshAdminUsersFromCloud().catch(e=>console.warn('Falha ao atualizar alunos online',e));clearInterval(adminRefreshTimer);adminRefreshTimer=setInterval(()=>refreshAdminUsersFromCloud().catch(e=>console.warn('Falha ao atualizar alunos online',e)),3000)}
+function showStudent(){document.body.classList.remove('admin-mode');document.querySelector('.app-header')?.style.removeProperty('display');document.querySelector('main')?.style.removeProperty('display');document.querySelector('.bottom-nav')?.style.removeProperty('display');$('#quickAdd')?.style.removeProperty('display');$('#adminPanel').classList.remove('active');$('#authScreen').style.display='none';document.body.classList.remove('auth-open');renderStudentAssigned();refresh()}
 async function initAuth(){
   const cloud = window.CicloFitCloud;
   // Quando o Supabase está ativo, a sessão real tem prioridade sobre o localStorage.
@@ -1089,6 +1089,7 @@ async function initAuth(){
 
   let a=currentAuth(); if(a){if(a.role==='admin')showAdmin();else showStudent();return}
   $('#authScreen').style.display='flex';
+  document.body.classList.add('auth-open');
   let cloudOnline=false;
   if(cloud?.enabled&&cloud.ping){
     cloud.ping().then(r=>{

@@ -5,7 +5,7 @@
 
   <meta
     name="viewport"
-    content="width=device-width, initial-scale=1, viewport-fit=cover"
+    content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=overlays-content"
   >
   
   <meta
@@ -53,7 +53,7 @@
     href="./assets/ciclofit-logo3.png"
   >
   <link rel="apple-touch-icon" sizes="180x180" href="icons/icon-180.png">
-  <title>CicloFit 5.0</title><link rel="stylesheet" href="css/style.css"><link rel="stylesheet" href="css/premium-visual.css">
+  <title>CicloFit 5.0</title><link rel="stylesheet" href="css/style.css?v=18"><link rel="stylesheet" href="css/premium-visual.css?v=18">
 </head>
 <script>
   window.addEventListener('load', () => {
@@ -73,7 +73,7 @@
     }, 700);
   });
 </script>
-<body>
+<body class="auth-open">
 <svg xmlns="http://www.w3.org/2000/svg" class="cf-sprite" aria-hidden="true" focusable="false">
 <defs>
 <style>.cf-line{fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}</style>
@@ -200,10 +200,10 @@
   <div class="admin-topbar"><div class="admin-brand"><img src="assets/ciclofit-logo3.png" alt="CicloFit"></div><div class="admin-topbar-actions"><button class="icon-btn admin-theme-btn" id="adminThemeToggle" type="button" aria-label="Alternar tema" title="Alternar tema"><svg class="cf-svg theme-svg-icon" aria-hidden="true"><use href="#i-sun"/></svg></button><button class="btn btn-light admin-logout-icon" id="logoutBtn" type="button" aria-label="Sair" title="Sair"><svg class="cf-svg" aria-hidden="true"><use href="#i-logout"/></svg></button></div></div>
   
   <div class="admin-tabs" role="tablist" aria-label="Seções do painel administrativo">
-    <button class="admin-tab active" data-admin-tab="students" type="button"><svg class="cf-svg" aria-hidden="true"><use href="#i-user"/></svg> ALUNOS</button>
-    <button class="admin-tab" data-admin-tab="workouts" type="button"><svg class="cf-svg" aria-hidden="true"><use href="#i-dumbbell"/></svg> TREINOS</button>
-    <button class="admin-tab" data-admin-tab="custom" type="button"><svg class="cf-svg" aria-hidden="true"><use href="#i-training"/></svg> CRIAR TREINO</button>
-    <button class="admin-tab" data-admin-tab="notifications" type="button"><svg class="cf-svg" aria-hidden="true"><use href="#i-bell"/></svg> NOTIFICAÇÕES</button>
+    <button class="admin-tab active" data-admin-tab="students" type="button"><svg class="cf-svg" aria-hidden="true"><use href="#i-user"/></svg><span>Alunos</span></button>
+    <button class="admin-tab" data-admin-tab="workouts" type="button"><svg class="cf-svg" aria-hidden="true"><use href="#i-dumbbell"/></svg><span>Treinos</span></button>
+    <button class="admin-tab" data-admin-tab="custom" type="button"><svg class="cf-svg" aria-hidden="true"><use href="#i-training"/></svg><span>Criar</span></button>
+    <button class="admin-tab" data-admin-tab="notifications" type="button"><svg class="cf-svg" aria-hidden="true"><use href="#i-bell"/></svg><span>Avisos</span></button>
   </div>
   <div class="admin-actions"><button class="btn btn-light" id="adminNotifyBtn"><svg class="cf-svg" aria-hidden="true"><use href="#i-bell"/></svg> Ativar notificações</button></div>
   <div class="admin-tab-panel active" data-admin-panel="students">
@@ -335,7 +335,8 @@
         const registration = await navigator.serviceWorker.register(
   './sw.js',
   {
-    scope: './'
+    scope: './',
+    updateViaCache: 'none'
   }
 );
   
