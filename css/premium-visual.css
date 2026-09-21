@@ -1713,7 +1713,7 @@ body {
   
     color: var(--accent);
   
-    font-size: 10px;
+    font-size: 12px;
     font-weight: 900;
   
     text-align: center;
@@ -1982,7 +1982,7 @@ body {
   
       padding: 4px 6px;
   
-      font-size: 9px;
+      font-size: 11px;
     }
   }
   
@@ -3485,7 +3485,7 @@ body:not([data-theme="dark"]) :focus-visible {
 }
 
 #workouts .workout-meta > span:not(.meta-icon-text) {
-  opacity: .55;
+  opacity: 1;
 }
 
 #workouts .meta-icon-text {
@@ -3593,23 +3593,23 @@ body:not([data-theme="dark"]) :focus-visible {
   background:
     linear-gradient(
       180deg,
-      #69b9ff,
-      rgba(105,185,255,.35)
+      var(--workout-bike-accent),
+      color-mix(in srgb, var(--workout-bike-accent) 35%, transparent)
     );
 }
 
 #workouts .workout-item.workout-bike .workout-icon {
-  color: #69b9ff;
+  color: var(--workout-bike-accent);
 
   background:
     linear-gradient(
       145deg,
-      rgba(105,185,255,.12),
+      color-mix(in srgb, var(--workout-bike-accent) 12%, transparent),
       var(--surface-2)
     );
 
   border-color:
-    rgba(105,185,255,.20);
+    color-mix(in srgb, var(--workout-bike-accent) 20%, transparent);
 }
 
 
@@ -4027,7 +4027,7 @@ body[data-theme="dark"] #workouts .in-progress-wrap {
     align-items: center;
     gap: 7px;
   
-    color: #69b9ff;
+    color: var(--accent);
   
     font-size: 9px;
     font-weight: 900;
@@ -4042,10 +4042,10 @@ body[data-theme="dark"] #workouts .in-progress-wrap {
   
     border-radius: 999px;
   
-    background: #69b9ff;
+    background: var(--accent);
   
     box-shadow:
-      0 0 9px rgba(105,185,255,.28);
+      0 0 9px rgba(183,245,0,.28);
   }
   
   
@@ -4064,7 +4064,7 @@ body[data-theme="dark"] #workouts .in-progress-wrap {
     background:
       radial-gradient(
         circle at 100% 0%,
-        rgba(105,185,255,.09),
+        rgba(183,245,0,.09),
         transparent 29%
       ),
       radial-gradient(
@@ -4081,7 +4081,7 @@ body[data-theme="dark"] #workouts .in-progress-wrap {
     border-color:
       color-mix(
         in srgb,
-        #69b9ff 16%,
+        var(--accent) 16%,
         var(--border)
       );
   
@@ -4107,7 +4107,7 @@ body[data-theme="dark"] #workouts .in-progress-wrap {
     background:
       radial-gradient(
         circle,
-        rgba(105,185,255,.11),
+        rgba(183,245,0,.11),
         transparent 68%
       );
   
@@ -4135,7 +4135,7 @@ body[data-theme="dark"] #workouts .in-progress-wrap {
   }
   
   #cycling .ride-form-card .card-head .eyebrow {
-    color: #69b9ff;
+    color: var(--accent);
   }
   
   #cycling .ride-form-card .card-head > span {
@@ -4225,7 +4225,7 @@ body[data-theme="dark"] #workouts .in-progress-wrap {
   
   
   #cycling .ride-mode-btn:first-child.active {
-    color: #69aee8;
+    color: var(--accent);
   }
   
   
@@ -4281,14 +4281,14 @@ body[data-theme="dark"] #workouts .in-progress-wrap {
     background:
       linear-gradient(
         145deg,
-        color-mix(in srgb,#69b9ff 5%,var(--surface-2)),
+        color-mix(in srgb,var(--accent) 5%,var(--surface-2)),
         var(--surface-2)
       );
   
     border: 1px solid
       color-mix(
         in srgb,
-        #69b9ff 18%,
+        var(--accent) 18%,
         var(--border)
       );
   
@@ -4305,7 +4305,7 @@ body[data-theme="dark"] #workouts .in-progress-wrap {
     border-color:
       color-mix(
         in srgb,
-        #69b9ff 30%,
+        var(--accent) 30%,
         var(--border)
       );
   
@@ -4337,7 +4337,7 @@ body[data-theme="dark"] #workouts .in-progress-wrap {
     width: 17px;
     height: 17px;
   
-    color: #69b9ff;
+    color: var(--accent);
   }
   
   
@@ -4493,7 +4493,7 @@ body[data-theme="dark"] #workouts .in-progress-wrap {
   
   
   #cycling .section-head .eyebrow {
-    color: #69b9ff;
+    color: var(--accent);
   }
   
   
@@ -4545,8 +4545,8 @@ body[data-theme="dark"] #workouts .in-progress-wrap {
     background:
       linear-gradient(
         180deg,
-        #69b9ff,
-        rgba(105,185,255,.25)
+        var(--accent),
+        rgba(183,245,0,.25)
       );
   }
   
@@ -4557,7 +4557,7 @@ body[data-theme="dark"] #workouts .in-progress-wrap {
     border-color:
       color-mix(
         in srgb,
-        #69b9ff 23%,
+        var(--accent) 23%,
         var(--border)
       );
   
@@ -4591,12 +4591,12 @@ body[data-theme="dark"] #workouts .in-progress-wrap {
     border-radius: 999px;
   
     background:
-      rgba(105,185,255,.08);
+      rgba(183,245,0,.08);
   
     border: 1px solid
-      rgba(105,185,255,.15);
+      rgba(183,245,0,.15);
   
-    color: #69aee8;
+    color: var(--accent);
   
     font-size: 8px;
     font-weight: 900;
@@ -4660,7 +4660,7 @@ body[data-theme="dark"] #workouts .in-progress-wrap {
   /* primeira métrica */
   
   #cycling .ride-meta span:first-child b {
-    color: #69aee8;
+    color: var(--text);
   }
   
   
@@ -4784,7 +4784,7 @@ body[data-theme="dark"] #workouts .in-progress-wrap {
   
   
   #cycling .gpx-map-header .eyebrow {
-    color: #69b9ff;
+    color: var(--accent);
   }
   
   
@@ -4820,7 +4820,7 @@ body[data-theme="dark"] #workouts .in-progress-wrap {
     border-color:
       color-mix(
         in srgb,
-        #69b9ff 20%,
+        var(--accent) 20%,
         var(--border)
       );
   }
@@ -4918,7 +4918,7 @@ body[data-theme="dark"] #workouts .in-progress-wrap {
     background:
       radial-gradient(
         circle at 100% 0%,
-        rgba(105,185,255,.075),
+        rgba(183,245,0,.075),
         transparent 29%
       ),
       radial-gradient(
@@ -4941,7 +4941,7 @@ body[data-theme="dark"] #workouts .in-progress-wrap {
     background:
       linear-gradient(
         145deg,
-        #f3f8fb,
+        #f3f8f1,
         #eef3ee
       );
   
@@ -4988,7 +4988,7 @@ body[data-theme="dark"] #workouts .in-progress-wrap {
     background:
       radial-gradient(
         circle at 100% 0%,
-        rgba(105,185,255,.07),
+        rgba(183,245,0,.07),
         transparent 30%
       ),
       radial-gradient(
@@ -5003,7 +5003,7 @@ body[data-theme="dark"] #workouts .in-progress-wrap {
       );
   
     border-color:
-      rgba(105,185,255,.12);
+      rgba(183,245,0,.12);
   }
   
   
@@ -5016,7 +5016,7 @@ body[data-theme="dark"] #workouts .in-progress-wrap {
       );
   
     border-color:
-      rgba(105,185,255,.13);
+      rgba(183,245,0,.13);
   }
   
   
@@ -9411,4 +9411,433 @@ header.app-header {
       transform: none !important;
     }
   }
+}
+
+/* =========================================================
+   Mobile: tipografia legível (iOS / Android)
+   Só visual. Não altera IDs, HTML ou funções.
+   ========================================================= */
+@media (max-width: 768px) {
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+
+  body {
+    font-size: 16px !important;
+    line-height: 1.45;
+  }
+
+  p,
+  .welcome p,
+  .page-intro p,
+  .muted,
+  .card p,
+  .hero-copy p {
+    font-size: 15px !important;
+    line-height: 1.45 !important;
+  }
+
+  .welcome h1,
+  .page-intro h1 {
+    font-size: 26px !important;
+    line-height: 1.2 !important;
+  }
+
+  .section-head h2,
+  .card-head h3,
+  h2,
+  h3 {
+    font-size: 18px !important;
+    line-height: 1.25 !important;
+  }
+
+  label,
+  .eyebrow,
+  small,
+  .auth-card label,
+  .admin-panel label {
+    font-size: 13px !important;
+    line-height: 1.35 !important;
+    letter-spacing: 0.01em;
+  }
+
+  .btn,
+  .auth-submit,
+  .mini-action,
+  .workout-open {
+    font-size: 14px !important;
+  }
+
+  input,
+  select,
+  textarea,
+  .auth-card input,
+  .admin-panel input,
+  .admin-panel select,
+  .admin-panel textarea {
+    font-size: 16px !important;
+    line-height: 1.35 !important;
+  }
+
+  .hero-copy h2 {
+    font-size: 22px !important;
+  }
+
+  .hero-stats strong {
+    font-size: 15px !important;
+  }
+
+  .hero-stats span,
+  #home .hero-stats span {
+    font-size: 11px !important;
+    line-height: 1.3 !important;
+  }
+
+  #home .section-head > .muted,
+  .section-head .muted {
+    font-size: 13px !important;
+  }
+
+  .week-card .day strong,
+  #home .week-card .day strong {
+    font-size: 11px !important;
+    line-height: 1.25 !important;
+  }
+
+  .week-card .day-status,
+  #home .week-card .day-status {
+    font-size: 10px !important;
+    line-height: 1.25 !important;
+  }
+
+  .week-card .day,
+  #home .week-card .day {
+    min-height: 96px !important;
+    padding: 8px 3px !important;
+  }
+
+  .nav-btn {
+    font-size: 11px !important;
+  }
+
+  .nav-btn span {
+    font-size: 11px !important;
+    letter-spacing: 0 !important;
+  }
+
+  .nav-btn .cf-svg {
+    width: 22px !important;
+    height: 22px !important;
+  }
+
+  #adminPanel .admin-tab,
+  #adminPanel .admin-tab span {
+    font-size: 11px !important;
+    letter-spacing: 0 !important;
+  }
+
+  #adminPanel .admin-tab .cf-svg {
+    width: 22px !important;
+    height: 22px !important;
+  }
+
+  .admin-student-info strong,
+  .admin-student-info small,
+  .admin-row,
+  .pr-row,
+  .profile-zone,
+  .workout-item,
+  .workout-status {
+    font-size: 14px !important;
+  }
+
+  .admin-student-info small,
+  .workout-item small,
+  .admin-row small {
+    font-size: 13px !important;
+  }
+
+  .admin-status-badge,
+  #adminPanel .admin-workout-row .admin-status-badge {
+    font-size: 12px !important;
+  }
+
+  .toast,
+  .auth-tab {
+    font-size: 14px !important;
+  }
+
+  .auth-hint,
+  #authScreen .auth-hint,
+  #loginHint {
+    font-size: 13px !important;
+    line-height: 1.4 !important;
+  }
+
+  /* Aba Treinos: duração, exercícios e séries */
+  #workouts .workout-meta,
+  #workouts .workout-meta span,
+  #workouts .workout-meta .meta-icon-text {
+    font-size: 13px !important;
+    line-height: 1.35 !important;
+    font-weight: 750 !important;
+    letter-spacing: 0 !important;
+    color: var(--muted) !important;
+    opacity: 1 !important;
+  }
+
+  #workouts .workout-meta {
+    gap: 7px !important;
+  }
+
+  #workouts .meta-icon-text svg,
+  #workouts .meta-icon-text .cf-svg {
+    width: 16px !important;
+    height: 16px !important;
+    color: var(--accent) !important;
+  }
+
+  #workouts .in-progress-top b,
+  #workouts .in-progress-card small {
+    font-size: 13px !important;
+    letter-spacing: 0 !important;
+  }
+
+  #workouts .workout-tag {
+    font-size: 11px !important;
+    letter-spacing: 0.06em !important;
+  }
+}
+
+/* Treinos: conteúdo à esquerda; HOJE / PROGRAMADO no canto superior direito */
+#workouts .workout-item {
+  position: relative !important;
+  text-align: left !important;
+  justify-items: start;
+  --cf-edge: 16px;
+}
+
+#workouts .workout-topline > .workout-tag:last-child:not(:first-child),
+#workouts .workout-topline > .validity-expired,
+#workouts .workout-item.workout-custom .workout-topline > .workout-tag:only-child {
+  position: absolute !important;
+  top: var(--cf-edge) !important;
+  right: var(--cf-edge) !important;
+  z-index: 2 !important;
+  margin: 0 !important;
+  max-width: none !important;
+  flex-shrink: 0 !important;
+}
+
+#workouts .workout-main,
+#workouts .workout-main h3,
+#workouts .workout-main p,
+#workouts .workout-meta,
+#workouts .workout-topline {
+  text-align: left !important;
+  justify-content: flex-start !important;
+}
+
+#workouts .workout-topline {
+  display: flex !important;
+  align-items: flex-start !important;
+  width: 100% !important;
+  min-height: 28px;
+}
+
+#workouts .workout-topline .workout-tag:first-child:not(:last-child) {
+  margin-right: auto !important;
+}
+
+#workouts .workout-main {
+  padding-right: 0 !important;
+}
+
+@media (max-width: 620px) {
+  #workouts .workout-item {
+    --cf-edge: 14px;
+  }
+
+  #workouts .workout-topline,
+  #workouts .workout-main h3,
+  #workouts .workout-main p,
+  #workouts .workout-meta {
+    padding-right: 7.25rem;
+  }
+}
+
+@media (min-width: 621px) {
+  #workouts .workout-item {
+    --cf-edge: 16px;
+    align-items: stretch !important;
+    grid-template-columns: 58px minmax(0, 1fr) !important;
+    padding: 16px !important;
+  }
+
+  #workouts .workout-item .workout-icon {
+    align-self: start;
+  }
+
+  #workouts .workout-open {
+    position: absolute !important;
+    right: var(--cf-edge) !important;
+    bottom: var(--cf-edge) !important;
+    top: auto !important;
+    left: auto !important;
+    width: auto !important;
+    grid-column: auto !important;
+    margin: 0 !important;
+    align-self: auto !important;
+    justify-self: auto !important;
+  }
+
+  #workouts .workout-main,
+  #workouts .workout-topline,
+  #workouts .workout-main h3,
+  #workouts .workout-main p,
+  #workouts .workout-meta {
+    padding-right: 10rem !important;
+  }
+}
+
+@media (max-width: 768px) {
+  #workouts .workout-item {
+    padding-top: 14px !important;
+  }
+
+  #workouts .workout-meta,
+  #workouts .workout-meta span,
+  #workouts .workout-meta .meta-icon-text {
+    flex-wrap: nowrap !important;
+    white-space: nowrap !important;
+  }
+
+  #workouts .workout-meta {
+    width: 100% !important;
+    max-width: 100% !important;
+    gap: 6px !important;
+    overflow: hidden;
+  }
+
+  #workouts .workout-meta > span {
+    flex-shrink: 0 !important;
+  }
+}
+
+/* Evolução: só os textos cinza menores (km, 0 kg, histórico, rótulos) */
+@media (max-width: 768px) {
+  #progress .chart-card .card-head > span,
+  #progress > .card .card-head > span,
+  #progress #volumeTotal,
+  #progress #prCount,
+  #progress .metric-card small,
+  #progress .pr-row small {
+    font-size: 12px !important;
+    letter-spacing: 0.03em !important;
+    line-height: 1.3 !important;
+  }
+}
+
+/* Calendário: dias sem treino mostram Off, sem cortar ícone/texto */
+.week-card .day,
+#home .week-card .day {
+  overflow: hidden !important;
+  box-sizing: border-box !important;
+}
+
+.week-card .day .icon,
+#home .week-card .day .icon {
+  overflow: hidden !important;
+  flex: 0 0 auto;
+}
+
+.week-card .day .icon .cf-svg,
+#home .week-card .day .icon .cf-svg {
+  width: 15px !important;
+  height: 15px !important;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.week-card .day.rest-day .icon,
+#home .week-card .day.rest-day .icon {
+  display: none !important;
+}
+
+.week-card .day.rest-day .day-status,
+#home .week-card .day.rest-day .day-status {
+  display: none !important;
+}
+
+.week-card .day.rest-day strong,
+#home .week-card .day.rest-day strong {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  max-width: calc(100% - 6px) !important;
+  min-height: 0 !important;
+  margin-top: 10px;
+  margin-bottom: 0;
+  padding: 4px 6px !important;
+  border-radius: 999px;
+  overflow: hidden !important;
+  text-overflow: ellipsis;
+  white-space: nowrap !important;
+  font-size: 10px !important;
+  line-height: 1 !important;
+  letter-spacing: 0.04em;
+  font-weight: 800 !important;
+  text-transform: uppercase;
+  color: var(--muted);
+  background: color-mix(in srgb, var(--card) 88%, transparent);
+  border: 1px solid color-mix(in srgb, var(--border) 80%, transparent);
+  box-sizing: border-box;
+}
+
+.week-card .day.rest-day.today strong,
+#home .week-card .day.rest-day.today strong {
+  background: rgba(255, 255, 255, 0.22);
+  color: inherit;
+}
+
+/* Pedal: acentos verdes; metas: % um pouco maior */
+#cycling .map-placeholder {
+  background: linear-gradient(135deg, rgba(183,245,0,.06), rgba(183,245,0,.05));
+}
+
+#home .goals-card .goal-row > b {
+  font-size: 12px !important;
+}
+
+@media (max-width: 480px) {
+  #home .goals-card .goal-row > b {
+    font-size: 11px !important;
+  }
+}
+
+/* Treinos: mesmo cinza em duração, exercícios e séries; relógio verde */
+#workouts .workout-meta,
+#workouts .workout-meta span,
+#workouts .workout-meta .meta-icon-text {
+  color: var(--muted) !important;
+  opacity: 1 !important;
+}
+
+#workouts .workout-meta .meta-icon-text svg,
+#workouts .workout-meta .meta-icon-text .cf-svg {
+  color: var(--accent) !important;
+  opacity: 1 !important;
+}
+
+/* Exercícios: Carga padrão — caixa um pouco maior e 16px para o iOS não dar zoom */
+#workoutModal .default-load-input,
+.default-load-input {
+  min-height: 36px !important;
+  width: 96px !important;
+  margin: 0 !important;
+  padding: 8px 9px !important;
+  font-size: 16px !important;
+  line-height: 1.2 !important;
+  font-weight: 800;
 }
