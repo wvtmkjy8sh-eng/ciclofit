@@ -501,7 +501,15 @@ body[data-theme="dark"] .auth-screen{background:radial-gradient(circle at 50% -1
 
 html {
   min-height: 100%;
+  background: var(--bg);
+}
+
+html:has(body[data-theme="dark"]) {
   background: #0b0f0d;
+}
+
+html:has(body:not([data-theme="dark"])) {
+  background: #f4f7f3;
 }
 
 body {
@@ -515,8 +523,6 @@ body {
     72px + env(safe-area-inset-bottom)
   );
   padding-left: env(safe-area-inset-left);
-
-  background: #0b0f0d;
 
   overflow-x: hidden;
 }
@@ -9840,4 +9846,20 @@ header.app-header {
   font-size: 16px !important;
   line-height: 1.2 !important;
   font-weight: 800;
+}
+
+/* Tema claro: sem faixa preta atrás do menu (desktop, PWA e páginas curtas) */
+html:has(body:not([data-theme="dark"])) {
+  background: #f4f7f3 !important;
+}
+
+body:not([data-theme="dark"]) {
+  background-color: #f4f7f3;
+}
+
+@media (min-width: 769px) {
+  html:has(body:not(.auth-open)),
+  html:has(body:not(.auth-open)) body {
+    min-height: 100dvh !important;
+  }
 }
