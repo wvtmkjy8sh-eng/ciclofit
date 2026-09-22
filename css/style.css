@@ -1990,3 +1990,51 @@ body[data-theme="light"] .auth-screen .auth-bg-photo{mix-blend-mode:multiply;opa
 @media(max-width:620px){.section-head h2{gap:7px}.section-title-icon{width:20px;height:20px;flex-basis:20px}.inline-icon-text{gap:7px}}
 
 .theme-svg-icon{width:20px;height:20px;display:block;flex:0 0 auto}
+
+/* Sheet de treino: lista rola; timer e Concluir ficam sempre visíveis */
+#workoutModal.gym-workout-overlay{
+  z-index:1200;
+}
+.gym-workout-overlay .gym-workout-sheet{
+  display:flex;
+  flex-direction:column;
+  min-height:0;
+  overflow:hidden;
+  max-height:min(90dvh,calc(100dvh - 12px));
+}
+.gym-workout-overlay .gym-sheet-handle,
+.gym-workout-overlay .gym-sheet-head,
+.gym-workout-overlay .gym-live-bar,
+.gym-workout-overlay .gym-workout-sheet .timer,
+.gym-workout-overlay .gym-workout-sheet #finishWorkout{
+  flex:0 0 auto;
+}
+.gym-workout-overlay .gym-workout-sheet #exerciseList{
+  flex:1 1 auto;
+  min-height:72px;
+  max-height:none;
+  overflow:auto;
+}
+.gym-workout-overlay .gym-workout-sheet #finishWorkout{
+  position:relative;
+  z-index:2;
+  margin-top:4px;
+}
+@media(max-width:620px){
+  .gym-workout-overlay .gym-workout-sheet{
+    max-height:min(94dvh,100dvh);
+  }
+  .gym-workout-overlay .gym-workout-sheet #exerciseList{
+    max-height:none;
+  }
+}
+@media(max-width:380px){
+  .gym-workout-overlay .gym-workout-sheet #exerciseList{
+    max-height:none;
+  }
+}
+@media(display-mode:standalone){
+  .gym-workout-overlay .gym-workout-sheet{
+    max-height:min(92dvh,calc(100dvh - env(safe-area-inset-bottom,0px)));
+  }
+}
