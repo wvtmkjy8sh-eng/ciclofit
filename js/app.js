@@ -1212,6 +1212,8 @@ if($('#adminWorkoutStart')&&!$('#adminWorkoutStart').value)$('#adminWorkoutStart
 function setAdminTab(tab){
   $$('.admin-tab').forEach(b=>{const active=b.dataset.adminTab===tab;b.classList.toggle('active',active);b.setAttribute('aria-selected',active?'true':'false')});
   $$('[data-admin-panel]').forEach(p=>p.classList.toggle('active',p.dataset.adminPanel===tab));
+  const tabs=$('#adminPanel .admin-tabs');
+  if(tabs)tabs.scrollLeft=0;
   if(tab==='students')renderAdminStudents();
   if(tab==='workouts')renderAdminWorkouts();
   if(tab==='custom'){renderExerciseCatalog();renderCustomStudents();renderSelectedExercises();renderCustomWorkoutList()}

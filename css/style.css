@@ -2038,3 +2038,30 @@ body[data-theme="light"] .auth-screen .auth-bg-photo{mix-blend-mode:multiply;opa
     max-height:min(92dvh,calc(100dvh - env(safe-area-inset-bottom,0px)));
   }
 }
+
+/* Admin: Avisos não desloca o menu (scrollbar some e o foco da última aba empurra) */
+html:has(body.admin-mode){
+  scrollbar-gutter:stable;
+  overflow-x:hidden;
+  overflow-y:scroll;
+}
+body.admin-mode{
+  overflow-x:hidden;
+}
+#adminPanel .admin-tabs{
+  overflow-x:hidden!important;
+  overscroll-behavior-x:none;
+}
+#adminPanel .admin-tab,
+#adminPanel .admin-tab[data-admin-tab="notifications"]{
+  scroll-margin:0!important;
+  scroll-margin-inline:0!important;
+}
+@media(min-width:769px){
+  #adminPanel .admin-tabs{
+    left:50%!important;
+    right:auto!important;
+    margin-left:0!important;
+    transform:translateX(-50%)!important;
+  }
+}

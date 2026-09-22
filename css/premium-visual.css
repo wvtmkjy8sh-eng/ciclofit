@@ -9863,3 +9863,24 @@ body:not([data-theme="dark"]) {
     min-height: 100dvh !important;
   }
 }
+
+/* Admin: Avisos não desloca o menu (scrollbar some em página curta / foco da última aba) */
+html:has(body.admin-mode) {
+  scrollbar-gutter: stable;
+  overflow-x: hidden !important;
+  overflow-y: scroll !important;
+}
+body.admin-mode {
+  overflow-x: hidden !important;
+}
+#adminPanel .admin-tabs {
+  overflow-x: hidden !important;
+  overscroll-behavior-x: none;
+}
+#adminPanel .admin-tab,
+#adminPanel .admin-tab[data-admin-tab="notifications"],
+#adminPanel .admin-tab[data-admin-tab="notifications"]:focus,
+#adminPanel .admin-tab[data-admin-tab="notifications"]:focus-visible {
+  scroll-margin: 0 !important;
+  scroll-margin-inline: 0 !important;
+}
