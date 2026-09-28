@@ -328,7 +328,7 @@ function updateGymStatus(){
   status.textContent=done===0?'SÉRIE EM ANDAMENTO':(done>=total?'TREINO COMPLETO':`SÉRIES REGISTRADAS ${done}/${total}`);
 }
 
-function openWorkout(type){currentWorkout=type;const w=workoutByKey(type);if(!w){currentWorkout=null;toast('Treino não encontrado.','error');return;}const exercises=Array.isArray(w.exercises)?w.exercises:[];if(!exercises.length){toast('Este treino não possui exercícios cadastrados.','error');return;}$('#modalTitle').textContent=w.title||'Treino';$('#modalSubtitle').textContent='';const key=workoutDraftKey(type),saved=data.workoutDrafts?.[key]?.sets||data.workouts?.[key]?.sets||[];$('#exerciseList').innerHTML=exercises.map((e,i)=>{const savedExercise=saved[i]||[],def=defaultLoadForExercise(e[0]);const rows=Array.from({length:e[2]},(_,s)=>{const x=savedExercise[s]||{};return `<div class="sets"><span>${s+1}</span><input data-e="${i}" data-s="${s}" data-field="weight" type="number" value="${x.weight!==undefined&&x.weight!==''?esc(x.weight):esc(def)}" placeholder="${def?'kg · padrão '+esc(def):'kg'}"><input data-e="${i}" data-s="${s}" data-field="reps" type="number" value="${x.reps||e[3]}" placeholder="reps"><button class="set-check ${x.done?'done':''}" data-e="${i}" data-s="${s}" aria-label="Marcar série ${s+1}">${x.done?'✓':'○'}</button></div>`});return `<div class="exercise"><div class="exercise-top"><div><h3>${i+1}. ${esc(e[0])}</h3><small>${esc(e[1])}</small><label class="default-load-label">Carga padrão<input class="default-load-input" data-default-exercise="${esc(e[0])}" type="number" min="0" step="0.5" value="${esc(def)}" placeholder="Ex.: 20"></label></div><strong>${e[2]} × ${e[3]}</strong></div>${rows.join('')}</div>`}).join('');$$('.set-check').forEach(b=>b.onclick=()=>{b.classList.toggle('done');b.textContent=b.classList.contains('done')?'✓':'+';b.setAttribute('aria-label',b.classList.contains('done')?'Série concluída':'Concluir série');saveWorkoutDraft();updateGymStatus();renderInProgressExercises()});$$('.default-load-input').forEach(input=>input.addEventListener('change',()=>{const value=String(input.value??'').trim();setDefaultLoad(input.dataset.defaultExercise,value);const card=input.closest('.exercise');if(card){card.querySelectorAll('[data-field="weight"]').forEach(w=>{w.value=value})}saveWorkoutDraft();}));$$('#exerciseList input:not(.default-load-input)').forEach(input=>input.addEventListener('input',()=>{saveWorkoutDraft();renderInProgressExercises()}));updateGymStatus();$('#workoutModal').classList.add('show');resetTimer();renderInProgressExercises()}
+function openWorkout(type){currentWorkout=type;const w=workoutByKey(type);if(!w){currentWorkout=null;toast('Treino não encontrado.','error');return;}const exercises=Array.isArray(w.exercises)?w.exercises:[];if(!exercises.length){toast('Este treino não possui exercícios cadastrados.','error');return;}$('#modalTitle').textContent=w.title||'Treino';$('#modalSubtitle').textContent='';const key=workoutDraftKey(type),saved=data.workoutDrafts?.[key]?.sets||data.workouts?.[key]?.sets||[];$('#exerciseList').innerHTML=exercises.map((e,i)=>{const savedExercise=saved[i]||[],def=defaultLoadForExercise(e[0]);const rows=Array.from({length:e[2]},(_,s)=>{const x=savedExercise[s]||{};return `<div class="sets"><span>${s+1}</span><input data-e="${i}" data-s="${s}" data-field="weight" type="number" value="${x.weight!==undefined&&x.weight!==''?esc(x.weight):esc(def)}" placeholder="${def?'kg · padrão '+esc(def):'kg'}"><input data-e="${i}" data-s="${s}" data-field="reps" type="number" value="${x.reps||e[3]}" placeholder="reps"><button class="set-check ${x.done?'done':''}" data-e="${i}" data-s="${s}" aria-label="Marcar série ${s+1}">${x.done?'✓':'○'}</button></div>`});return `<div class="exercise"><div class="exercise-top"><div><h3>${i+1}. ${esc(e[0])}</h3><small>${esc(e[1])}</small><label class="default-load-label">Carga padrão<input class="default-load-input" data-default-exercise="${esc(e[0])}" type="number" min="0" step="0.5" value="${esc(def)}" placeholder="Ex.: 20"></label></div><strong>${e[2]} × ${e[3]}</strong></div>${rows.join('')}</div>`}).join('');$$('.set-check').forEach(b=>b.onclick=()=>{b.classList.toggle('done');b.textContent=b.classList.contains('done')?'✓':'+';b.setAttribute('aria-label',b.classList.contains('done')?'Série concluída':'Concluir série');saveWorkoutDraft();updateGymStatus();renderInProgressExercises()});$$('.default-load-input').forEach(input=>input.addEventListener('change',()=>{const value=String(input.value??'').trim();setDefaultLoad(input.dataset.defaultExercise,value);const card=input.closest('.exercise');if(card){card.querySelectorAll('[data-field="weight"]').forEach(w=>{w.value=value})}saveWorkoutDraft();}));$$('#exerciseList input:not(.default-load-input)').forEach(input=>input.addEventListener('input',()=>{saveWorkoutDraft();renderInProgressExercises()}));updateGymStatus();$('#workoutModal').classList.add('show');resumeOrResetTimer();renderInProgressExercises()}
 function collectWorkout(){const activeWorkout=workoutByKey(currentWorkout)||workouts[currentWorkout];if(!activeWorkout)return [];return activeWorkout.exercises.map((e,i)=>Array.from({length:e[2]},(_,s)=>{const w=$(`[data-e="${i}"][data-s="${s}"][data-field="weight"]`),r=$(`[data-e="${i}"][data-s="${s}"][data-field="reps"]`),c=$(`.set-check[data-e="${i}"][data-s="${s}"]`);return{weight:w?.value||'',reps:r?.value||'',done:c?.classList.contains('done')||false}}))}
 $('#finishWorkout').onclick=()=>{
   if(!currentWorkout)return;
@@ -349,6 +349,10 @@ $('#finishWorkout').onclick=()=>{
 let restAudioContext=null,restEndAt=0,restFinishTimer=0,restKeepWatch=0,restBeepHold=0,restWakeLock=null,restPendingBeep=false;
 const restAlertAudio=$('#restAlertAudio'),restKeepAudio=$('#restKeepAliveAudio');
 const REST_ALERT={title:'CicloFit — descanso finalizado',body:'Seu descanso terminou. Próxima série.'};
+const REST_CLOCK_KEY='ciclofit-rest-until';
+function readRestClock(){try{return JSON.parse(localStorage.getItem(REST_CLOCK_KEY)||'null')}catch(e){return null}}
+function persistRestClock(){if(!restEndAt)return;try{localStorage.setItem(REST_CLOCK_KEY,JSON.stringify({endAt:restEndAt,base:timerBase||60}))}catch(e){}}
+function clearRestClock(){try{localStorage.removeItem(REST_CLOCK_KEY)}catch(e){}}
 function prepRestAudio(el){
   if(!el)return;
   el.playsInline=true;
@@ -505,12 +509,13 @@ function cancelRestSchedule(){
   postRestWorker({type:'CANCEL_REST'});
 }
 function armRestBackground(){
-  cancelRestSchedule();
+  if(restFinishTimer){clearTimeout(restFinishTimer);restFinishTimer=0}
   if(!timerInterval||!restEndAt)return;
   const delay=Math.max(0,restEndAt-Date.now()+80);
   restFinishTimer=setTimeout(()=>{
     if(timerInterval&&Date.now()>=restEndAt)finishRest();
   },Math.min(delay,2147483647));
+  persistRestClock();
   postRestWorker({type:'ARM_REST',endAt:restEndAt,title:REST_ALERT.title,body:REST_ALERT.body,url:'./'});
 }
 function syncRestClock(){
@@ -547,6 +552,7 @@ function stopTimer(){
   timerInterval=null;
   restEndAt=0;
   restPendingBeep=false;
+  clearRestClock();
   cancelRestSchedule();
   stopRestKeepAlive();
   try{restAlertAudio?.pause()}catch(e){}
@@ -557,7 +563,9 @@ function finishRest(){
   clearInterval(timerInterval);
   timerInterval=null;
   restEndAt=0;
-  cancelRestSchedule();
+  clearRestClock();
+  if(restFinishTimer){clearTimeout(restFinishTimer);restFinishTimer=0}
+  postRestWorker({type:'REST_SETTLED'});
   timerValue=0;
   updateTimer();
   if($('#startTimer'))$('#startTimer').textContent='Iniciar';
@@ -583,6 +591,32 @@ function shiftRest(next){
   }
   updateTimer();
 }
+function resumePersistedRest(){
+  if(timerInterval)return true;
+  const saved=readRestClock();
+  if(!saved||!saved.endAt||saved.endAt<=Date.now()){
+    if(saved)clearRestClock();
+    return false;
+  }
+  timerBase=Math.max(1,Number(saved.base)||60);
+  restEndAt=Number(saved.endAt);
+  timerValue=Math.max(0,Math.ceil((restEndAt-Date.now())/1000));
+  unlockRestAudio();
+  startRestKeepAlive();
+  enableRestNotifications();
+  const box=$('#timer')?.closest('.timer');
+  box?.classList.remove('timer-finished');
+  if($('#startTimer'))$('#startTimer').textContent='Pausar';
+  timerInterval=setInterval(syncRestClock,250);
+  armRestBackground();
+  updateTimer();
+  return true;
+}
+function resumeOrResetTimer(){
+  if(timerInterval&&restEndAt>Date.now()){updateTimer();return}
+  if(resumePersistedRest())return;
+  resetTimer();
+}
 function resetTimer(){
   stopTimer();
   restPendingBeep=false;
@@ -602,6 +636,7 @@ document.addEventListener('visibilitychange',()=>{
     armRestAudioSession();
     if(restAudioContext?.state==='suspended')restAudioContext.resume();
     if(timerInterval)syncRestClock();
+    else resumePersistedRest();
     if(restPendingBeep)playRestEndSound();
     if(timerInterval){startRestKeepAlive();armRestBackground()}
   }else if(timerInterval){
@@ -609,6 +644,23 @@ document.addEventListener('visibilitychange',()=>{
     startRestKeepAlive();
   }
 });
+window.addEventListener('pagehide',()=>{
+  if(!timerInterval||!restEndAt)return;
+  persistRestClock();
+  const message={type:'ARM_REST',endAt:restEndAt,title:REST_ALERT.title,body:REST_ALERT.body,url:'./'};
+  postRestWorker(message);
+  try{
+    if(navigator.serviceWorker?.controller){
+      navigator.sendBeacon(new URL('./rest-arm',location.href),new Blob([JSON.stringify(message)],{type:'application/json'}));
+    }
+  }catch(e){}
+});
+if(navigator.serviceWorker){
+  navigator.serviceWorker.addEventListener('message',ev=>{
+    if(ev.data?.type==='REST_ELAPSED'&&timerInterval)finishRest();
+  });
+}
+resumePersistedRest();
 function getHrZones(){
   const max=Number(data.profile.maxHr)||190;
   return [
@@ -1598,7 +1650,7 @@ $('#saveCustomWorkout')?.addEventListener('click',()=>{
 $('#cancelCustomWorkoutEdit')?.addEventListener('click',resetCustomWorkoutForm);
 
 // Resolve treinos personalizados no player do aluno.
-window.openWorkout=function(type){try{if(!$('#exerciseList')||!$('#workoutModal')){toast('Tela de treino indisponível.','error');return false}currentWorkout=type;const w=workoutByKey(type);if(!w){currentWorkout=null;toast('Treino não encontrado.','error');return false}const exercises=Array.isArray(w.exercises)?w.exercises:[];if(!exercises.length){toast('Este treino não possui exercícios cadastrados.','error');return}const key=workoutDraftKey(type),saved=data.workoutDrafts?.[key]?.sets||data.workouts?.[key]?.sets||[];$('#modalTitle').textContent=w.title||'Treino';$('#modalSubtitle').textContent='';$('#exerciseList').innerHTML=exercises.map((e,i)=>{const se=saved[i]||[],def=defaultLoadForExercise(e[0]);const rows=Array.from({length:e[2]},(_,s)=>{const x=se[s]||{};return `<div class="sets"><span>${s+1}</span><input data-e="${i}" data-s="${s}" data-field="weight" type="number" value="${x.weight!==undefined&&x.weight!==''?esc(x.weight):esc(def)}" placeholder="${def?'kg · padrão '+esc(def):'kg'}"><input data-e="${i}" data-s="${s}" data-field="reps" type="number" value="${x.reps||e[3]||10}" placeholder="reps"><button class="set-check ${x.done?'done':''}" data-e="${i}" data-s="${s}" aria-label="Marcar série">${x.done?'✓':'○'}</button></div>`});return `<div class="exercise"><div class="exercise-top"><div><h3>${i+1}. ${esc(e[0])}</h3><small>${esc(e[1])}</small><label class="default-load-label">Carga padrão<input class="default-load-input" data-default-exercise="${esc(e[0])}" type="number" min="0" step="0.5" value="${esc(def)}" placeholder="Ex.: 20"></label></div><strong>${e[2]} × ${e[3]}</strong></div>${rows.join('')}</div>`}).join('');$$('.set-check').forEach(b=>b.onclick=()=>{b.classList.toggle('done');b.textContent=b.classList.contains('done')?'✓':'○';saveWorkoutDraft();updateGymStatus();renderInProgressExercises()});$$('.default-load-input').forEach(input=>input.addEventListener('change',()=>{const value=String(input.value??'').trim();setDefaultLoad(input.dataset.defaultExercise,value);const card=input.closest('.exercise');if(card){card.querySelectorAll('[data-field="weight"]').forEach(w=>{w.value=value})}saveWorkoutDraft();}));$$('#exerciseList input:not(.default-load-input)').forEach(i=>i.addEventListener('input',()=>{saveWorkoutDraft();renderInProgressExercises()}));updateGymStatus();$('#workoutModal').classList.add('show');document.body.classList.add('modal-open');resetTimer();updateFinishWorkoutState();renderInProgressExercises();return true}catch(e){console.error('CicloFit: openWorkout falhou',e);currentWorkout=null;$('#workoutModal')?.classList.remove('show');toast('Não foi possível abrir a lista de exercícios.','error');return false}};
+window.openWorkout=function(type){try{if(!$('#exerciseList')||!$('#workoutModal')){toast('Tela de treino indisponível.','error');return false}currentWorkout=type;const w=workoutByKey(type);if(!w){currentWorkout=null;toast('Treino não encontrado.','error');return false}const exercises=Array.isArray(w.exercises)?w.exercises:[];if(!exercises.length){toast('Este treino não possui exercícios cadastrados.','error');return}const key=workoutDraftKey(type),saved=data.workoutDrafts?.[key]?.sets||data.workouts?.[key]?.sets||[];$('#modalTitle').textContent=w.title||'Treino';$('#modalSubtitle').textContent='';$('#exerciseList').innerHTML=exercises.map((e,i)=>{const se=saved[i]||[],def=defaultLoadForExercise(e[0]);const rows=Array.from({length:e[2]},(_,s)=>{const x=se[s]||{};return `<div class="sets"><span>${s+1}</span><input data-e="${i}" data-s="${s}" data-field="weight" type="number" value="${x.weight!==undefined&&x.weight!==''?esc(x.weight):esc(def)}" placeholder="${def?'kg · padrão '+esc(def):'kg'}"><input data-e="${i}" data-s="${s}" data-field="reps" type="number" value="${x.reps||e[3]||10}" placeholder="reps"><button class="set-check ${x.done?'done':''}" data-e="${i}" data-s="${s}" aria-label="Marcar série">${x.done?'✓':'○'}</button></div>`});return `<div class="exercise"><div class="exercise-top"><div><h3>${i+1}. ${esc(e[0])}</h3><small>${esc(e[1])}</small><label class="default-load-label">Carga padrão<input class="default-load-input" data-default-exercise="${esc(e[0])}" type="number" min="0" step="0.5" value="${esc(def)}" placeholder="Ex.: 20"></label></div><strong>${e[2]} × ${e[3]}</strong></div>${rows.join('')}</div>`}).join('');$$('.set-check').forEach(b=>b.onclick=()=>{b.classList.toggle('done');b.textContent=b.classList.contains('done')?'✓':'○';saveWorkoutDraft();updateGymStatus();renderInProgressExercises()});$$('.default-load-input').forEach(input=>input.addEventListener('change',()=>{const value=String(input.value??'').trim();setDefaultLoad(input.dataset.defaultExercise,value);const card=input.closest('.exercise');if(card){card.querySelectorAll('[data-field="weight"]').forEach(w=>{w.value=value})}saveWorkoutDraft();}));$$('#exerciseList input:not(.default-load-input)').forEach(i=>i.addEventListener('input',()=>{saveWorkoutDraft();renderInProgressExercises()}));updateGymStatus();$('#workoutModal').classList.add('show');document.body.classList.add('modal-open');resumeOrResetTimer();updateFinishWorkoutState();renderInProgressExercises();return true}catch(e){console.error('CicloFit: openWorkout falhou',e);currentWorkout=null;$('#workoutModal')?.classList.remove('show');toast('Não foi possível abrir a lista de exercícios.','error');return false}};
 // Treinos atribuídos: inclui personalizados e templates A/B/C.
 function renderInProgressExercisesLegacy(){
   const box=$('#inProgressExercises'); if(!box)return;
