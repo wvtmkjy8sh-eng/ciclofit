@@ -1,0 +1,669 @@
+/* CicloFit — camada visual Atelier
+   Só aparência: tipo, cor, luz e material.
+   Não altera estrutura, rotas nem comportamento. */
+
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Syne:wght@600;700;800&display=swap");
+
+:root {
+  --display: "Syne", "Outfit", sans-serif;
+  --body: "Outfit", "Segoe UI", sans-serif;
+  --atelier-lime: #c8f53a;
+  --atelier-lime-deep: #9ad40a;
+  --atelier-ink: #121612;
+  --atelier-copper: #c4844a;
+}
+
+html,
+body,
+button,
+input,
+select,
+textarea {
+  font-family: var(--body);
+}
+
+h1, h2, h3,
+.welcome h1,
+.page-intro h1,
+.section-head h2,
+.hero-copy h2,
+.auth-welcome,
+.auth-welcome strong,
+.gym-sheet-head h2,
+.logo {
+  font-family: var(--display);
+}
+
+/* ---------- Tema claro ---------- */
+body:not([data-theme="dark"]) {
+  --bg: #efece4;
+  --card: #fbfaf6;
+  --surface-2: #f3f0e8;
+  --text: #161a16;
+  --muted: #6a7168;
+  --border: rgba(22, 26, 22, 0.1);
+  --accent: var(--atelier-lime);
+  --accent-2: var(--atelier-lime-deep);
+  --accent-ink: #172000;
+  --green: #2c7a45;
+  --blue: #3d8fd4;
+  --purple: #7d68c8;
+  --danger: #d24a4a;
+  --dark: #101410;
+  --shadow: 0 22px 50px rgba(28, 24, 16, 0.08);
+  --shadow-soft: 0 10px 28px rgba(28, 24, 16, 0.05);
+  color: var(--text);
+  background-color: #efece4;
+  background-image:
+    radial-gradient(880px 420px at -6% -12%, rgba(200, 245, 58, 0.28), transparent 62%),
+    radial-gradient(640px 380px at 108% -8%, rgba(196, 132, 74, 0.16), transparent 58%),
+    linear-gradient(180deg, #f7f4ec 0%, #efece4 52%, #e7e3d8 100%);
+}
+
+html:has(body:not([data-theme="dark"])) {
+  background: #efece4 !important;
+}
+
+body:not([data-theme="dark"]) .app-header {
+  background: color-mix(in srgb, #fbfaf6 78%, transparent);
+  border-bottom: 1px solid rgba(22, 26, 22, 0.08);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.65) inset;
+}
+
+body:not([data-theme="dark"]) .card,
+body:not([data-theme="dark"]) .mini-card,
+body:not([data-theme="dark"]) .metric-card,
+body:not([data-theme="dark"]) .ride-item,
+body:not([data-theme="dark"]) .workout-item,
+body:not([data-theme="dark"]) .profile-card,
+body:not([data-theme="dark"]) .quick-grid button {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.72), transparent 42%),
+    linear-gradient(180deg, #fffcf8 0%, #f7f4ec 100%);
+  border: 1px solid rgba(22, 26, 22, 0.08);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.85) inset,
+    0 14px 36px rgba(36, 30, 18, 0.06);
+}
+
+body:not([data-theme="dark"]) .card:hover,
+body:not([data-theme="dark"]) .mini-card:hover,
+body:not([data-theme="dark"]) .metric-card:hover,
+body:not([data-theme="dark"]) .ride-item:hover {
+  border-color: rgba(154, 212, 10, 0.45);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.9) inset,
+    0 18px 40px rgba(36, 30, 18, 0.09);
+}
+
+/* ---------- Tema escuro ---------- */
+body[data-theme="dark"] {
+  --bg: #070908;
+  --card: #121614;
+  --surface-2: #0d110f;
+  --text: #f4f7f0;
+  --muted: #a3aea4;
+  --border: rgba(214, 255, 90, 0.12);
+  --accent: #d6ff4a;
+  --accent-2: #b6ef22;
+  --accent-ink: #121800;
+  --green: #8ed56a;
+  --blue: #7ec0f2;
+  --purple: #b3a4f0;
+  --danger: #ff6d6d;
+  --dark: #050706;
+  --shadow: 0 28px 70px rgba(0, 0, 0, 0.45);
+  --shadow-soft: 0 12px 32px rgba(0, 0, 0, 0.32);
+  background-color: #070908;
+  background-image:
+    radial-gradient(820px 420px at 0% -10%, rgba(214, 255, 74, 0.14), transparent 60%),
+    radial-gradient(560px 360px at 100% 0%, rgba(196, 132, 74, 0.12), transparent 55%),
+    linear-gradient(180deg, #0b0e0c 0%, #070908 58%, #0a0d0b 100%);
+}
+
+body[data-theme="dark"] .app-header,
+body[data-theme="dark"] .admin-topbar {
+  background: color-mix(in srgb, #0c100e 78%, transparent);
+  border-color: rgba(214, 255, 90, 0.1);
+}
+
+body[data-theme="dark"] .card,
+body[data-theme="dark"] .mini-card,
+body[data-theme="dark"] .metric-card,
+body[data-theme="dark"] .ride-item,
+body[data-theme="dark"] .workout-item,
+body[data-theme="dark"] .profile-card {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent 36%),
+    linear-gradient(180deg, #161b17 0%, #101412 100%);
+  border-color: rgba(214, 255, 90, 0.1);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.04) inset,
+    0 18px 40px rgba(0, 0, 0, 0.28);
+}
+
+/* ---------- Tipo ---------- */
+.welcome h1,
+.page-intro h1 {
+  font-weight: 750;
+  letter-spacing: -0.045em;
+  line-height: 0.98;
+}
+
+.section-head h2,
+.hero-copy h2,
+.card-head h3,
+.gym-sheet-head h2 {
+  font-weight: 700;
+  letter-spacing: -0.035em;
+}
+
+.eyebrow,
+.section-label,
+.workout-section-label span,
+.picker-kicker {
+  font-family: var(--body);
+  letter-spacing: 0.22em;
+  font-weight: 700;
+  color: color-mix(in srgb, var(--text) 42%, var(--accent-2));
+}
+
+.welcome p,
+.page-intro p,
+.muted {
+  letter-spacing: 0.01em;
+}
+
+/* ---------- Controles ---------- */
+.btn {
+  border-radius: 999px;
+  letter-spacing: 0.04em;
+  font-weight: 700;
+}
+
+body:not([data-theme="dark"]) .btn-primary,
+body:not([data-theme="dark"]) .chip.active,
+body:not([data-theme="dark"]) .fab,
+.btn-primary,
+.auth-submit {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.35), transparent 42%),
+    linear-gradient(135deg, #e4ff7a 0%, #c8f53a 42%, #8ed000 100%);
+  color: #152000;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.55) inset,
+    0 12px 28px rgba(154, 196, 20, 0.28);
+}
+
+.btn-light,
+.icon-btn {
+  border-radius: 999px;
+}
+
+.icon-btn {
+  border: 1px solid var(--border);
+  backdrop-filter: blur(16px);
+}
+
+input,
+select,
+textarea,
+.exercise-search {
+  border-radius: 14px;
+  font-family: var(--body);
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  box-shadow: 0 0 0 4px rgba(200, 245, 58, 0.18);
+}
+
+/* ---------- Início ---------- */
+body[data-theme="dark"] #home .hero-card {
+  background:
+    radial-gradient(420px 180px at 100% 0%, rgba(200, 245, 58, 0.2), transparent 60%),
+    linear-gradient(155deg, #1a2218 0%, #0c100d 55%, #14110e 100%) !important;
+  border: 1px solid rgba(200, 245, 58, 0.22) !important;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.08) inset,
+    0 28px 60px rgba(8, 12, 8, 0.28) !important;
+  color: #f6f8f2;
+}
+
+body[data-theme="dark"] #home .hero-copy .eyebrow,
+body[data-theme="dark"] #home .hero-copy p,
+body[data-theme="dark"] #home .hero-stats span {
+  color: rgba(236, 240, 228, 0.72) !important;
+}
+
+body[data-theme="dark"] #home .hero-copy h2,
+body[data-theme="dark"] #home .hero-stats strong,
+body[data-theme="dark"] #home .today-badge,
+body[data-theme="dark"] #home .hero-today-badge {
+  color: #f7fbe8 !important;
+}
+
+body:not([data-theme="dark"]) #home .hero-card {
+  background:
+    radial-gradient(420px 180px at 100% 0%, rgba(200, 245, 58, 0.28), transparent 58%),
+    linear-gradient(165deg, #fffdf8 0%, #f4efe4 100%) !important;
+  border: 1px solid rgba(22, 26, 22, 0.08) !important;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.9) inset,
+    0 22px 48px rgba(36, 30, 18, 0.08) !important;
+  color: #161a16;
+}
+
+body:not([data-theme="dark"]) #home .hero-copy h2,
+body:not([data-theme="dark"]) #home .hero-stats strong {
+  color: #161a16 !important;
+}
+
+body:not([data-theme="dark"]) #home .hero-copy .eyebrow,
+body:not([data-theme="dark"]) #home .hero-copy p,
+body:not([data-theme="dark"]) #home .hero-stats span {
+  color: #5e675e !important;
+}
+
+body:not([data-theme="dark"]) #home .today-badge,
+body:not([data-theme="dark"]) #home .hero-today-badge {
+  color: #172000 !important;
+  background: #d8ff63 !important;
+}
+
+body[data-theme="dark"] #home .hero-stats div {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+}
+
+body:not([data-theme="dark"]) #home .hero-stats > div {
+  background: rgba(255, 255, 255, 0.55) !important;
+  border: 1px solid rgba(22, 26, 22, 0.08) !important;
+  border-radius: 16px;
+}
+
+.week-card .day.today,
+#home .week-card .day.today {
+  background: linear-gradient(180deg, #e7ff86, #b6ef22) !important;
+  color: #172000 !important;
+  box-shadow: 0 12px 26px rgba(182, 239, 34, 0.28);
+}
+
+.progress {
+  height: 8px;
+  border-radius: 999px;
+}
+
+.progress i {
+  background: linear-gradient(90deg, #8ed000, #e4ff7a);
+  box-shadow: 0 0 16px rgba(200, 245, 58, 0.35);
+}
+
+.mini-icon {
+  border-radius: 14px;
+}
+
+/* ---------- Navegação ---------- */
+.bottom-nav {
+  background: color-mix(in srgb, var(--card) 82%, transparent);
+  border-top: 1px solid var(--border);
+  backdrop-filter: blur(22px) saturate(1.2);
+  box-shadow: 0 -1px 0 rgba(255, 255, 255, 0.04) inset;
+}
+
+.nav-btn.active {
+  color: var(--text);
+}
+
+.nav-btn.active:before {
+  width: 22px;
+  height: 2px;
+  background: var(--accent);
+  box-shadow: 0 0 12px rgba(200, 245, 58, 0.55);
+}
+
+#adminPanel .admin-tabs {
+  background: color-mix(in srgb, var(--card) 88%, transparent) !important;
+  backdrop-filter: blur(22px) saturate(1.15);
+  border-top: 1px solid var(--border) !important;
+}
+
+#adminPanel .admin-tab.active {
+  background: rgba(200, 245, 58, 0.12) !important;
+  color: color-mix(in srgb, var(--accent-2) 70%, var(--text)) !important;
+}
+
+#adminPanel .admin-tab.active::before {
+  background: var(--accent);
+  box-shadow: 0 0 12px rgba(200, 245, 58, 0.5);
+}
+
+.admin-topbar {
+  border-radius: 0 0 22px 22px;
+  background: color-mix(in srgb, var(--card) 84%, transparent);
+  backdrop-filter: blur(18px);
+}
+
+/* ---------- Evolução ---------- */
+body[data-theme="dark"] #progress .progress-hero {
+  background:
+    radial-gradient(360px 160px at 100% 0%, rgba(200, 245, 58, 0.16), transparent 62%),
+    linear-gradient(145deg, #171e16, #0c100d 70%) !important;
+  border: 1px solid rgba(200, 245, 58, 0.16) !important;
+  color: #f4f7ef;
+}
+
+body:not([data-theme="dark"]) #progress .progress-hero {
+  background:
+    radial-gradient(360px 160px at 100% 0%, rgba(200, 245, 58, 0.22), transparent 62%),
+    linear-gradient(145deg, #fffdf8, #f3eee3) !important;
+  border: 1px solid rgba(22, 26, 22, 0.08) !important;
+  color: #161a16;
+}
+
+.metric-card strong {
+  font-family: var(--display);
+  letter-spacing: -0.04em;
+}
+
+/* ---------- Auth e splash ---------- */
+html.cf-skip-splash #ciclofit-splash,
+html.cf-session #ciclofit-splash,
+html.cf-session #authScreen {
+  display: none !important;
+}
+
+.ciclofit-splash {
+  z-index: 100001 !important;
+  background:
+    radial-gradient(520px 280px at 50% 18%, rgba(200, 245, 58, 0.18), transparent 62%),
+    #070908 !important;
+}
+
+@media (max-width: 700px), (display-mode: standalone) {
+  .ciclofit-splash {
+    position: fixed !important;
+    inset: 0 !important;
+    z-index: 100001 !important;
+    display: flex !important;
+  }
+
+  .ciclofit-splash.is-hidden {
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+  }
+}
+
+.ciclofit-splash-text {
+  font-family: var(--display);
+  letter-spacing: 0.42em;
+}
+
+#authScreen.auth-screen,
+.auth-screen {
+  background:
+    radial-gradient(720px 380px at 12% -10%, rgba(200, 245, 58, 0.2), transparent 60%),
+    radial-gradient(540px 320px at 100% 0%, rgba(196, 132, 74, 0.16), transparent 55%),
+    linear-gradient(180deg, #f6f3ea, #e8e3d6) !important;
+}
+
+body[data-theme="dark"] #authScreen.auth-screen,
+body[data-theme="dark"] .auth-screen {
+  background:
+    radial-gradient(720px 380px at 12% -10%, rgba(214, 255, 74, 0.14), transparent 60%),
+    radial-gradient(540px 320px at 100% 0%, rgba(196, 132, 74, 0.14), transparent 55%),
+    linear-gradient(180deg, #0c100e, #070908) !important;
+}
+
+.auth-card,
+#authScreen .auth-card {
+  border: 1px solid rgba(255, 255, 255, 0.38) !important;
+  background: color-mix(in srgb, #fffcf7 78%, transparent) !important;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.7) inset,
+    0 30px 80px rgba(28, 22, 12, 0.16) !important;
+  backdrop-filter: blur(22px) saturate(1.15);
+}
+
+body[data-theme="dark"] .auth-card,
+body[data-theme="dark"] #authScreen .auth-card {
+  border-color: rgba(214, 255, 90, 0.14) !important;
+  background: color-mix(in srgb, #121614 82%, transparent) !important;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.05) inset,
+    0 30px 80px rgba(0, 0, 0, 0.4) !important;
+}
+
+.auth-welcome,
+.auth-welcome strong {
+  letter-spacing: -0.045em;
+}
+
+.auth-tagline {
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.auth-tabs {
+  border-radius: 999px;
+  padding: 4px;
+}
+
+.auth-tab {
+  border-radius: 999px;
+  font-family: var(--body);
+  letter-spacing: 0.12em;
+  font-weight: 700;
+}
+
+.auth-tab.active {
+  background: #fffcf8;
+  box-shadow: 0 8px 18px rgba(28, 22, 12, 0.08);
+}
+
+body[data-theme="dark"] .auth-tab.active {
+  background: #1a201b;
+}
+
+/* ---------- Folhas e modais ---------- */
+.gym-workout-sheet,
+.modal-content {
+  border: 1px solid var(--border);
+  box-shadow: 0 28px 80px rgba(0, 0, 0, 0.28);
+}
+
+.gym-live-bar {
+  border-radius: 16px;
+  background:
+    linear-gradient(135deg, rgba(200, 245, 58, 0.14), transparent 40%),
+    var(--dark);
+  border: 1px solid rgba(200, 245, 58, 0.16);
+}
+
+.toast {
+  border-radius: 16px;
+  font-family: var(--body);
+  backdrop-filter: blur(16px);
+}
+
+.ride-mode-btn,
+.ride-mode {
+  border-radius: 16px;
+}
+
+.ride-mode-btn.active,
+.ride-mode.active {
+  box-shadow:
+    inset 0 0 0 1px var(--accent),
+    0 10px 24px rgba(200, 245, 58, 0.12);
+}
+
+/* Rotina da semana: letra, data em círculo, ícone da atividade */
+#home .week-card .day,
+.week-card .day {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 7px !important;
+  min-height: 96px !important;
+  padding: 10px 2px !important;
+  overflow: hidden !important;
+}
+
+#home .week-card .day-name,
+.week-card .day-name {
+  font-size: 12px !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.02em;
+  line-height: 1 !important;
+  text-transform: uppercase;
+}
+
+#home .week-card .day-date,
+.week-card .day-date {
+  width: 28px !important;
+  height: 28px !important;
+  margin: 0 !important;
+  display: grid !important;
+  place-items: center !important;
+  border-radius: 50% !important;
+  border: 1.5px solid color-mix(in srgb, currentColor 28%, transparent) !important;
+  background: color-mix(in srgb, var(--card) 82%, transparent) !important;
+  font-size: 12px !important;
+  font-weight: 800 !important;
+  line-height: 1 !important;
+  color: var(--text) !important;
+  flex: 0 0 auto;
+}
+
+#home .week-card .day.today .day-name,
+.week-card .day.today .day-name {
+  color: var(--accent-ink) !important;
+}
+
+#home .week-card .day.today .day-date,
+.week-card .day.today .day-date {
+  background: #141814 !important;
+  color: #f6f8f1 !important;
+  border-color: transparent !important;
+}
+
+#home .week-card .day .icon,
+.week-card .day .icon,
+#home .week-card .day.rest-day .icon,
+.week-card .day.rest-day .icon {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  width: auto !important;
+  height: 22px !important;
+  min-width: 22px;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  overflow: visible !important;
+}
+
+#home .week-card .day .icon .cf-svg,
+.week-card .day .icon .cf-svg {
+  width: 18px !important;
+  height: 18px !important;
+}
+
+#home .week-card .day.today .icon,
+.week-card .day.today .icon {
+  color: var(--accent-ink);
+}
+
+#progress .pr-row.pr-highlight {
+  margin-bottom: 6px;
+  padding: 12px 10px;
+  border: 1px solid color-mix(in srgb, var(--accent) 35%, var(--border));
+  border-radius: 16px;
+  background:
+    linear-gradient(135deg, rgba(200, 245, 58, 0.16), transparent 55%),
+    color-mix(in srgb, var(--card) 88%, transparent);
+}
+
+#progress .pr-row.pr-highlight small {
+  display: block;
+  max-width: 100%;
+  line-height: 1.35;
+}
+
+#progress .pr-modality {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 14px 0 4px;
+  color: var(--muted);
+}
+
+#progress .pr-modality:first-child {
+  margin-top: 2px;
+}
+
+#progress .pr-modality span {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  color: var(--accent);
+}
+
+#progress .pr-modality .cf-svg {
+  width: 16px;
+  height: 16px;
+}
+
+#progress .pr-modality b {
+  font-family: var(--display);
+  font-size: 12px;
+  font-weight: 750;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+#progress .card:has(#history) {
+  display: none !important;
+}
+
+#home .week-card .day .icon .day-x,
+.week-card .day .icon .day-x {
+  display: block;
+  font-family: var(--body);
+  font-size: 15px;
+  font-weight: 800;
+  line-height: 1;
+  color: var(--muted);
+}
+
+#home .week-card .day.today .day-x,
+.week-card .day.today .day-x {
+  color: var(--accent-ink);
+}
+
+#home .week-card .day.assigned-day .day-x,
+.week-card .day.assigned-day .day-x,
+#home .week-card .day .icon .cf-svg ~ .cf-svg,
+.week-card .day .icon .cf-svg ~ .cf-svg {
+  display: none !important;
+}
+
+#home .week-card .day strong,
+#home .week-card .day .day-status,
+#home .week-card .day.rest-day strong,
+#home .week-card .day.rest-day .day-status,
+.week-card .day strong,
+.week-card .day .day-status {
+  display: none !important;
+}

@@ -232,7 +232,7 @@ function renderToday(){
 function weeklyAssignedSchedule(baseDate=new Date()){
   const map=new Map(),a=currentAuth?.();
   if(!a||a.role!=='student')return map;
-  const all=adminWorkouts().filter(x=>String(x.studentId)===String(a.id)&&workoutByKey(x.type)&&x.startDate);
+  const all=adminWorkouts().filter(x=>String(x.studentId)===String(a.id)&&x.startDate);
   const weekStart=new Date(baseDate);weekStart.setHours(0,0,0,0);
   // A semana do calendário é sempre de segunda a domingo.
   // getDay(): domingo=0, segunda=1 ... sábado=6.
@@ -243,22 +243,34 @@ function weeklyAssignedSchedule(baseDate=new Date()){
     const start=x.startDate;
     const end=x.validUntil||start;
     // Cada atribuição recebe um dia fixo da semana. Registros antigos usam o dia da data de início.
-    const wd=Number.isInteger(Number(x.weekday))?Number(x.weekday):new Date(start+'T12:00:00').getDay();
+    const wd=canonicalWeekday(x);
     if(wd<0||wd>6)return;
     const target=days[(wd+6)%7];
-    // Só exibe na semana se a atribuição estiver válida em algum momento dela.
-    // A atribuição é semanal: o dia escolhido pelo Admin se repete dentro
-    // da vigência do treino. Não bloqueie o dia da semana apenas porque a
-    // data de início caiu depois dele na semana atual; isso fazia a
-    // segunda-feira desaparecer quando o plano começava na terça-feira.
+    // A vigência precisa cruzar a semana. O dia escolhido continua visível
+    // mesmo que a data desse dia caia um pouco antes do início ou depois do fim.
     if(end<days[0]||start>days[6])return;
-    if(target>end)return;
     if(!map.has(target))map.set(target,[]);
     map.get(target).push({...x,weekday:wd,weekdayName:dayNames[wd]});
   });
   // Mantém a ordem definida pelo Admin e evita duplicidade do mesmo registro.
   map.forEach((items,date)=>map.set(date,items.sort((a,b)=>String(a.startDate).localeCompare(String(b.startDate))||String(a.id).localeCompare(String(b.id)))));
   return map;
+}
+function canonicalWeekday(x){
+  const raw=x?.weekday;
+  if(raw!==undefined&&raw!==null&&String(raw).trim()!==''){
+    const wd=Number(raw);
+    if(Number.isInteger(wd)&&wd>=0&&wd<=6)return wd;
+  }
+  // A/B/C antigos não gravavam o dia. Seguem a rotina: seg, qua, sex.
+  if(x?.type==='A')return 1;
+  if(x?.type==='B')return 3;
+  if(x?.type==='C')return 5;
+  return new Date((x?.startDate||iso())+'T12:00:00').getDay();
+}
+function weekActivityIcon(item){
+  if(item?.type==='ride')return 'i-bike';
+  return String(workoutByKey(item?.type)?.category||'').toLowerCase()==='bike'?'i-bike':'i-dumbbell';
 }
 function svgIcon(id){return `<svg class="cf-svg" aria-hidden="true"><use href="#${id}"/></svg>`}
 function shortWeekWorkoutLabel(item){
@@ -274,7 +286,7 @@ function shortWeekWorkoutLabel(item){
 function renderWeek(){
   const grid=$('#weekGrid');
   if(!grid) return;
-  const names=['Seg','Ter','Qua','Qui','Sex','Sáb','Dom'];
+  const letters=['S','T','Q','Q','S','S','D'];
   const fullNames=['Segunda-feira','Terça-feira','Quarta-feira','Quinta-feira','Sexta-feira','Sábado','Domingo'];
   const now=new Date(), today=iso(now);
   const monday=new Date(now); monday.setHours(0,0,0,0); monday.setDate(monday.getDate()-((monday.getDay()+6)%7));
@@ -283,11 +295,11 @@ function renderWeek(){
   grid.innerHTML=days.map((d,i)=>{
     const date=iso(d), items=schedule.get(date)||[];
     const isToday=date===today;
-    const firstWorkout=items.length?workoutByKey(items[0].type):null;
-    const iconSvg=items.length?(String(firstWorkout?.category||'').toLowerCase()==='bike'?svgIcon('i-bike'):svgIcon('i-training')):svgIcon('i-rest');
-    const label=items.length?[...new Set(items.map(shortWeekWorkoutLabel))].join(' + '):'Off';
+    const iconId=items.length?weekActivityIcon(items[0]):'';
+    const label=items.length?[...new Set(items.map(shortWeekWorkoutLabel))].join(' + '):'Sem treino';
     const done=items.length&&items.every(x=>isDoneWorkout(x.type));
-    return `<article class="day ${isToday?'today':''} ${items.length?'assigned-day':''} ${done?'done':''} ${!items.length?'rest-day':''}" title="${esc(fullNames[i])}: ${esc(items.length?label:'Off')}"><span class="day-name">${names[i]}</span><span class="day-date">${String(d.getDate()).padStart(2,'0')}</span><div class="icon">${done?svgIcon('i-check'):iconSvg}</div><strong>${esc(label)}</strong><small class="day-status" title="${done?'Concluído':(items.length?'Programado':'Off')}">${done?'Concluído':(items.length?'Prog.':'Off')}</small></article>`;
+    const iconHtml=iconId?svgIcon(iconId):'<span class="day-x" aria-hidden="true">X</span>';
+    return `<article class="day ${isToday?'today':''} ${items.length?'assigned-day':'rest-day'} ${done?'done':''}" title="${esc(fullNames[i])}: ${esc(label)}"><span class="day-name">${letters[i]}</span><span class="day-date">${d.getDate()}</span><div class="icon">${iconHtml}</div></article>`;
   }).join('');
   const end=new Date(monday);end.setDate(monday.getDate()+6);
   const fmt=new Intl.DateTimeFormat('pt-BR',{day:'2-digit',month:'short'});
@@ -334,34 +346,179 @@ $('#finishWorkout').onclick=()=>{
   toast('Treino registrado!');
   renderPRs();
 };function closeModal(){if(currentWorkout&&$('#workoutModal')?.classList.contains('show'))saveWorkoutDraft();stopTimer();$('#workoutModal').classList.remove('show')}$('#closeModal').onclick=closeModal;$('#workoutModal').onclick=e=>{if(e.target.id==='workoutModal')closeModal()};
-let restAudioContext=null;
+let restAudioContext=null,restEndAt=0,restFinishTimer=0,restKeepWatch=0,restBeepHold=0,restWakeLock=null,restPendingBeep=false;
+const restAlertAudio=$('#restAlertAudio'),restKeepAudio=$('#restKeepAliveAudio');
+const REST_ALERT={title:'CicloFit — descanso finalizado',body:'Seu descanso terminou. Próxima série.'};
+function prepRestAudio(el){
+  if(!el)return;
+  el.playsInline=true;
+  el.setAttribute('playsinline','');
+  el.setAttribute('webkit-playsinline','');
+  el.preload='auto';
+  el.muted=false;
+}
+function armRestAudioSession(){
+  try{if('audioSession' in navigator)navigator.audioSession.type='playback'}catch(e){}
+}
 function unlockRestAudio(){
   try{
+    armRestAudioSession();
     const AC=window.AudioContext||window.webkitAudioContext;
     if(!AC)return null;
     if(!restAudioContext)restAudioContext=new AC();
     if(restAudioContext.state==='suspended')restAudioContext.resume().catch(()=>{});
+    prepRestAudio(restKeepAudio);
     return restAudioContext;
   }catch(e){return null}
 }
-function playRestEndSound(){
+function markRestPlaying(){
+  if(!navigator.mediaSession)return;
   try{
+    navigator.mediaSession.metadata=new MediaMetadata({title:'CicloFit',artist:'Descansando',album:'Treino'});
+    navigator.mediaSession.playbackState='playing';
+    navigator.mediaSession.setActionHandler('play',()=>{restKeepAudio?.play().catch(()=>{});if(restAudioContext?.state==='suspended')restAudioContext.resume()});
+    navigator.mediaSession.setActionHandler('pause',()=>{restKeepAudio?.play().catch(()=>{});if(restAudioContext?.state==='suspended')restAudioContext.resume()});
+  }catch(e){}
+}
+function startRestKeepAlive(){
+  unlockRestAudio();
+  markRestPlaying();
+  try{
+    if(restKeepAudio){
+      restKeepAudio.loop=true;
+      restKeepAudio.muted=false;
+      restKeepAudio.volume=1;
+      restKeepAudio.play().catch(()=>{});
+    }
+  }catch(e){}
+  if(!restKeepWatch){
+    restKeepWatch=setInterval(()=>{
+      if(!timerInterval)return;
+      armRestAudioSession();
+      if(restAudioContext?.state==='suspended')restAudioContext.resume();
+      if(restKeepAudio?.paused)restKeepAudio.play().catch(()=>{});
+    },4000);
+  }
+  if(navigator.wakeLock){
+    navigator.wakeLock.request('screen').then(lock=>{restWakeLock=lock}).catch(()=>{});
+  }
+}
+function stopRestKeepAlive(){
+  if(restKeepWatch){clearInterval(restKeepWatch);restKeepWatch=0}
+  try{if(restKeepAudio){restKeepAudio.pause();restKeepAudio.currentTime=0}}catch(e){}
+  try{restWakeLock?.release()}catch(e){}
+  restWakeLock=null;
+  if(restBeepHold)return;
+  try{if(navigator.mediaSession)navigator.mediaSession.playbackState='none'}catch(e){}
+}
+function fallbackRestBeep(){
+  try{
+    armRestAudioSession();
     const ctx=unlockRestAudio();
     if(!ctx)return;
-    const now=ctx.currentTime+0.03;
-    [880,660,880,1046].forEach((freq,i)=>{
-      const osc=ctx.createOscillator(),gain=ctx.createGain();
-      const t=now+i*.17;
-      osc.type='sine';
-      osc.frequency.setValueAtTime(freq,t);
-      gain.gain.setValueAtTime(.0001,t);
-      gain.gain.exponentialRampToValueAtTime(.20,t+.025);
-      gain.gain.exponentialRampToValueAtTime(.0001,t+.13);
-      osc.connect(gain).connect(ctx.destination);
-      osc.start(t);
-      osc.stop(t+.14);
-    });
-  }catch(e){console.warn('Som de descanso indisponível',e)}
+    const kick=ctx.state==='suspended'?ctx.resume():Promise.resolve();
+    const play=()=>{
+      let n=ctx.currentTime;
+      [{s:0,d:.12,f:3200},{s:.2,d:.12,f:3200},{s:.4,d:.12,f:3200},{s:.6,d:.16,f:3600}].forEach(p=>{
+        const osc=ctx.createOscillator(),gain=ctx.createGain();
+        osc.type='square';
+        osc.frequency.setValueAtTime(p.f,n+p.s);
+        gain.gain.setValueAtTime(.0001,n+p.s);
+        gain.gain.linearRampToValueAtTime(.95,n+p.s+.008);
+        gain.gain.setValueAtTime(.95,n+p.s+p.d-.02);
+        gain.gain.linearRampToValueAtTime(.0001,n+p.s+p.d);
+        osc.connect(gain);gain.connect(ctx.destination);
+        osc.start(n+p.s);osc.stop(n+p.s+p.d+.01);
+      });
+    };
+    if(kick&&kick.then)kick.then(play).catch(play);else play();
+  }catch(e){}
+}
+function playRestEndSound(){
+  restBeepHold=1;
+  try{
+    armRestAudioSession();
+    if(restAudioContext?.state==='suspended')restAudioContext.resume();
+    prepRestAudio(restAlertAudio);
+    if(restAlertAudio){
+      restAlertAudio.muted=false;
+      restAlertAudio.loop=false;
+      restAlertAudio.volume=1;
+      try{restAlertAudio.currentTime=0}catch(e){}
+      const play=restAlertAudio.play();
+      if(play&&play.then)play.then(()=>{restPendingBeep=false}).catch(()=>{restPendingBeep=true;fallbackRestBeep()});
+      else restPendingBeep=false;
+    }else fallbackRestBeep();
+    navigator.vibrate?.([400,100,400,100,700]);
+  }catch(e){restPendingBeep=true;fallbackRestBeep()}
+  setTimeout(()=>{
+    restBeepHold=0;
+    if(!timerInterval){
+      try{if(navigator.mediaSession)navigator.mediaSession.playbackState='none'}catch(e){}
+    }
+  },2600);
+}
+async function enableRestNotifications(){
+  if(!('Notification' in window))return false;
+  if(Notification.permission==='granted')return true;
+  if(Notification.permission==='denied')return false;
+  try{return await Notification.requestPermission()==='granted'}catch(e){return false}
+}
+function restNotifyOptions(){
+  return {
+    body:REST_ALERT.body,
+    tag:'ciclofit-rest-finished',
+    renotify:true,
+    requireInteraction:true,
+    silent:false,
+    sound:'./assets/restx-alert.wav',
+    icon:'./icons/icon-192.png',
+    badge:'./icons/icon-192.png',
+    vibrate:[400,100,400,100,700],
+    data:{url:'./'}
+  };
+}
+function notifyRestFinish(){
+  const options=restNotifyOptions();
+  const fallback=()=>{try{if('Notification' in window && Notification.permission==='granted')new Notification(REST_ALERT.title,options)}catch(e){}};
+  try{
+    if(navigator.serviceWorker){
+      navigator.serviceWorker.ready.then(reg=>{
+        if(reg.showNotification)return reg.showNotification(REST_ALERT.title,options);
+        reg.active?.postMessage({type:'SHOW_REST_NOTIFICATION',title:REST_ALERT.title,body:REST_ALERT.body,options});
+        return null;
+      }).catch(fallback);
+      return;
+    }
+  }catch(e){}
+  fallback();
+}
+function postRestWorker(message){
+  try{
+    const worker=navigator.serviceWorker?.controller;
+    if(worker){worker.postMessage(message);return}
+    navigator.serviceWorker?.ready.then(reg=>reg.active?.postMessage(message)).catch(()=>{});
+  }catch(e){}
+}
+function cancelRestSchedule(){
+  if(restFinishTimer){clearTimeout(restFinishTimer);restFinishTimer=0}
+  postRestWorker({type:'CANCEL_REST'});
+}
+function armRestBackground(){
+  cancelRestSchedule();
+  if(!timerInterval||!restEndAt)return;
+  const delay=Math.max(0,restEndAt-Date.now()+80);
+  restFinishTimer=setTimeout(()=>{
+    if(timerInterval&&Date.now()>=restEndAt)finishRest();
+  },Math.min(delay,2147483647));
+  postRestWorker({type:'ARM_REST',endAt:restEndAt,title:REST_ALERT.title,body:REST_ALERT.body,url:'./'});
+}
+function syncRestClock(){
+  if(!timerInterval||!restEndAt)return;
+  const left=Math.max(0,Math.ceil((restEndAt-Date.now())/1000));
+  timerValue=left;
+  updateTimer();
+  if(left<=0)finishRest();
 }
 function updateTimer(){
   const timer=$('#timer'),bar=$('#timerProgress'),box=timer?.closest('.timer');
@@ -372,37 +529,63 @@ function updateTimer(){
 }
 function startTimer(){
   if(timerInterval)return;
+  if(timerValue<=0)timerValue=timerBase||60;
   unlockRestAudio();
+  startRestKeepAlive();
+  enableRestNotifications();
+  restPendingBeep=false;
+  restEndAt=Date.now()+Math.max(0,timerValue*1000);
   const box=$('#timer')?.closest('.timer');
   box?.classList.remove('timer-finished');
   $('#startTimer').textContent='Pausar';
-  timerInterval=setInterval(()=>{
-    timerValue=Math.max(0,timerValue-1);
-    updateTimer();
-    if(timerValue===0){
-      stopTimer();
-      playRestEndSound();
-      navigator.vibrate?.([250,100,250]);
-      toast('⏱️ Descanso terminado! Próxima série.');
-      // Volta automaticamente ao estado visual padrão após o aviso.
-      setTimeout(()=>{
-        if(!timerInterval && timerValue===0){
-          timerValue=60;
-          timerBase=60;
-          updateTimer();
-          $('#startTimer').textContent='Iniciar';
-        }
-      },1100);
-    }
-  },1000);
+  timerInterval=setInterval(syncRestClock,250);
+  armRestBackground();
+  updateTimer();
 }
 function stopTimer(){
   clearInterval(timerInterval);
   timerInterval=null;
+  restEndAt=0;
+  restPendingBeep=false;
+  cancelRestSchedule();
+  stopRestKeepAlive();
+  try{restAlertAudio?.pause()}catch(e){}
   if($('#startTimer'))$('#startTimer').textContent='Iniciar';
+}
+function finishRest(){
+  if(!timerInterval)return;
+  clearInterval(timerInterval);
+  timerInterval=null;
+  restEndAt=0;
+  cancelRestSchedule();
+  timerValue=0;
+  updateTimer();
+  if($('#startTimer'))$('#startTimer').textContent='Iniciar';
+  notifyRestFinish();
+  playRestEndSound();
+  toast('⏱️ Descanso terminado! Próxima série.');
+  setTimeout(()=>{if(!timerInterval)stopRestKeepAlive()},2600);
+  setTimeout(()=>{
+    if(!timerInterval && timerValue===0){
+      timerValue=60;
+      timerBase=60;
+      updateTimer();
+      $('#startTimer').textContent='Iniciar';
+    }
+  },1100);
+}
+function shiftRest(next){
+  timerValue=next;
+  timerBase=Math.max(timerBase,timerValue);
+  if(timerInterval){
+    restEndAt=Date.now()+timerValue*1000;
+    armRestBackground();
+  }
+  updateTimer();
 }
 function resetTimer(){
   stopTimer();
+  restPendingBeep=false;
   timerValue=60;
   timerBase=60;
   const box=$('#timer')?.closest('.timer');
@@ -411,18 +594,21 @@ function resetTimer(){
 }
 $('#startTimer').onclick=()=>timerInterval?stopTimer():startTimer();
 $('#resetTimer').onclick=resetTimer;
-$('#minusTimer').onclick=()=>{
-  timerValue=Math.max(15,timerValue-15);
-  timerBase=Math.max(timerBase,timerValue);
-  updateTimer();
-};
-$('#plusTimer').onclick=()=>{
-  timerValue+=15;
-  timerBase=Math.max(timerBase,timerValue);
-  updateTimer();
-};
-// Pré-libera o áudio no primeiro toque do usuário, respeitando as políticas do navegador.
+$('#minusTimer').onclick=()=>shiftRest(Math.max(15,timerValue-15));
+$('#plusTimer').onclick=()=>shiftRest(timerValue+15);
 document.addEventListener('pointerdown',unlockRestAudio,{once:true,passive:true});
+document.addEventListener('visibilitychange',()=>{
+  if(document.visibilityState==='visible'){
+    armRestAudioSession();
+    if(restAudioContext?.state==='suspended')restAudioContext.resume();
+    if(timerInterval)syncRestClock();
+    if(restPendingBeep)playRestEndSound();
+    if(timerInterval){startRestKeepAlive();armRestBackground()}
+  }else if(timerInterval){
+    armRestBackground();
+    startRestKeepAlive();
+  }
+});
 function getHrZones(){
   const max=Number(data.profile.maxHr)||190;
   return [
@@ -852,7 +1038,52 @@ function renderProgress(){const tc=totalWorkoutCount(),rc=data.rides.length,km=d
 function setupCanvas(c){const dpr=devicePixelRatio||1,w=c.clientWidth||600,h=190;c.width=w*dpr;c.height=h*dpr;const ctx=c.getContext('2d');ctx.scale(dpr,dpr);return{ctx,w,h}}
 function drawLineChart(id,values,labels){const c=$('#'+id),{ctx,w,h}=setupCanvas(c),pad={l:34,r:18,t:15,b:38},max=Math.max(1,...values),step=values.length>1?(w-pad.l-pad.r)/(values.length-1):w-pad.l-pad.r;ctx.clearRect(0,0,w,h);ctx.strokeStyle=getComputedStyle(document.body).getPropertyValue('--border');ctx.lineWidth=1;for(let i=0;i<4;i++){const y=pad.t+i*(h-pad.t-pad.b)/3;ctx.beginPath();ctx.moveTo(pad.l,y);ctx.lineTo(w-pad.r,y);ctx.stroke()}ctx.strokeStyle=getComputedStyle(document.body).getPropertyValue('--accent');ctx.lineWidth=3;ctx.beginPath();values.forEach((v,i)=>{const x=pad.l+i*step,y=pad.t+(h-pad.t-pad.b)*(1-v/max);i?ctx.lineTo(x,y):ctx.moveTo(x,y)});ctx.stroke();ctx.fillStyle=getComputedStyle(document.body).getPropertyValue('--muted');ctx.font='12px Arial';values.forEach((v,i)=>{const x=pad.l+i*step,y=pad.t+(h-pad.t-pad.b)*(1-v/max),text=String(labels[i]||''),tw=ctx.measureText(text).width,tx=Math.min(Math.max(2,x-tw/2),w-tw-2);ctx.fillText(text,tx,h-8);ctx.beginPath();ctx.fillStyle=getComputedStyle(document.body).getPropertyValue('--accent');ctx.arc(x,y,3,0,Math.PI*2);ctx.fill();ctx.fillStyle=getComputedStyle(document.body).getPropertyValue('--muted')})}
 function drawCharts(){const rides=data.rides.slice().sort((a,b)=>a.date.localeCompare(b.date)).slice(-7);drawLineChart('rideChart',rides.map(r=>+r.distance||0),rides.map(r=>r.date.slice(5)));const vals=Object.entries(data.workouts).sort((a,b)=>a[0].localeCompare(b[0])).slice(-7).map(([,w])=>w.sets.reduce((a,ex)=>a+ex.reduce((b,s)=>b+(+s.weight||0)*(+s.reps||0),0),0));drawLineChart('volumeChart',vals.length?vals:[0],vals.map((_,i)=>i+1))}
-function renderPRs(){const prs={};Object.values(data.workouts).forEach(v=>v.sets?.forEach((arr,i)=>arr.forEach(x=>{const ex=workouts[v.type]?.exercises[i],w=+x.weight||0,r=+x.reps||0;if(ex&&w&&r){const name=ex[0],score=w*r;if(!prs[name]||score>prs[name].score)prs[name]={name,score,weight:w,reps:r}}})));const list=Object.values(prs).sort((a,b)=>b.score-a.score);$('#prCount').textContent=list.length;$('#prList').innerHTML=list.length?list.slice(0,8).map(x=>`<div class="pr-row"><span class="pr-icon">${svgIcon('i-trophy')}</span><div><strong>${esc(x.name)}</strong><small>Melhor registro</small></div><b>${x.weight} kg × ${x.reps}</b></div>`).join(''):'<div class="muted">Complete séries com carga para criar seus recordes.</div>'}
+function bestRideBy(pick){
+  return (data.rides||[]).reduce((best,ride)=>{
+    const value=+pick(ride);
+    if(!Number.isFinite(value)||value<=0)return best;
+    if(!best||value>best.value)return {ride,value};
+    return best;
+  },null);
+}
+function renderPRs(){
+  const prs={};
+  Object.values(data.workouts).forEach(v=>v.sets?.forEach((arr,i)=>arr.forEach(x=>{
+    const ex=(workoutByKey(v.type)||workouts[v.type])?.exercises?.[i],w=+x.weight||0,r=+x.reps||0;
+    if(ex&&w&&r){const name=ex[0],score=w*r;if(!prs[name]||score>prs[name].score)prs[name]={name,score,weight:w,reps:r}}
+  })));
+  const gym=Object.values(prs).sort((a,b)=>b.score-a.score).slice(0,8);
+  const cyclingMetrics=[
+    {key:'maxSpeed',label:'Velocidade máxima',format:v=>`${v.toFixed(1)} km/h`,pick:r=>+r.maxSpeed},
+    {key:'speed',label:'Velocidade média',format:v=>`${v.toFixed(1)} km/h`,pick:r=>+r.speed},
+    {key:'elevation',label:'Maior altimetria',format:v=>`${Math.round(v)} m`,pick:r=>+r.elevation},
+    {key:'minutes',label:'Maior duração',format:v=>fmtMinutes(v),pick:r=>+r.minutes},
+    {key:'power',label:'Potência máxima',format:v=>`${Math.round(v)} W`,pick:r=>+r.powerMax||+r.power},
+    {key:'hr',label:'FC máxima',format:v=>`${Math.round(v)} bpm`,pick:r=>+r.maxHr||+r.hr}
+  ];
+  const cycling=cyclingMetrics.map(metric=>{const best=bestRideBy(metric.pick);return best?{...metric,...best}:null}).filter(Boolean);
+  const highlight=bestRideBy(r=>+r.distance)||cycling[0];
+  const cyclingRows=[];
+  if(highlight){
+    const ride=highlight.ride;
+    const bits=[
+      Number.isFinite(+ride.distance)&&+ride.distance>0?`${(+ride.distance).toFixed(1)} km`:null,
+      Number.isFinite(+ride.speed)&&+ride.speed>0?`${(+ride.speed).toFixed(1)} km/h`:null,
+      Number.isFinite(+ride.elevation)&&+ride.elevation>0?`${Math.round(+ride.elevation)} m`:null
+    ].filter(Boolean);
+    const date=ride.date?new Date(ride.date+'T12:00:00').toLocaleDateString('pt-BR'):'';
+    cyclingRows.push(`<div class="pr-row pr-highlight"><span class="pr-icon">${svgIcon('i-bike')}</span><div><strong>Melhor desempenho</strong><small>${esc(bits.join(' · ')||'Ciclismo')}</small></div><b>${esc(date||bits[0]||'')}</b></div>`);
+  }
+  cycling.forEach(item=>{
+    cyclingRows.push(`<div class="pr-row"><span class="pr-icon">${svgIcon('i-bike')}</span><div><strong>${esc(item.label)}</strong><small>Melhor registro</small></div><b>${esc(item.format(item.value))}</b></div>`);
+  });
+  const gymRows=gym.map(x=>`<div class="pr-row"><span class="pr-icon">${svgIcon('i-dumbbell')}</span><div><strong>${esc(x.name)}</strong><small>Melhor registro</small></div><b>${x.weight} kg × ${x.reps}</b></div>`);
+  const groups=[];
+  if(cyclingRows.length)groups.push(`<div class="pr-modality"><span>${svgIcon('i-bike')}</span><b>Ciclismo</b></div>${cyclingRows.join('')}`);
+  if(gymRows.length)groups.push(`<div class="pr-modality"><span>${svgIcon('i-dumbbell')}</span><b>Academia</b></div>${gymRows.join('')}`);
+  $('#prCount').textContent=cyclingRows.length+gymRows.length;
+  $('#prList').innerHTML=groups.length?groups.join(''):'<div class="muted">Registre pedais ou séries com carga para criar seus recordes.</div>';
+}
 function renderHistory(){const arr=Object.entries(data.workouts).sort((a,b)=>b[0].localeCompare(a[0])).slice(0,8);$('#history').innerHTML=arr.length?arr.map(([k,v])=>{const date=k.slice(0,10),w=workouts[v.type];return `<div class="pr-row"><span>${String(w?.category||'').toLowerCase()==='bike'?svgIcon('i-bike'):svgIcon('i-dumbbell')}</span><div><strong>${esc(w?.title||v.type)}</strong><small>${new Date(date+'T12:00:00').toLocaleDateString('pt-BR')}</small></div><b>Concluído</b></div>`}).join(''):'<div class="muted">Seus treinos concluídos aparecerão aqui.</div>'}
 async function refreshProfileFromServer(){
   if(currentAuth?.()?.role!=='student')return;
@@ -1088,6 +1319,7 @@ async function initAuth(){
   }
 
   let a=currentAuth(); if(a){if(a.role==='admin')showAdmin();else showStudent();return}
+  document.documentElement.classList.remove('cf-session');
   $('#authScreen').style.display='flex';
   document.body.classList.add('auth-open');
   let cloudOnline=false;
@@ -1462,6 +1694,12 @@ function isWorkoutScheduledToday(type){
 function activityOpenGate(type){
   if(!type)return {ok:false,reason:'Nenhuma atividade selecionada.'};
   if(isDoneWorkout(type))return {ok:false,reason:'Esta atividade já foi concluída e não pode ser aberta novamente.'};
+  const a=currentAuth();
+  if(a?.role==='student'){
+    const active=adminWorkouts().some(x=>String(x.studentId)===String(a.id)&&String(x.type)===String(type)&&(!x.validUntil||new Date(x.validUntil+'T23:59:59')>=new Date()));
+    if(!active)return {ok:false,reason:'Este treino não está válido.'};
+    return {ok:true};
+  }
   if(!isWorkoutScheduledToday(type))return {ok:false,reason:'Só é possível abrir a atividade do dia.'};
   return {ok:true};
 }
@@ -1548,7 +1786,7 @@ window.renderStudentAssigned=function(){
     const expired=x.validUntil&&new Date(x.validUntil+'T23:59:59')<new Date();
     const done=isDoneWorkout(x.type);
     const todayOnly=isWorkoutScheduledToday(x.type);
-    const locked=expired||done||!todayOnly;
+    const locked=expired||done;
     const isCustom=String(x.type||'').startsWith('custom:');
     const tag=isCustom?'':`TREINO ${esc(x.type)}`;
     const title=w.title||'Treino';
@@ -1556,7 +1794,7 @@ window.renderStudentAssigned=function(){
     const duration=w.duration||'';
     const exercises=w.exercises?.length||0;
     const sets=w.exercises?.reduce((sum,e)=>sum+(+e[2]||0),0)||0;
-    const label=expired?'Expirado':(done?'Concluído':(todayOnly?'Começar':'Somente no dia'));
+    const label=expired?'Expirado':(done?'Concluído':'Começar');
     const status=expired?'VENCIDO':(done?'CONCLUÍDO':(todayOnly?'HOJE':'PROGRAMADO'));
     const statusClass=expired||done?'validity-expired':'workout-tag';
     const tagHtml=tag?`<span class="workout-tag">${tag}</span>`:'';
