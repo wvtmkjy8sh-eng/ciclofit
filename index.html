@@ -10,7 +10,7 @@
   
   <meta
     name="theme-color"
-    content="#b7f500"
+    content="#121612"
   >
   
   <meta
@@ -53,7 +53,7 @@
     href="./assets/ciclofit-logo3.png"
   >
   <link rel="apple-touch-icon" sizes="180x180" href="icons/icon-180.png">
-  <title>CicloFit 5.0</title><link rel="stylesheet" href="css/style.css?v=34"><link rel="stylesheet" href="css/premium-visual.css?v=34">
+  <title>CicloFit 5.0</title><link rel="stylesheet" href="css/style.css?v=35"><link rel="stylesheet" href="css/premium-visual.css?v=35"><link rel="stylesheet" href="css/atelier-visual.css?v=45">
 </head>
 <script>
   window.addEventListener('load', () => {
@@ -74,6 +74,22 @@
   });
 </script>
 <body class="auth-open">
+<script>
+(function () {
+  try {
+    document.body.dataset.theme = localStorage.getItem('ciclofit-theme') || 'dark';
+  } catch (e) {}
+  try {
+    if (sessionStorage.getItem('ciclofit-splash-seen') === '1') {
+      document.documentElement.classList.add('cf-skip-splash');
+    } else {
+      sessionStorage.setItem('ciclofit-splash-seen', '1');
+    }
+    var auth = sessionStorage.getItem('ciclofit-auth-v1');
+    if (auth && auth !== 'null') document.documentElement.classList.add('cf-session');
+  } catch (e) {}
+})();
+</script>
 <svg xmlns="http://www.w3.org/2000/svg" class="cf-sprite" aria-hidden="true" focusable="false">
 <defs>
 <style>.cf-line{fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}</style>
@@ -324,10 +340,14 @@
 <div class="modal" id="quickModal"><div class="modal-content small-modal"><button class="close" onclick="closeQuick()" aria-label="Fechar">×</button><div class="eyebrow">REGISTRO RÁPIDO</div><h2>O que deseja fazer?</h2><div class="quick-grid"><button onclick="closeQuick();navigate('cycling')"><span><svg class="cf-svg" aria-hidden="true"><use href="#i-bike"/></svg></span><b>Registrar pedal</b><small>Distância e tempo</small></button><button onclick="closeQuick();navigate('workouts')"><span><svg class="cf-svg" aria-hidden="true"><use href="#i-dumbbell"/></svg></span><b>Começar treino</b><small>Séries e cargas</small></button><button onclick="closeQuick();navigate('progress')"><span><svg class="cf-svg" aria-hidden="true"><use href="#i-chart"/></svg></span><b>Ver evolução</b><small>Resultados e metas</small></button></div></div></div>
 
 <div id="toast" class="toast" role="status" aria-live="polite"></div>
+<audio id="restAlertAudio" preload="auto" playsinline>
+  <source src="./assets/restx-alert.wav" type="audio/wav">
+</audio>
+<audio id="restKeepAliveAudio" src="./assets/restx-keepalive.wav" preload="auto" loop playsinline></audio>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="js/cloud-config.js"></script>
 <script src="js/cloud-sync.js"></script>
-<script src="js/app.js?v=34"></script>
+<script src="js/app.js?v=47"></script>
 <script>
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', async () => {
