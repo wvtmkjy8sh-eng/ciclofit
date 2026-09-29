@@ -118,6 +118,7 @@ async function loadCloudState(){
       data.adminNotifs=Array.isArray(payload.adminNotifs)?payload.adminNotifs:[];
     }
 
+    repairAssignmentValidity();
     if(currentAuth?.()?.role==='admin'){
       await refreshAdminUsersFromCloud();
     }
@@ -256,6 +257,24 @@ function weeklyAssignedSchedule(baseDate=new Date()){
   map.forEach((items,date)=>map.set(date,items.sort((a,b)=>String(a.startDate).localeCompare(String(b.startDate))||String(a.id).localeCompare(String(b.id)))));
   return map;
 }
+function scheduledDateThisWeek(x,now=new Date()){
+  const wd=canonicalWeekday(x);
+  const monday=new Date(now);
+  monday.setHours(12,0,0,0);
+  monday.setDate(monday.getDate()-((monday.getDay()+6)%7));
+  const d=new Date(monday);
+  d.setDate(monday.getDate()+((wd+6)%7));
+  return iso(d);
+}
+function workoutListState(x){
+  const day=scheduledDateThisWeek(x);
+  const today=iso();
+  if(x?.startDate&&x.startDate>today)return 'future';
+  if(isDoneWorkout(x.type,day))return 'done';
+  if(day>today)return 'future';
+  if(day<today)return 'missed';
+  return 'today';
+}
 function canonicalWeekday(x){
   const raw=x?.weekday;
   if(raw!==undefined&&raw!==null&&String(raw).trim()!==''){
@@ -299,12 +318,70 @@ function renderWeek(){
     const label=items.length?[...new Set(items.map(shortWeekWorkoutLabel))].join(' + '):'Sem treino';
     const done=items.length&&items.every(x=>isDoneWorkout(x.type));
     const iconHtml=iconId?svgIcon(iconId):'<span class="day-x" aria-hidden="true">X</span>';
-    return `<article class="day ${isToday?'today':''} ${items.length?'assigned-day':'rest-day'} ${done?'done':''}" title="${esc(fullNames[i])}: ${esc(label)}"><span class="day-name">${letters[i]}</span><span class="day-date">${d.getDate()}</span><div class="icon">${iconHtml}</div></article>`;
+    return `<article class="day ${isToday?'today':''} ${items.length?'assigned-day':'rest-day'} ${done?'done':''}" data-week-date="${date}" role="button" tabindex="0" title="${esc(fullNames[i])}: ${esc(label)}"><span class="day-name">${letters[i]}</span><span class="day-date">${d.getDate()}</span><div class="icon">${iconHtml}</div></article>`;
   }).join('');
   const end=new Date(monday);end.setDate(monday.getDate()+6);
   const fmt=new Intl.DateTimeFormat('pt-BR',{day:'2-digit',month:'short'});
   const current=$('#weekCurrent');if(current)current.textContent=`${fmt.format(monday)} — ${fmt.format(end)}`;
 }
+function assignmentGroup(item){
+  if(item?.group)return item.group;
+  const type=String(item?.type||'');
+  if(type.startsWith('custom:'))return customById(type.slice(7))?.group||customById(type.slice(7))?.workout?.group||'';
+  return '';
+}
+function closeWeekDay(){$('#weekDayModal')?.classList.remove('show')}
+function openWeekDay(date){
+  const modal=$('#weekDayModal'); if(!modal||!date)return;
+  const d=new Date(date+'T12:00:00');
+  const names=['Domingo','Segunda-feira','Terça-feira','Quarta-feira','Quinta-feira','Sexta-feira','Sábado'];
+  const items=weeklyAssignedSchedule(d).get(date)||[];
+  if($('#weekDayEyebrow'))$('#weekDayEyebrow').textContent=date===iso()?'HOJE':'SEMANA';
+  if($('#weekDayTitle'))$('#weekDayTitle').textContent=names[d.getDay()];
+  if($('#weekDaySub'))$('#weekDaySub').textContent=d.toLocaleDateString('pt-BR',{day:'2-digit',month:'long'});
+  const body=$('#weekDayBody');
+  if(body){
+    body.innerHTML=items.length?items.map(item=>{
+      const w=workoutByKey(item.type)||{};
+      const bike=String(w.category||'').toLowerCase()==='bike'||item.type==='ride';
+      const group=assignmentGroup(item);
+      const exercises=Array.isArray(w.exercises)?w.exercises:[];
+      const ride=w.ride||{};
+      const facts=[
+        group?`<span>Grupo ${esc(group)}</span>`:'',
+        w.duration?`<span>${esc(w.duration)}</span>`:'',
+        w.intensity?`<span>${esc(w.intensity)}</span>`:''
+      ].filter(Boolean).join('');
+      const gymList=bike?exercises.map(e=>`<li><b>${esc(e[0])}</b><small>${esc(e[3]||'')}</small></li>`).join(''):exercises.map(e=>`<li><b>${esc(e[0])}</b><small>${esc(e[1]||'')} · ${esc(e[2]||0)} × ${esc(e[3]||0)}</small></li>`).join('');
+      const stageHead=bike&&gymList?'<div class="week-stage-head"><span>Etapa</span><span>Duração</span></div>':'';
+      const rideList=[
+        ride.distance?`<li><b>Distância</b><small>${esc(ride.distance)} km</small></li>`:'',
+        ride.elevation?`<li><b>Altimetria</b><small>${esc(ride.elevation)} m</small></li>`:'',
+        ride.pace?`<li><b>Ritmo</b><small>${esc(ride.pace)}</small></li>`:'',
+        ride.brief?`<li><b>Orientação</b><small>${esc(ride.brief)}</small></li>`:''
+      ].filter(Boolean).join('');
+      const note=w.info||item.note||w.subtitle||'';
+      const lists=`${rideList?`<ul class="week-day-list">${rideList}</ul>`:''}${stageHead}${gymList?`<ul class="week-day-list">${gymList}</ul>`:''}`;
+      const split=note&&lists?'<hr class="week-day-split">':'';
+      return `<article class="week-day-item"><div class="workout-topline"><span class="workout-tag">${bike?'CICLISMO':'ACADEMIA'}</span></div><h3>${esc((w.title||'Treino').replace(/^Treino [ABC] — /,''))}</h3>${facts?`<div class="week-day-facts">${facts}</div>`:''}${note?`<p>${esc(note)}</p>`:''}${split}${lists}</article>`;
+    }).join(''):'<div class="muted">Sem treino atribuído neste dia.</div>';
+  }
+  modal.classList.add('show');
+}
+$('#weekDayMinimize')?.addEventListener('click',closeWeekDay);
+$('#weekDayModal')?.addEventListener('click',e=>{if(e.target.id==='weekDayModal')closeWeekDay()});
+document.addEventListener('click',e=>{
+  const day=e.target?.closest?.('#weekGrid .day');
+  if(!day)return;
+  openWeekDay(day.dataset.weekDate);
+});
+document.addEventListener('keydown',e=>{
+  if(e.key!=='Enter'&&e.key!==' ')return;
+  const day=e.target?.closest?.('#weekGrid .day');
+  if(!day)return;
+  e.preventDefault();
+  openWeekDay(day.dataset.weekDate);
+});
 function renderWorkouts(filter='all'){
   const entries=Object.entries(workouts).filter(([key])=>filter==='all'||key===filter);
   const box=$('#workoutCards');
@@ -1237,9 +1314,45 @@ function notifyAdmin(title,body){
   if(window.Notification && Notification.permission==='granted') new Notification(title,{body});
   renderAdminNotifications();
 }
+function dateOnly(value){return String(value||'').slice(0,10)}
+function planEnded(validUntil){const day=dateOnly(validUntil);return !!day&&day<iso()}
+function validityDayCount(start,until,fallback=30){
+  const a=new Date(dateOnly(start)+'T12:00:00'), b=new Date(dateOnly(until)+'T12:00:00');
+  if(Number.isNaN(a.getTime())||Number.isNaN(b.getTime()))return fallback;
+  return Math.max(1,Math.round((b-a)/86400000))||fallback;
+}
+function validityEndFrom(start,days){
+  const base=new Date(dateOnly(start)+'T12:00:00');
+  if(Number.isNaN(base.getTime()))return '';
+  base.setDate(base.getDate()+Math.max(1,Number(days)||30));
+  return iso(base);
+}
+function repairAssignmentValidity(){
+  const list=adminWorkouts();
+  const customs=customWorkouts();
+  let changed=false;
+  list.forEach(a=>{
+    if(!a.customId&&!String(a.type||'').startsWith('custom:'))return;
+    const custom=customs.find(x=>x.id===a.customId);
+    const start=dateOnly(a.startDate||custom?.startDate);
+    if(!start)return;
+    const days=Math.max(30,Number(a.validityDays||custom?.validityDays)||30);
+    const expected=validityEndFrom(start,days);
+    const current=dateOnly(a.validUntil);
+    const template=dateOnly(custom?.validUntil);
+    const next=[expected,template,current].filter(Boolean).sort().pop();
+    if(current&&current<iso()&&next&&next>current){
+      a.validUntil=next;
+      a.validityDays=days;
+      a.notified=false;
+      changed=true;
+    }
+  });
+  if(changed)saveAdminWorkouts(list);
+}
 function checkWorkoutValidity(){
-  const now=Date.now(), list=adminWorkouts(), users=authUsers(); let changed=false;
-  list.forEach(w=>{if(!w.notified && w.validUntil && new Date(w.validUntil).getTime()<=now){const u=users.find(x=>x.id===w.studentId);notifyAdmin('Treino vencido',`${u?.name||'Aluno'} — ${workoutByKey(w.type)?.title||'Treino'}`);w.notified=true;changed=true}});
+  const list=adminWorkouts(), users=authUsers(); let changed=false;
+  list.forEach(w=>{if(!w.notified && planEnded(w.validUntil)){const u=users.find(x=>x.id===w.studentId);notifyAdmin('Treino vencido',`${u?.name||'Aluno'} — ${workoutByKey(w.type)?.title||'Treino'}`);w.notified=true;changed=true}});
   if(changed)saveAdminWorkouts(list);
 }
 function requestAdminNotifications(){if('Notification' in window)Notification.requestPermission().then(()=>{toast('Notificações ativadas');checkWorkoutValidity()})}
@@ -1306,12 +1419,12 @@ function renderAdminStudents(){
   renderCustomStudents();
 }
 function renderAdminWorkouts(){
+  repairAssignmentValidity();
   const users=authUsers(), all=adminWorkouts().filter(x=>x.type?.startsWith('custom:'));
   const search=String($('#adminWorkoutSearch')?.value||'').trim().toLowerCase();
   const studentFilter=String($('#adminWorkoutStudentFilter')?.value||'');
   const status=String($('#adminWorkoutStatusFilter')?.value||'all');
-  const now=new Date();
-  const isExpired=x=>x.validUntil&&new Date(x.validUntil+'T23:59:59')<now;
+  const isExpired=x=>planEnded(x.validUntil);
   const activeCount=all.filter(x=>!isExpired(x)).length, expiredCount=all.length-activeCount;
   if($('#adminWorkoutCount'))$('#adminWorkoutCount').textContent=all.length;
   if($('#adminWorkoutActive'))$('#adminWorkoutActive').textContent=activeCount;
@@ -1510,18 +1623,16 @@ const CUSTOM_EXERCISES_KEY='ciclofit-custom-exercises-v1';
 const CUSTOM_WORKOUTS_KEY='ciclofit-custom-workouts-v1';
 const exerciseCatalog=[
   // Academia
-  ['Supino reto','Peito','gym'],['Supino inclinado','Peito','gym'],['Crucifixo máquina','Peito','gym'],['Flexão de braço','Peito','gym'],['Puxada frontal','Costas','gym'],['Puxada neutra','Costas','gym'],['Remada baixa','Costas','gym'],['Remada unilateral','Costas','gym'],['Remada cavalinho','Costas','gym'],['Pullover na polia','Costas','gym'],['Desenvolvimento de ombros','Ombros','gym'],['Elevação lateral','Ombros','gym'],['Elevação frontal','Ombros','gym'],['Face pull','Ombros','gym'],['Rosca direta','Bíceps','gym'],['Rosca alternada','Bíceps','gym'],['Rosca martelo','Bíceps','gym'],['Tríceps na polia','Tríceps','gym'],['Tríceps francês','Tríceps','gym'],['Tríceps testa','Tríceps','gym'],['Agachamento livre','Pernas','gym'],['Agachamento no Smith','Pernas','gym'],['Leg press 45°','Pernas','gym'],['Cadeira extensora','Quadríceps','gym'],['Mesa flexora','Posteriores','gym'],['Flexora sentado','Posteriores','gym'],['Terra romeno','Posteriores','gym'],['Levantamento terra','Posteriores','gym'],['Hip thrust','Glúteos','gym'],['Glute bridge','Glúteos','gym'],['Afundo / passada','Pernas','gym'],['Step-up','Pernas','gym'],['Cadeira adutora','Adutores','gym'],['Cadeira abdutora','Glúteos','gym'],['Panturrilha em pé','Panturrilhas','gym'],['Panturrilha sentado','Panturrilhas','gym'],['Tibial anterior','Tibial','gym'],['Prancha','Core','gym'],['Prancha lateral','Core','gym'],['Dead bug','Core','gym'],['Bird dog','Core','gym'],['Pallof press','Core','gym'],['Abdominal na polia','Core','gym'],['Abdominal infra','Core','gym'],['Hiperextensão lombar','Lombar','gym'],
-  // Bike / ciclismo
-  ['Aquecimento leve','Endurance','bike'],['Giro contínuo Z2','Endurance','bike'],['Tempo Z3','Tempo','bike'],['Sweet spot','Limiar','bike'],['Intervalo VO₂ máx.','VO₂ máx.','bike'],['Sprint máximo','Potência','bike'],['Sprint 10 s','Potência','bike'],['Sprint 20 s','Potência','bike'],['Subida sentado','Força','bike'],['Subida em pé','Força','bike'],['Força em baixa cadência','Força','bike'],['Cadência alta','Técnica','bike'],['Cadência baixa','Técnica','bike'],['Over-under','Limiar','bike'],['Intervalos 30/30','VO₂ máx.','bike'],['Intervalos 1/1','VO₂ máx.','bike'],['Intervalos 2/2','VO₂ máx.','bike'],['Intervalos 4/4','VO₂ máx.','bike'],['Endurance longo','Endurance','bike'],['Recuperação ativa','Recuperação','bike'],['Contrarrelógio','Performance','bike'],['Ataque em subida','Potência','bike'],['Arrancada','Potência','bike'],['Pedalada unilateral','Técnica','bike'],['Drill de cadência','Técnica','bike'],['Tempo progressivo','Tempo','bike'],['Fartlek','Variado','bike'],['Descida técnica','Técnica','bike'],['Sprint em subida','Potência','bike'],['Resistência muscular','Força','bike']
+  ['Supino reto','Peito','gym'],['Supino inclinado','Peito','gym'],['Crucifixo máquina','Peito','gym'],['Flexão de braço','Peito','gym'],['Puxada frontal','Costas','gym'],['Puxada neutra','Costas','gym'],['Remada baixa','Costas','gym'],['Remada unilateral','Costas','gym'],['Remada cavalinho','Costas','gym'],['Pullover na polia','Costas','gym'],['Desenvolvimento de ombros','Ombros','gym'],['Elevação lateral','Ombros','gym'],['Elevação frontal','Ombros','gym'],['Face pull','Ombros','gym'],['Rosca direta','Bíceps','gym'],['Rosca alternada','Bíceps','gym'],['Rosca martelo','Bíceps','gym'],['Tríceps na polia','Tríceps','gym'],['Tríceps francês','Tríceps','gym'],['Tríceps testa','Tríceps','gym'],['Agachamento livre','Pernas','gym'],['Agachamento no Smith','Pernas','gym'],['Leg press 45°','Pernas','gym'],['Cadeira extensora','Quadríceps','gym'],['Mesa flexora','Posteriores','gym'],['Flexora sentado','Posteriores','gym'],['Terra romeno','Posteriores','gym'],['Levantamento terra','Posteriores','gym'],['Hip thrust','Glúteos','gym'],['Glute bridge','Glúteos','gym'],['Afundo / passada','Pernas','gym'],['Step-up','Pernas','gym'],['Cadeira adutora','Adutores','gym'],['Cadeira abdutora','Glúteos','gym'],['Panturrilha em pé','Panturrilhas','gym'],['Panturrilha sentado','Panturrilhas','gym'],['Tibial anterior','Tibial','gym'],['Prancha','Core','gym'],['Prancha lateral','Core','gym'],['Dead bug','Core','gym'],['Bird dog','Core','gym'],['Pallof press','Core','gym'],['Abdominal na polia','Core','gym'],  ['Abdominal infra','Core','gym'],['Hiperextensão lombar','Lombar','gym']
 ];
 function customExercises(){try{const v=Array.isArray(data.customExercises)?data.customExercises:JSON.parse(localStorage.getItem(CUSTOM_EXERCISES_KEY)||'[]');return Array.isArray(v)?v:[]}catch{return []}}
 function saveCustomExercises(v){localStorage.setItem(CUSTOM_EXERCISES_KEY,JSON.stringify(v));data.customExercises=v;save();queueSharedSave()}
-function allExerciseCatalog(){return exerciseCatalog.concat(customExercises().map(e=>[e.name,e.group,e.category]))}
+function allExerciseCatalog(){return exerciseCatalog.concat(customExercises().map(e=>[e.name,e.group,e.category])).filter(e=>e[2]!=='bike')}
 function customWorkouts(){try{const v=Array.isArray(data.customWorkouts)?data.customWorkouts:JSON.parse(localStorage.getItem(CUSTOM_WORKOUTS_KEY)||'[]');return Array.isArray(v)?v:[]}catch{return []}}
 function saveCustomWorkouts(v){localStorage.setItem(CUSTOM_WORKOUTS_KEY,JSON.stringify(v));data.customWorkouts=v;save();queueSharedSave()}
 function customById(id){return customWorkouts().find(x=>x.id===id)||null}
 function workoutByKey(type){return type&&type.startsWith('custom:')?customById(type.slice(7))?.workout:workouts[type]}
-function normalizeCustomExercise(e){return [e.name,e.group,Math.max(1,+e.sets||1),e.reps||10]}
+function normalizeCustomExercise(e){const bike=$('#customWorkoutCategory')?.value==='bike'||e.category==='bike';if(bike)return [e.name,'Etapa',1,String(e.reps??'').trim()];return [e.name,e.group,Math.max(1,+e.sets||1),e.reps||10]}
 function populateExerciseGroupFilter(){
   const select=$('#exerciseCatalogGroup');if(!select)return;
   const current=select.value||'all';
@@ -1534,9 +1645,8 @@ function renderExerciseCatalog(){
   populateExerciseGroupFilter();
   const q=($('#exerciseSearch')?.value||'').trim().toLowerCase();
   const group=$('#exerciseCatalogGroup')?.value||'all';
-  const cat=$('#exerciseCatalogCategory')?.value||'all';
-  const list=allExerciseCatalog().filter(e=>(cat==='all'||e[2]===cat)&&(group==='all'||e[1]===group)&&(!q||e[0].toLowerCase().includes(q)||e[1].toLowerCase().includes(q)));
-  box.innerHTML=list.map(e=>`<button type="button" class="catalog-item" data-exercise="${esc(e[0])}" data-group="${esc(e[1])}" data-category="${e[2]}"><span class="catalog-icon">${e[2]==='bike'?svgIcon('i-bike'):svgIcon('i-dumbbell')}</span><span class="catalog-copy"><strong>${esc(e[0])}</strong><small>${esc(e[1])}</small></span><span class="catalog-add">+</span></button>`).join('')||'<div class="catalog-empty"><strong>Nenhum exercício encontrado</strong><small>Ajuste a busca, o grupo muscular ou a modalidade.</small></div>';
+  const list=allExerciseCatalog().filter(e=>(group==='all'||e[1]===group)&&(!q||e[0].toLowerCase().includes(q)||e[1].toLowerCase().includes(q)));
+  box.innerHTML=list.map(e=>`<button type="button" class="catalog-item" data-exercise="${esc(e[0])}" data-group="${esc(e[1])}" data-category="${e[2]}"><span class="catalog-icon">${svgIcon('i-dumbbell')}</span><span class="catalog-copy"><strong>${esc(e[0])}</strong><small>${esc(e[1])}</small></span><span class="catalog-add">+</span></button>`).join('')||'<div class="catalog-empty"><strong>Nenhum exercício encontrado</strong><small>Ajuste a busca ou o grupo muscular.</small></div>';
   $$('#exerciseCatalog .catalog-item').forEach(b=>b.onclick=()=>addSelectedExercise({name:b.dataset.exercise,group:b.dataset.group,category:b.dataset.category,sets:3,reps:10}));
 }
 let selectedCustomExercises=[];
@@ -1544,20 +1654,34 @@ function addSelectedExercise(e){if(selectedCustomExercises.some(x=>x.name===e.na
 function removeSelectedExercise(i){selectedCustomExercises.splice(i,1);renderSelectedExercises()}
 function renderSelectedExercises(){
  const box=$('#selectedExercises');if(!box)return;
-
- box.innerHTML=selectedCustomExercises.length?selectedCustomExercises.map((e,i)=>`<div class="selected-exercise"><div><strong>${i+1}. ${esc(e.name)}</strong><small>${esc(e.group)} · ${e.category==='bike'?'Bike':'Academia'}</small></div><input type="number" min="1" value="${e.sets||3}" aria-label="Séries" data-custom-field="sets" data-index="${i}"><input type="number" min="1" value="${e.reps||10}" aria-label="Repetições" data-custom-field="reps" data-index="${i}"><button type="button" class="remove-exercise" data-remove="${i}" aria-label="Remover">×</button></div>`).join(''):'<div class="muted">Nenhum exercício adicionado.</div>';
- $$('#selectedExercises [data-custom-field]').forEach(i=>i.oninput=()=>{const n=+i.value||1;selectedCustomExercises[+i.dataset.index][i.dataset.customField]=n});
+ const bike=$('#customWorkoutCategory')?.value==='bike';
+ const empty=bike?'<div class="muted">Nenhuma etapa adicionada.</div>':'<div class="muted">Nenhum exercício adicionado.</div>';
+ box.innerHTML=selectedCustomExercises.length?(bike?'<div class="week-stage-head"><span>Etapa</span><span>Duração</span></div>':'')+selectedCustomExercises.map((e,i)=>bike
+  ?`<div class="selected-exercise bike-stage"><div><strong>${i+1}. ${esc(e.name)}</strong></div><input type="text" value="${esc(e.reps||'')}" aria-label="Duração" data-custom-field="reps" data-index="${i}" placeholder="Ex.: 15 min"><button type="button" class="remove-exercise" data-remove="${i}" aria-label="Remover">×</button></div>`
+  :`<div class="selected-exercise"><div><strong>${i+1}. ${esc(e.name)}</strong><small>${esc(e.group)} · ${e.category==='bike'?'Bike':'Academia'}</small></div><input type="number" min="1" value="${e.sets||3}" aria-label="Séries" data-custom-field="sets" data-index="${i}"><input type="number" min="1" value="${e.reps||10}" aria-label="Repetições" data-custom-field="reps" data-index="${i}"><button type="button" class="remove-exercise" data-remove="${i}" aria-label="Remover">×</button></div>`).join(''):empty;
+ $$('#selectedExercises [data-custom-field]').forEach(i=>i.oninput=()=>{const field=i.dataset.customField;selectedCustomExercises[+i.dataset.index][field]=i.type==='text'?i.value:(+i.value||1)});
  $$('#selectedExercises [data-remove]').forEach(b=>b.onclick=()=>removeSelectedExercise(+b.dataset.remove));
+}
+function addBikeStage(){
+ const name=($('#bikeStageName')?.value||'').trim(), duration=($('#bikeStageDuration')?.value||'').trim();
+ if(!name)return toast('Informe a etapa.','error');
+ if(!duration)return toast('Informe a duração da etapa.','error');
+ addSelectedExercise({name,group:'Etapa',category:'bike',sets:1,reps:duration});
+ if($('#bikeStageName'))$('#bikeStageName').value='';
+ if($('#bikeStageDuration'))$('#bikeStageDuration').value='';
+ $('#bikeStageName')?.focus();
 }
 let editingCustomWorkoutId=null;
 function resetCustomWorkoutForm(){
   editingCustomWorkoutId=null; selectedCustomExercises=[];
-  ['customWorkoutName','customWorkoutGroup','customWorkoutDuration','customWorkoutNote'].forEach(x=>{if($('#'+x))$('#'+x).value=''});
+  ['customWorkoutName','customWorkoutGroup','customWorkoutDuration','customWorkoutNote','customWorkoutInfo'].forEach(x=>{if($('#'+x))$('#'+x).value=''});
   if($('#customWorkoutCategory'))$('#customWorkoutCategory').value='gym';
   if($('#customWorkoutIntensity'))$('#customWorkoutIntensity').value='Moderada';
   if($('#customWorkoutStart'))$('#customWorkoutStart').value=iso();
   if($('#customWorkoutValidity'))$('#customWorkoutValidity').value='30';
   if($('#customWorkoutWeekday'))$('#customWorkoutWeekday').value='';
+  ['bikeWorkoutDistance','bikeWorkoutElevation','bikeWorkoutPace','bikeWorkoutBrief','bikeStageName','bikeStageDuration'].forEach(x=>{if($('#'+x))$('#'+x).value=''});
+  syncBikeWorkoutFields();
   const sel=$('#customWorkoutStudent');if(sel)sel.value='';
   if($('#saveCustomWorkout'))$('#saveCustomWorkout').innerHTML='<svg class="cf-svg" aria-hidden="true"><use href="#i-check"></use></svg> Salvar treino';
   if($('#cancelCustomWorkoutEdit'))$('#cancelCustomWorkoutEdit').hidden=true;
@@ -1583,7 +1707,7 @@ window.assignCustomWorkout=id=>{
  if(dayChoice===null)return; const weekday=Number(dayChoice); if(!Number.isInteger(weekday)||weekday<0||weekday>6)return toast('Dia da semana inválido.','error');
  const start=x.startDate||iso(),days=Math.max(1,Number(x.validityDays)||30),end=new Date(start+'T12:00:00');end.setDate(end.getDate()+days);
  const list=adminWorkouts();
- if(list.some(a=>a.customId===id&&a.studentId===u.id&&new Date(a.validUntil)>=new Date()))return toast('Este treino já está atribuído a esse aluno.','error');
+ if(list.some(a=>a.customId===id&&a.studentId===u.id&&!planEnded(a.validUntil)))return toast('Este treino já está atribuído a esse aluno.','error');
  list.push({id:crypto.randomUUID?.()||String(Date.now()),customId:id,studentId:u.id,type:'custom:'+id,startDate:start,validUntil:iso(end),validityDays:days,weekday,note:x.note||'',notified:false});
  saveAdminWorkouts(list);authUsers();renderCustomWorkoutList();renderAdminWorkouts();toast(`Treino atribuído a ${u.name}.`);
 };
@@ -1599,10 +1723,17 @@ window.editCustomWorkout=id=>{
  $('#customWorkoutCategory').value=x.workout.category||'gym';
  $('#customWorkoutDuration').value=x.workout.duration||'';
  $('#customWorkoutIntensity').value=x.workout.intensity||'Moderada';
- $('#customWorkoutValidity').value=assigned?.validityDays||Math.max(1,Math.round((new Date(x.validUntil)-new Date(x.startDate))/86400000))||30;
+ $('#customWorkoutValidity').value=assigned?.validityDays||validityDayCount(x.startDate,x.validUntil,30);
  $('#customWorkoutStart').value=x.startDate||iso();
  $('#customWorkoutWeekday').value=String(Number.isInteger(Number(assigned?.weekday))?Number(assigned.weekday):new Date((x.startDate||iso())+'T12:00:00').getDay());
  $('#customWorkoutNote').value=assigned?.note||'';
+ if($('#customWorkoutInfo'))$('#customWorkoutInfo').value=x.workout?.info||'';
+ const ride=x.workout.ride||{};
+ if($('#bikeWorkoutDistance'))$('#bikeWorkoutDistance').value=ride.distance||'';
+ if($('#bikeWorkoutElevation'))$('#bikeWorkoutElevation').value=ride.elevation||'';
+ if($('#bikeWorkoutPace'))$('#bikeWorkoutPace').value=ride.pace||'';
+ if($('#bikeWorkoutBrief'))$('#bikeWorkoutBrief').value=ride.brief||'';
+ syncBikeWorkoutFields();
  selectedCustomExercises=(x.workout.exercises||[]).map(e=>({name:e[0],group:e[1],sets:e[2],reps:e[3],category:x.workout.category||'gym'}));
  $('#saveCustomWorkout').innerHTML='<svg class="cf-svg" aria-hidden="true"><use href="#i-check"></use></svg> Salvar alterações';$('#cancelCustomWorkoutEdit').hidden=false;
  renderSelectedExercises();
@@ -1612,7 +1743,6 @@ window.deleteCustomWorkout=id=>{if(!confirm('Excluir este treino personalizado?'
 function renderCustomStudents(){const users=authUsers().filter(u=>u.role==='student');renderStudentSelect($('#customWorkoutStudent'),users)}
 $('#exerciseSearch')?.addEventListener('input',renderExerciseCatalog);
 $('#exerciseCatalogGroup')?.addEventListener('change',renderExerciseCatalog);
-$('#exerciseCatalogCategory')?.addEventListener('change',renderExerciseCatalog);
 function closeNewExerciseModal(){$('#newExerciseModal')?.classList.remove('show')}
 function openNewExerciseModal(){if(!$('#newExerciseModal'))return;$('#newExerciseName').value='';$('#newExerciseGroup').value='';$('#newExerciseCategory').value=$('#customWorkoutCategory')?.value||'gym';$('#newExerciseModal').classList.add('show');setTimeout(()=>$('#newExerciseName')?.focus(),50)}
 $('#addExerciseBtn')?.addEventListener('click',openNewExerciseModal);
@@ -1620,28 +1750,73 @@ $('#closeNewExercise')?.addEventListener('click',closeNewExerciseModal);
 $('#cancelNewExercise')?.addEventListener('click',closeNewExerciseModal);
 $('#saveNewExercise')?.addEventListener('click',()=>{const name=($('#newExerciseName')?.value||'').trim(),group=($('#newExerciseGroup')?.value||'').trim(),category=$('#newExerciseCategory')?.value||'gym';if(!name)return toast('Informe o nome do exercício.','error');if(!group)return toast('Informe o grupo muscular ou objetivo.','error');if(allExerciseCatalog().some(e=>e[0].trim().toLowerCase()===name.toLowerCase()))return toast('Esse exercício já existe no catálogo.','error');const list=customExercises();list.push({id:'ex_'+Date.now().toString(36),name,group,category});saveCustomExercises(list);renderExerciseCatalog();closeNewExerciseModal();addSelectedExercise({name,group,category,sets:3,reps:10});toast('Novo exercício adicionado ao catálogo.','success')});
 $('#newExerciseModal')?.addEventListener('click',e=>{if(e.target.id==='newExerciseModal')closeNewExerciseModal()});
+function readBikeWorkout(){
+  return {
+    distance:($('#bikeWorkoutDistance')?.value||'').trim(),
+    elevation:($('#bikeWorkoutElevation')?.value||'').trim(),
+    pace:($('#bikeWorkoutPace')?.value||'').trim(),
+    brief:($('#bikeWorkoutBrief')?.value||'').trim()
+  };
+}
+function syncBikeWorkoutFields(){
+  const bike=$('#customWorkoutCategory')?.value==='bike';
+  const builder=document.querySelector('.custom-workout-builder');
+  if(builder)builder.classList.toggle('is-bike',!!bike);
+  const box=$('#bikeWorkoutFields');
+  if(box)box.hidden=true;
+  const adder=$('#bikeStageAdder');
+  if(adder)adder.hidden=!bike;
+  const picker=document.querySelector('.custom-workout-builder .exercise-picker');
+  if(picker)picker.hidden=bike;
+  const form=document.querySelector('.custom-workout-builder > .form-grid');
+  const selected=document.querySelector('.custom-workout-builder .selected-exercises');
+  if(bike&&form&&adder&&selected){
+    form.insertAdjacentElement('afterend',selected);
+    form.insertAdjacentElement('afterend',adder);
+  }else if(picker&&adder&&selected){
+    picker.insertAdjacentElement('afterend',selected);
+    picker.insertAdjacentElement('afterend',adder);
+  }
+  if($('#selectedExerciseTitle'))$('#selectedExerciseTitle').textContent=bike?'Etapas do treino':'Exercícios do treino';
+  if($('#selectedExerciseHint'))$('#selectedExerciseHint').textContent=bike?'A duração aparece ao lado de cada etapa':'Defina séries/repetições ou tempo';
+  renderSelectedExercises();
+}
+$('#customWorkoutCategory')?.addEventListener('change',syncBikeWorkoutFields);
+$('#addBikeStage')?.addEventListener('click',addBikeStage);
+$('#bikeStageName')?.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();$('#bikeStageDuration')?.focus()}});
+$('#bikeStageDuration')?.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();addBikeStage()}});
+syncBikeWorkoutFields();
 $('#saveCustomWorkout')?.addEventListener('click',()=>{
  const studentId=$('#customWorkoutStudent')?.value?.trim(),name=$('#customWorkoutName')?.value?.trim(),group=$('#customWorkoutGroup')?.value?.trim()||'Grupo personalizado',category=$('#customWorkoutCategory')?.value||'gym',weekdayValue=$('#customWorkoutWeekday')?.value;
  if(!name)return toast('Informe o nome do treino.','error');
  if(studentId && weekdayValue==='')return toast('Selecione o dia da semana para este aluno.','error');
- if(!selectedCustomExercises.length)return toast('Adicione pelo menos um exercício.','error');
+ const ride=category==='bike'?readBikeWorkout():null;
+ const hasRide=!!(ride&&(ride.distance||ride.elevation||ride.pace||ride.brief));
+ if(category==='bike'){if(!selectedCustomExercises.length&&!hasRide)return toast('Adicione pelo menos uma etapa.','error')}
+ else if(!selectedCustomExercises.length)return toast('Adicione pelo menos um exercício.','error');
  const duration=$('#customWorkoutDuration')?.value.trim()||'60 min',intensity=$('#customWorkoutIntensity')?.value||'Moderada';
  const startDate=$('#customWorkoutStart')?.value||iso(),days=Math.max(1,+$('#customWorkoutValidity')?.value||30),end=new Date(startDate+'T12:00:00');end.setDate(end.getDate()+days);
  if(Number.isNaN(end.getTime()))return toast('Data de início inválida.','error');
- const workout={title:name,subtitle:category==='bike'?'Treino personalizado de ciclismo':'Treino personalizado de academia',icon:category==='bike'?'i-bike':'i-dumbbell',duration,intensity,exercises:selectedCustomExercises.map(normalizeCustomExercise),category,group};
+ const info=$('#customWorkoutInfo')?.value.trim()||'';
+ const workout={title:name,subtitle:category==='bike'?'Treino personalizado de ciclismo':'Treino personalizado de academia',icon:category==='bike'?'i-bike':'i-dumbbell',duration,intensity,info,exercises:selectedCustomExercises.map(normalizeCustomExercise),category,group,ride};
  if(editingCustomWorkoutId){
    const list=customWorkouts(),item=list.find(x=>x.id===editingCustomWorkoutId); if(!item)return toast('Treino não encontrado.','error');
-   item.workout=workout;item.group=group;item.startDate=startDate;item.validUntil=iso(end);item.validityDays=days;item.note=$('#customWorkoutNote')?.value.trim()||'';item.studentId=studentId||null;saveCustomWorkouts(list);
+   const note=$('#customWorkoutNote')?.value.trim()||'';
+   item.workout=workout;item.group=group;item.note=note;saveCustomWorkouts(list);
    const assigned=adminWorkouts();
-   const a=assigned.find(x=>x.customId===editingCustomWorkoutId&&(!studentId||x.studentId===studentId));
-   if(a)Object.assign(a,{studentId,startDate:startDate,validUntil:iso(end),validityDays:days,weekday:weekdayValue===''?(Number.isInteger(Number(a.weekday))?Number(a.weekday):new Date(startDate+'T12:00:00').getDay()):Number(weekdayValue),note:item.note,notified:false});
-   else if(studentId)assigned.push({id:crypto.randomUUID?.()||String(Date.now()+1),customId:editingCustomWorkoutId,studentId,type:'custom:'+editingCustomWorkoutId,startDate:startDate,validUntil:iso(end),validityDays:days,weekday:Number(weekdayValue),note:item.note,notified:false});
+   assigned.forEach(a=>{
+     if(a.customId!==editingCustomWorkoutId)return;
+     a.group=group;
+     if(note)a.note=note;
+     if(studentId&&String(a.studentId)===String(studentId)&&weekdayValue!=='')a.weekday=Number(weekdayValue);
+   });
+   if(studentId&&!assigned.some(a=>a.customId===editingCustomWorkoutId&&String(a.studentId)===String(studentId)))assigned.push({id:crypto.randomUUID?.()||String(Date.now()+1),customId:editingCustomWorkoutId,studentId,type:'custom:'+editingCustomWorkoutId,startDate,validUntil:iso(end),validityDays:days,weekday:Number(weekdayValue),group,note,notified:false});
    saveAdminWorkouts(assigned);toast('Grupo de treino atualizado.');
  }else{
    const id=crypto.randomUUID?.()||String(Date.now()),list=customWorkouts();
    const item={id,studentId:studentId||null,group,workout,startDate:startDate,validUntil:iso(end),validityDays:days,note:$('#customWorkoutNote')?.value.trim()||''};
    list.push(item);saveCustomWorkouts(list);
-   if(studentId){const assigned=adminWorkouts();assigned.push({id:crypto.randomUUID?.()||String(Date.now()+1),customId:id,studentId,type:'custom:'+id,startDate:startDate,validUntil:iso(end),validityDays:days,weekday:Number(weekdayValue),note:item.note,notified:false});saveAdminWorkouts(assigned);toast('Grupo criado e atribuído ao aluno.');}
+   if(studentId){const assigned=adminWorkouts();assigned.push({id:crypto.randomUUID?.()||String(Date.now()+1),customId:id,studentId,type:'custom:'+id,startDate:startDate,validUntil:iso(end),validityDays:days,weekday:Number(weekdayValue),group,note:item.note,notified:false});saveAdminWorkouts(assigned);toast('Grupo criado e atribuído ao aluno.');}
    else toast('Grupo de treino criado. Atribua a alunos quando quiser.');
  }
  resetCustomWorkoutForm();renderCustomWorkoutList();renderAdminWorkouts();renderCustomStudents();renderStudentAssigned();
@@ -1672,8 +1847,10 @@ window.openAssignedWorkout=function(identifier){
   if(!assigned){toast('Treino atribuído não encontrado.','error');return false;}
   const w=workoutByKey(assigned.type);
   if(!w){toast('O treino atribuído não está disponível.','error');return false;}
-  const expired=assigned.validUntil&&new Date(assigned.validUntil+'T23:59:59')<new Date();
-  if(expired){toast('Este treino está vencido.','error');return false;}
+  const state=workoutListState(assigned);
+  if(state==='done'){toast('Este treino já foi concluído.','error');return false;}
+  if(state==='missed'){toast('Este treino expirou. Só é possível registrar no dia certo.','error');return false;}
+  if(state==='future'){toast('Este treino está programado. Só é possível registrar no dia certo.','error');return false;}
   const gate=activityOpenGate(assigned.type);
   if(!gate.ok){toast(gate.reason,'error');return false;}
   const isBike=String(w.category||'').toLowerCase()==='bike'||String(w.icon||'').toLowerCase()==='i-bike';
@@ -1748,8 +1925,8 @@ function activityOpenGate(type){
   if(isDoneWorkout(type))return {ok:false,reason:'Esta atividade já foi concluída e não pode ser aberta novamente.'};
   const a=currentAuth();
   if(a?.role==='student'){
-    const active=adminWorkouts().some(x=>String(x.studentId)===String(a.id)&&String(x.type)===String(type)&&(!x.validUntil||new Date(x.validUntil+'T23:59:59')>=new Date()));
-    if(!active)return {ok:false,reason:'Este treino não está válido.'};
+    const active=adminWorkouts().some(x=>String(x.studentId)===String(a.id)&&String(x.type)===String(type)&&workoutListState(x)==='today');
+    if(!active)return {ok:false,reason:'Só é possível registrar o treino do dia.'};
     return {ok:true};
   }
   if(!isWorkoutScheduledToday(type))return {ok:false,reason:'Só é possível abrir a atividade do dia.'};
@@ -1835,22 +2012,24 @@ window.renderStudentAssigned=function(){
   const assigned=adminWorkouts().filter(w=>String(w.studentId)===String(a.id)).sort((x,y)=>{const wx=Number.isInteger(Number(x.weekday))?Number(x.weekday):new Date(x.startDate+'T12:00:00').getDay();const wy=Number.isInteger(Number(y.weekday))?Number(y.weekday):new Date(y.startDate+'T12:00:00').getDay();return ((wx+6)%7)-((wy+6)%7)||String(x.startDate).localeCompare(String(y.startDate))});
   const cards=assigned.map(x=>{
     const w=workoutByKey(x.type); if(!w)return '';
-    const expired=x.validUntil&&new Date(x.validUntil+'T23:59:59')<new Date();
-    const done=isDoneWorkout(x.type);
-    const todayOnly=isWorkoutScheduledToday(x.type);
-    const locked=expired||done;
+    const state=workoutListState(x);
+    const locked=state!=='today';
+    const isBike=String(w.category||'').toLowerCase()==='bike'||String(w.icon||'').toLowerCase()==='i-bike';
     const isCustom=String(x.type||'').startsWith('custom:');
     const tag=isCustom?'':`TREINO ${esc(x.type)}`;
     const title=w.title||'Treino';
-    const subtitle=x.note||w.subtitle||'';
+    const kindLine=isCustom?(isBike?'Treino personalizado de ciclismo':'Treino personalizado de academia'):'';
     const duration=w.duration||'';
     const exercises=w.exercises?.length||0;
-    const sets=w.exercises?.reduce((sum,e)=>sum+(+e[2]||0),0)||0;
-    const label=expired?'Expirado':(done?'Concluído':'Começar');
-    const status=expired?'VENCIDO':(done?'CONCLUÍDO':(todayOnly?'HOJE':'PROGRAMADO'));
-    const statusClass=expired||done?'validity-expired':'workout-tag';
+    const sets=isBike?0:(w.exercises?.reduce((sum,e)=>sum+(+e[2]||0),0)||0);
+    const label=isBike?'Carregar GPX':'Começar';
+    const status=state==='done'?'CONCLUÍDO':(state==='missed'?'EXPIRADO':(state==='future'?'PROGRAMADO':'HOJE'));
+    const statusMod=state==='done'?'status-done':(state==='missed'?'status-expired':(state==='today'?'status-today':'status-programado'));
     const tagHtml=tag?`<span class="workout-tag">${tag}</span>`:'';
-    const aid=esc(x.id||x.type||x.customId||''); return `<article class="card workout-item ${locked?'workout-done workout-locked':''} ${isCustom?'workout-custom':''}"><div class="workout-icon">${String(w.category||'').toLowerCase()==='bike'?svgIcon('i-bike'):svgIcon('i-dumbbell')}</div><div class="workout-main"><div class="workout-topline">${tagHtml}<span class="${statusClass}">${status}</span></div><h3>${esc(title.replace(/^Treino [ABC] — /,''))}</h3><p>${esc(subtitle)}</p><div class="workout-meta"><span class="meta-icon-text">${svgIcon('i-clock')} ${esc(duration)}</span><span>•</span><span>${exercises} exercícios</span>${sets?`<span>•</span><span>${sets} séries</span>`:''}</div></div><button type="button" class="btn ${locked?'btn-light':'btn-primary'} workout-open" ${locked?'disabled':''} data-open-assigned="${aid}">${label}</button></article>`;
+    const statusHtml=`<span class="workout-tag ${statusMod}">${status}</span>`;
+    const aid=esc(x.id||x.type||x.customId||'');
+    const buttonHtml=state==='today'?`<button type="button" class="btn btn-primary workout-open" data-open-assigned="${aid}">${label}</button>`:'';
+    return `<article class="card workout-item ${locked?'workout-done workout-locked':''} ${isCustom?'workout-custom':''}"><div class="workout-icon">${String(w.category||'').toLowerCase()==='bike'?svgIcon('i-bike'):svgIcon('i-dumbbell')}</div><div class="workout-main"><div class="workout-topline">${tagHtml}${statusHtml}</div><h3>${esc(title.replace(/^Treino [ABC] — /,''))}</h3>${kindLine?`<p class="workout-kind">${kindLine}</p>`:''}<div class="workout-meta"><span class="meta-icon-text">${svgIcon('i-clock')} ${esc(duration)}</span><span>•</span><span>${exercises} ${isBike?'etapas':'exercícios'}</span>${sets?`<span>•</span><span>${sets} séries</span>`:''}</div></div>${buttonHtml}</article>`;
   }).join('');
   box.innerHTML=cards||'<div class="card"><div class="muted">Nenhum treino atribuído pelo Admin.</div></div>';
 };
@@ -1890,7 +2069,7 @@ const _refreshV22=window.refresh;
 window.refresh=function(){_refreshV22?.();if(currentAuth()?.role==='admin')renderCustomWorkoutsInTrainings()};
 
 // Migra grupos personalizados antigos sem alterar o conteúdo dos treinos.
-try{const cs=customWorkouts();let changed=false;cs.forEach(x=>{if(!x.group){x.group=x.workout?.group||'Grupo personalizado';changed=true}if(x.validityDays==null&&x.startDate&&x.validUntil){x.validityDays=Math.max(1,Math.round((new Date(x.validUntil)-new Date(x.startDate))/86400000));changed=true}});if(changed)saveCustomWorkouts(cs)}catch(e){console.warn('Migração de grupos',e)}
+try{const cs=customWorkouts();let changed=false;cs.forEach(x=>{if(!x.group){x.group=x.workout?.group||'Grupo personalizado';changed=true}if(x.validityDays==null&&x.startDate&&x.validUntil){x.validityDays=validityDayCount(x.startDate,x.validUntil,30);changed=true}});if(changed)saveCustomWorkouts(cs);repairAssignmentValidity()}catch(e){console.warn('Migração de grupos',e)}
 // Remove atribuições antigas dos treinos A/B/C da estrutura administrativa.
 cleanLegacyABCWorkouts();
 /* ===== v36: treino de bike no card inicial abre a área de GPX ===== */
@@ -1904,7 +2083,7 @@ cleanLegacyABCWorkouts();
     const today=iso(new Date());
     const items=typeof weeklyAssignedSchedule==='function' ? (weeklyAssignedSchedule(new Date()).get(today)||[]) : [];
     return items.find(x=>{
-      if(x.validUntil && new Date(x.validUntil+'T23:59:59')<new Date()) return false;
+      if(planEnded(x.validUntil)) return false;
       return !!workoutByKey(x.type);
     })||null;
   }

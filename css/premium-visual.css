@@ -9626,6 +9626,10 @@ header.app-header {
 
 #workouts .workout-topline > .workout-tag:last-child:not(:first-child),
 #workouts .workout-topline > .validity-expired,
+#workouts .workout-topline > .status-programado,
+#workouts .workout-topline > .status-today,
+#workouts .workout-topline > .status-done,
+#workouts .workout-topline > .status-expired,
 #workouts .workout-item.workout-custom .workout-topline > .workout-tag:only-child {
   position: absolute !important;
   top: var(--cf-edge) !important;
