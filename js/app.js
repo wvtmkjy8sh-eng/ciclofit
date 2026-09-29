@@ -47,6 +47,44 @@ async function refreshAdminUsersFromCloud(){
   renderAdminStudents();
   renderAdminWorkouts();
 }
+let studentSharedTimer=null,studentSharedLoading=false;
+async function refreshStudentSharedState(){
+  if(currentAuth?.()?.role!=='student'||!cloudStateHydrated||studentSharedLoading)return;
+  const cloud=window.CicloFitCloud;
+  if(!cloud?.enabled||!cloud.loadSharedState)return;
+  studentSharedLoading=true;
+  try{
+    const shared=await cloud.loadSharedState();
+    const payload=shared?.ok?shared.data?.payload:null;
+    if(!payload)return;
+    const next={
+      adminUsers:Array.isArray(payload.adminUsers)?payload.adminUsers:[],
+      adminWorkouts:Array.isArray(payload.adminWorkouts)?payload.adminWorkouts:[],
+      customExercises:Array.isArray(payload.customExercises)?payload.customExercises:[],
+      customWorkouts:Array.isArray(payload.customWorkouts)?payload.customWorkouts:[]
+    };
+    const changed=['adminWorkouts','customExercises','customWorkouts'].some(k=>JSON.stringify(data[k]||[])!==JSON.stringify(next[k]));
+    if(!changed)return;
+    Object.assign(data,next);
+    syncStudentProfile();
+    try{
+      localStorage.setItem(dataStorageKey(),JSON.stringify(data));
+      localStorage.setItem(ADMIN_WORKOUTS_KEY,JSON.stringify(data.adminWorkouts));
+    }catch(e){console.warn('CicloFit Cloud: não foi possível atualizar o cache local',e)}
+    renderStudentAssigned();
+    refresh();
+  }catch(e){
+    console.warn('CicloFit Cloud: falha ao atualizar treinos atribuídos',e);
+  }finally{
+    studentSharedLoading=false;
+  }
+}
+function startStudentSharedRefresh(){
+  clearInterval(studentSharedTimer);
+  if(currentAuth?.()?.role!=='student'||!window.CicloFitCloud?.enabled)return;
+  studentSharedTimer=setInterval(()=>{if(!document.hidden)refreshStudentSharedState()},5000);
+}
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)refreshStudentSharedState()});
 async function flushCloudSave(){
   if(cloudSaveRunning)return;
   // Nunca envie o estado local inicial para a nuvem antes de terminar
@@ -117,6 +155,8 @@ async function loadCloudState(){
       data.customWorkouts=Array.isArray(payload.customWorkouts)?payload.customWorkouts:[];
       data.adminNotifs=Array.isArray(payload.adminNotifs)?payload.adminNotifs:[];
     }
+    // A lista compartilhada pode ter uma cópia antiga do perfil do próprio aluno.
+    if(currentAuth?.()?.role==='student')syncStudentProfile();
 
     repairAssignmentValidity();
     if(currentAuth?.()?.role==='admin'){
@@ -138,7 +178,7 @@ async function loadCloudState(){
     cloudStateHydrating=false;
   }
 }
-function syncStudentProfile(){try{const a=earlyAuth();if(!a||a.role!=='student'||!a.id)return;const users=JSON.parse(localStorage.getItem(USERS_KEY)||'[]');if(!Array.isArray(users))return;const idx=users.findIndex(u=>String(u.id)===String(a.id));if(idx<0)return;users[idx].profile=clone(data.profile);users[idx].name=data.profile.name||users[idx].name||'Aluno';localStorage.setItem(USERS_KEY,JSON.stringify(users))}catch(e){console.warn('Falha ao sincronizar perfil do aluno',e)}}
+function syncStudentProfile(){try{const a=earlyAuth();if(!a||a.role!=='student'||!a.id)return;const own=Array.isArray(data.adminUsers)?data.adminUsers.find(u=>String(u?.id)===String(a.id)):null;if(own){own.profile=clone(data.profile);own.name=data.profile.name||own.name||'Aluno'}const users=JSON.parse(localStorage.getItem(USERS_KEY)||'[]');if(!Array.isArray(users))return;const idx=users.findIndex(u=>String(u.id)===String(a.id));if(idx<0)return;users[idx].profile=clone(data.profile);users[idx].name=data.profile.name||users[idx].name||'Aluno';localStorage.setItem(USERS_KEY,JSON.stringify(users))}catch(e){console.warn('Falha ao sincronizar perfil do aluno',e)}}
 function save(){
   try{localStorage.setItem(dataStorageKey(),JSON.stringify(data));syncStudentProfile();queueIndexedSave();queueCloudSave();return true}
   catch(e){
@@ -1386,8 +1426,9 @@ function resetAdminWorkoutForm(){
 }
 function renderStudentSelect(el, users){
   if(!el)return;
+  const previous=el.value;
   el.innerHTML='<option value="" selected disabled>Selecione um aluno</option>'+users.map(u=>`<option value="${esc(u.id)}">${esc(u.name)} (@${esc(u.username)})</option>`).join('');
-  el.value='';
+  el.value=users.some(u=>String(u.id)===String(previous))?previous:'';
 }
 function renderAdminStudents(){
   const users=authUsers().filter(u=>u.role==='student');
@@ -1457,7 +1498,7 @@ function renderAdminWorkouts(){
 function renderAdminNotifications(){const n=adminNotifs();$('#adminNotificationCount').textContent=n.filter(x=>!x.read).length;$('#adminNotifications').innerHTML=n.length?n.slice(0,20).map(x=>`<div class="admin-row"><div><strong>${esc(x.title)}</strong><small>${esc(x.body)} · ${new Date(x.date).toLocaleString('pt-BR')}</small></div><button class="mini-action" onclick="markAdminNotification('${x.id}')">${x.read?'Lida':'Marcar lida'}</button></div>`).join(''):'<div class="muted">Nenhum aviso.</div>'}
 function markAdminNotification(id){const n=adminNotifs();const x=n.find(a=>String(a.id)===String(id));if(x)x.read=true;saveAdminNotifs(n);renderAdminNotifications()}
 function showAdmin(){document.body.classList.add('admin-mode');document.querySelector('main')?.style.setProperty('display','none');document.querySelector('.app-header')?.style.setProperty('display','none');document.querySelector('.bottom-nav')?.style.setProperty('display','none');$('#quickAdd')?.style.setProperty('display','none');$('#adminPanel').classList.add('active');$('#authScreen').style.display='none';document.body.classList.remove('auth-open');renderAdminStudents();renderAdminWorkouts();renderCustomWorkoutList();renderAdminNotifications();checkWorkoutValidity();setAdminTab('students');refreshAdminUsersFromCloud().catch(e=>console.warn('Falha ao atualizar alunos online',e));clearInterval(adminRefreshTimer);adminRefreshTimer=setInterval(()=>refreshAdminUsersFromCloud().catch(e=>console.warn('Falha ao atualizar alunos online',e)),3000)}
-function showStudent(){document.body.classList.remove('admin-mode');document.querySelector('.app-header')?.style.removeProperty('display');document.querySelector('main')?.style.removeProperty('display');document.querySelector('.bottom-nav')?.style.removeProperty('display');$('#quickAdd')?.style.removeProperty('display');$('#adminPanel').classList.remove('active');$('#authScreen').style.display='none';document.body.classList.remove('auth-open');renderStudentAssigned();refresh()}
+function showStudent(){document.body.classList.remove('admin-mode');document.querySelector('.app-header')?.style.removeProperty('display');document.querySelector('main')?.style.removeProperty('display');document.querySelector('.bottom-nav')?.style.removeProperty('display');$('#quickAdd')?.style.removeProperty('display');$('#adminPanel').classList.remove('active');$('#authScreen').style.display='none';document.body.classList.remove('auth-open');renderStudentAssigned();refresh();startStudentSharedRefresh()}
 async function initAuth(){
   const cloud = window.CicloFitCloud;
   // Quando o Supabase está ativo, a sessão real tem prioridade sobre o localStorage.
@@ -1465,6 +1506,8 @@ async function initAuth(){
     try{
       const sessionResult = await cloud.getSession();
       const session = sessionResult?.session;
+      // Sem sessão no Supabase, um login online não pode exibir o cache local antigo.
+      if(!session?.user&&!sessionResult?.error){const stored=currentAuth();if(stored&&!stored.offline)clearAuth()}
       if(session?.user){
         const profileResult = await cloud.getProfile(session.user.id);
         const profile = profileResult?.data;
@@ -1613,7 +1656,7 @@ function setAdminTab(tab){
   if(tabs)tabs.scrollLeft=0;
   if(tab==='students')renderAdminStudents();
   if(tab==='workouts')renderAdminWorkouts();
-  if(tab==='custom'){renderExerciseCatalog();renderCustomStudents();renderSelectedExercises();renderCustomWorkoutList()}
+  if(tab==='custom'){window.customGroupOpen={};renderExerciseCatalog();renderCustomStudents();renderSelectedExercises();renderCustomWorkoutList()}
   if(tab==='notifications')renderAdminNotifications();
 }
 $$('.admin-tab').forEach(b=>b.addEventListener('click',()=>setAdminTab(b.dataset.adminTab)));
@@ -1689,13 +1732,27 @@ function resetCustomWorkoutForm(){
   renderSelectedExercises();
 }
 function renderCustomWorkoutList(){
- const box=$('#customWorkoutList');if(!box)return;const users=authUsers(),list=customWorkouts().slice().reverse();
- box.innerHTML=list.length?list.map(x=>{
-   const u=users.find(a=>a.id===x.studentId);
-   const group=x.group||x.workout?.group||'Grupo sem nome';
-   const assigned=adminWorkouts().filter(a=>a.customId===x.id).length;
-   return `<div class="admin-row"><div><strong>${svgIcon(x.workout?.category==='bike'?'i-bike':'i-dumbbell')} ${esc(x.workout.title)}</strong><small>Grupo: ${esc(group)} · ${x.workout.exercises.length} exercícios · ${esc(x.workout.duration||'')} · ${assigned} aluno(s) atribuído(s)</small></div><div class="admin-row-actions"><button class="mini-action" onclick="assignCustomWorkout('${x.id}')">Atribuir</button><button class="mini-action" onclick="editCustomWorkout('${x.id}')">Editar</button><button class="mini-action mini-danger" onclick="deleteCustomWorkout('${x.id}')">Excluir</button></div></div>`
- }).join(''):'<div class="muted">Nenhum grupo de treino criado.</div>';
+ const box=$('#customWorkoutList');if(!box)return;const list=customWorkouts().slice().reverse();
+ if(!list.length){box.innerHTML='<div class="muted">Nenhum grupo de treino criado.</div>';return}
+ if(!window.customGroupOpen)window.customGroupOpen={};
+ const groups=new Map();
+ list.forEach(x=>{const name=x.group||x.workout?.group||'Grupo sem nome';if(!groups.has(name))groups.set(name,[]);groups.get(name).push(x)});
+ box.innerHTML=[...groups.entries()].map(([name,items])=>{
+   const open=window.customGroupOpen[name]===true;
+   const rows=items.map(x=>{
+     const assigned=adminWorkouts().filter(a=>a.customId===x.id).length;
+     return `<div class="admin-row"><div><strong>${svgIcon(x.workout?.category==='bike'?'i-bike':'i-dumbbell')} ${esc(x.workout.title)}</strong><small>${x.workout.exercises.length} exercícios · ${esc(x.workout.duration||'')} · ${assigned} aluno(s) atribuído(s)</small></div><div class="admin-row-actions"><button class="mini-action" onclick="assignCustomWorkout('${x.id}')">Atribuir</button><button class="mini-action" onclick="editCustomWorkout('${x.id}')">Editar</button><button class="mini-action mini-danger" onclick="deleteCustomWorkout('${x.id}')">Excluir</button></div></div>`;
+   }).join('');
+   return `<section class="custom-group${open?' is-open':''}"><button type="button" class="custom-group-toggle" data-group="${esc(name)}" aria-expanded="${open?'true':'false'}"><span><small>Treinos criados</small><strong>${esc(name)}</strong></span><b>${items.length}</b></button><div class="custom-group-body">${rows}</div></section>`;
+ }).join('');
+ box.querySelectorAll('.custom-group-toggle').forEach(btn=>btn.onclick=()=>{
+   const name=btn.dataset.group;
+   const section=btn.closest('.custom-group');
+   const open=!section.classList.contains('is-open');
+   window.customGroupOpen[name]=open;
+   section.classList.toggle('is-open',open);
+   btn.setAttribute('aria-expanded',open?'true':'false');
+ });
 }
 window.assignCustomWorkout=id=>{
  const x=customById(id); if(!x)return toast('Grupo de treino não encontrado.','error');

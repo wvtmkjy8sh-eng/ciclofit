@@ -2,10 +2,10 @@
    Só aparência: tipo, cor, luz e material.
    Não altera estrutura, rotas nem comportamento. */
 
-@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Syne:wght@600;700;800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap");
 
 :root {
-  --display: "Syne", "Outfit", sans-serif;
+  --display: "Outfit", "Segoe UI", sans-serif;
   --body: "Outfit", "Segoe UI", sans-serif;
   --atelier-lime: #c8f53a;
   --atelier-lime-deep: #9ad40a;
@@ -146,8 +146,8 @@ body[data-theme="dark"] .profile-card {
 .welcome h1,
 .page-intro h1 {
   font-weight: 750;
-  letter-spacing: -0.045em;
-  line-height: 0.98;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
 }
 
 .section-head h2,
@@ -155,7 +155,8 @@ body[data-theme="dark"] .profile-card {
 .card-head h3,
 .gym-sheet-head h2 {
   font-weight: 700;
-  letter-spacing: -0.035em;
+  letter-spacing: -0.015em;
+  line-height: 1.25;
 }
 
 .eyebrow,
@@ -369,8 +370,6 @@ body:not([data-theme="dark"]) #progress .progress-hero {
 }
 
 /* ---------- Auth e splash ---------- */
-html.cf-skip-splash #ciclofit-splash,
-html.cf-session #ciclofit-splash,
 html.cf-session #authScreen {
   display: none !important;
 }
@@ -820,6 +819,105 @@ body:not([data-theme="dark"]) #home .section-head .text-btn {
   grid-template-columns: minmax(0, 1fr) minmax(110px, 180px) 32px !important;
 }
 
+#customWorkoutList .custom-group {
+  margin-top: 12px;
+  border: 1px solid color-mix(in srgb, var(--accent) 32%, var(--border));
+  border-radius: 16px;
+  background: color-mix(in srgb, var(--accent) 7%, var(--card));
+  overflow: hidden;
+}
+
+#customWorkoutList .custom-group-toggle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 0;
+  padding: 12px 14px;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+  font: inherit;
+}
+
+#customWorkoutList .custom-group-toggle span {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+  flex: 1;
+}
+
+#customWorkoutList .custom-group-toggle small {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #3d6b12;
+}
+
+#customWorkoutList .custom-group-toggle strong {
+  font-size: 15px;
+  font-weight: 800;
+}
+
+#customWorkoutList .custom-group-toggle b {
+  flex: 0 0 auto;
+  min-width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  padding: 0 8px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--accent) 28%, var(--card));
+  color: #2f5a0c;
+  font-size: 12px;
+}
+
+#customWorkoutList .custom-group-toggle::after {
+  content: "";
+  width: 8px;
+  height: 8px;
+  flex: 0 0 8px;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: rotate(45deg) translateY(-2px);
+}
+
+#customWorkoutList .custom-group.is-open .custom-group-toggle::after {
+  transform: rotate(225deg) translateY(-1px);
+}
+
+#customWorkoutList .custom-group-body {
+  display: none;
+  padding: 0 8px 8px;
+}
+
+#customWorkoutList .custom-group.is-open .custom-group-body {
+  display: grid;
+  gap: 8px;
+}
+
+body[data-theme="dark"] #customWorkoutList .custom-group-toggle small,
+body[data-theme="dark"] #customWorkoutList .custom-group-toggle b {
+  color: var(--accent);
+}
+
+#adminPanel .selected-exercise {
+  background:
+    linear-gradient(90deg, color-mix(in srgb, var(--accent) 28%, var(--card)), color-mix(in srgb, var(--accent) 10%, var(--card))) !important;
+  border: 1px solid color-mix(in srgb, var(--accent) 48%, var(--border)) !important;
+  box-shadow: inset 3px 0 0 var(--accent);
+}
+
+body[data-theme="dark"] #adminPanel .selected-exercise {
+  background:
+    linear-gradient(90deg, color-mix(in srgb, var(--accent) 16%, var(--card)), color-mix(in srgb, var(--accent) 6%, var(--card))) !important;
+  border-color: color-mix(in srgb, var(--accent) 36%, var(--border)) !important;
+}
+
 @media (max-width: 700px) {
   .bike-stage-form {
     grid-template-columns: 1fr;
@@ -1061,6 +1159,82 @@ body[data-theme="dark"] #workouts .status-expired {
   grid-column: 1 / -1;
 }
 
+@media (max-width: 700px) {
+  .app-main {
+    padding-top: calc(32px + 3lh);
+  }
+
+  #adminPanel {
+    padding-top: calc(3lh + env(safe-area-inset-top));
+  }
+
+  #home .section-head:has(#weekCurrent) {
+    align-items: flex-end;
+    gap: 8px;
+  }
+
+  #home .section-head:has(#weekCurrent) > div {
+    min-width: 0;
+    flex: 1 1 auto;
+  }
+
+  #home .section-head:has(#weekCurrent) h2 {
+    white-space: nowrap;
+    font-size: clamp(14px, 4.2vw, 18px);
+  }
+
+  #home .section-head:has(#weekCurrent) > #weekCurrent {
+    flex: 0 0 auto;
+    font-size: 11px !important;
+  }
+}
+
+.admin-student-search-separator {
+  display: none !important;
+}
+
+.custom-workout-builder label:has(#customWorkoutNote) {
+  display: none !important;
+}
+
+.custom-workout-builder #saveCustomWorkout,
+.custom-workout-builder #cancelCustomWorkoutEdit:not([hidden]) {
+  width: 260px;
+  max-width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.custom-workout-builder #cancelCustomWorkoutEdit[hidden] {
+  display: none !important;
+}
+
+.custom-workout-builder #cancelCustomWorkoutEdit:not([hidden]) {
+  margin-top: 8px;
+}
+
+@media (max-width: 760px) {
+  .custom-workout-builder #saveCustomWorkout,
+  .custom-workout-builder #cancelCustomWorkoutEdit:not([hidden]) {
+    width: 100%;
+  }
+}
+
+#profile .profile-zone {
+  justify-content: flex-start !important;
+  text-align: left;
+}
+
+#profile .profile-zone > div {
+  text-align: left;
+}
+
+#profile .profile-zone > span {
+  margin-left: auto;
+}
+
 .custom-workout-info textarea {
   width: 100%;
   box-sizing: border-box;
@@ -1073,4 +1247,14 @@ body[data-theme="dark"] #workouts .status-expired {
   resize: vertical;
   font: inherit;
   color: inherit;
+}
+
+.custom-workout-builder .selected-exercises {
+  margin-bottom: 18px !important;
+  padding-bottom: 18px !important;
+  border-bottom: 1px solid var(--border) !important;
+}
+
+body[data-theme="dark"] .custom-workout-builder .selected-exercises {
+  border-bottom-color: rgba(255, 255, 255, 0.07) !important;
 }

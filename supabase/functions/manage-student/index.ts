@@ -59,9 +59,23 @@ Deno.serve(async (request) => {
     const { error: authError } = await adminClient.auth.admin.updateUserById(id, authPatch)
     if (authError) throw authError
 
+    // A tabela profiles não tem colunas weight/height/goal/level/max_hr/ftp/photo_path:
+    // esses dados ficam em extras e a foto em photo_url.
+    const currentExtras = existing.extras && typeof existing.extras === 'object' ? existing.extras : {}
+    const num = (value: unknown, fallback: unknown) => {
+      if (value === '' || value == null) return fallback ?? null
+      const n = Number(value)
+      return Number.isFinite(n) ? n : (fallback ?? null)
+    }
     const extras = {
-      ...(existing.extras && typeof existing.extras === 'object' ? existing.extras : {}),
-      age: profile.age ?? existing.extras?.age ?? ''
+      ...currentExtras,
+      age: profile.age ?? currentExtras.age ?? '',
+      weight: num(profile.weight, currentExtras.weight),
+      height: num(profile.height, currentExtras.height),
+      goal: profile.goal ?? currentExtras.goal ?? '',
+      level: profile.level ?? currentExtras.level ?? '',
+      maxHr: num(profile.maxHr, currentExtras.maxHr),
+      ftp: num(profile.ftp, currentExtras.ftp)
     }
 
     const { data: updated, error: updateError } = await adminClient.from('profiles').update({
@@ -70,13 +84,7 @@ Deno.serve(async (request) => {
       username: String(body.username || email).trim(),
       phone: profile.phone ?? existing.phone,
       birth_date: profile.birthDate || existing.birth_date,
-      weight: profile.weight === '' || profile.weight == null ? existing.weight : Number(profile.weight),
-      height: profile.height === '' || profile.height == null ? existing.height : Number(profile.height),
-      goal: profile.goal ?? existing.goal,
-      level: profile.level ?? existing.level,
-      max_hr: profile.maxHr === '' || profile.maxHr == null ? existing.max_hr : Number(profile.maxHr),
-      ftp: profile.ftp === '' || profile.ftp == null ? existing.ftp : Number(profile.ftp),
-      photo_path: profile.photo ?? existing.photo_path,
+      photo_url: profile.photo ?? existing.photo_url,
       extras,
       updated_at: new Date().toISOString()
     }).eq('id', id).select('*').single()

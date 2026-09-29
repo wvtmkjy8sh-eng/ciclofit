@@ -53,7 +53,7 @@
     href="./assets/ciclofit-logo3.png"
   >
   <link rel="apple-touch-icon" sizes="180x180" href="icons/icon-180.png">
-  <title>CicloFit 5.0</title><link rel="stylesheet" href="css/style.css?v=35"><link rel="stylesheet" href="css/premium-visual.css?v=37"><link rel="stylesheet" href="css/atelier-visual.css?v=58">
+  <title>CicloFit 5.0</title><link rel="stylesheet" href="css/style.css?v=35"><link rel="stylesheet" href="css/premium-visual.css?v=37"><link rel="stylesheet" href="css/atelier-visual.css?v=69">
 </head>
 <script>
   window.addEventListener('load', () => {
@@ -70,7 +70,7 @@
         splash.remove();
       }, 500);
 
-    }, 700);
+    }, 1400);
   });
 </script>
 <body class="auth-open">
@@ -80,11 +80,6 @@
     document.body.dataset.theme = localStorage.getItem('ciclofit-theme') || 'dark';
   } catch (e) {}
   try {
-    if (sessionStorage.getItem('ciclofit-splash-seen') === '1') {
-      document.documentElement.classList.add('cf-skip-splash');
-    } else {
-      sessionStorage.setItem('ciclofit-splash-seen', '1');
-    }
     var auth = sessionStorage.getItem('ciclofit-auth-v1');
     if (auth && auth !== 'null') document.documentElement.classList.add('cf-session');
   } catch (e) {}
@@ -252,12 +247,12 @@
   <div class="admin-tab-panel" data-admin-panel="custom">
   <div class="card custom-workout-builder">
     <div class="card-head"><div><h3>Montar novo treino</h3><p class="muted custom-builder-intro">Monte a sessão, organize os exercícios e atribua ao aluno.</p></div></div>
-    <div class="form-grid"><label>Nome do treino<input id="customWorkoutName" placeholder="Ex.: Força + endurance"></label><label>Grupo de treino<input id="customWorkoutGroup" placeholder="Ex.: Base 1, Emagrecimento, Performance"></label><label>Modalidade<select id="customWorkoutCategory"><option value="gym">Academia</option><option value="bike">Ciclismo</option></select></label><label>Duração<input id="customWorkoutDuration" placeholder="Ex.: 60 min"></label><label>Intensidade<select id="customWorkoutIntensity"><option>Leve</option><option selected>Moderada</option><option>Alta</option></select></label><label class="custom-workout-info">Informações do treino<textarea id="customWorkoutInfo" rows="3" placeholder="Objetivo, orientações e detalhes desta sessão"></textarea></label></div>
+    <div class="form-grid"><label>Nome do treino<input id="customWorkoutName" placeholder="Ex.: Força + endurance"></label><label>Grupo de treino<input id="customWorkoutGroup" placeholder="Ex.: Base 1, Emagrecimento, Performance"></label><label>Modalidade<select id="customWorkoutCategory"><option value="gym">Academia</option><option value="bike">Ciclismo</option></select></label><label>Duração<input id="customWorkoutDuration" placeholder="Ex.: 60 min"></label><label>Intensidade<select id="customWorkoutIntensity"><option>Leve</option><option selected>Moderada</option><option>Alta</option></select></label><label>Validade do treino<input id="customWorkoutValidity" type="number" min="1" value="30"><small>dias</small></label><label>Início do treino<input id="customWorkoutStart" type="date"></label><label>Aluno (opcional)<select id="customWorkoutStudent"><option value="" selected>Não atribuir agora</option></select></label><label>Dia da semana<select id="customWorkoutWeekday"><option value="" selected>Selecione o dia</option><option value="0">Domingo</option><option value="1">Segunda-feira</option><option value="2">Terça-feira</option><option value="3">Quarta-feira</option><option value="4">Quinta-feira</option><option value="5">Sexta-feira</option><option value="6">Sábado</option></select></label><label class="custom-workout-info">Informações do treino<textarea id="customWorkoutInfo" rows="3" placeholder="Objetivo, orientações e detalhes desta sessão"></textarea></label></div>
     <div id="bikeWorkoutFields" class="bike-workout-fields" hidden><div class="picker-head"><div><span class="picker-kicker">CICLISMO</span><strong>Informações do pedal</strong><small>Distância, altimetria e orientação deste treino.</small></div></div><div class="form-grid"><label>Distância (km)<input id="bikeWorkoutDistance" type="number" min="0" step="0.1" placeholder="Ex.: 40"></label><label>Altimetria (m)<input id="bikeWorkoutElevation" type="number" min="0" step="1" placeholder="Ex.: 500"></label><label>Ritmo / zona<input id="bikeWorkoutPace" placeholder="Ex.: Zona 2 · 25 km/h"></label><label>Orientação<input id="bikeWorkoutBrief" placeholder="Ex.: Pedal longo, cadência estável"></label></div></div>
     <div class="exercise-picker"><div class="picker-head"><div><span class="picker-kicker">CATÁLOGO DE EXERCÍCIOS</span><strong>Adicionar exercícios</strong><small>Pesquise e organize por grupo muscular.</small></div><button class="btn btn-light mini-add-exercise" id="addExerciseBtn" type="button"><svg class="cf-svg" aria-hidden="true"><use href="#i-training"/></svg> Novo exercício</button></div><div class="exercise-catalog-tools"><label class="catalog-filter-field">Buscar<input id="exerciseSearch" class="exercise-search" placeholder="Ex.: agachamento"></label><label class="catalog-filter-field">Grupo muscular<select id="exerciseCatalogGroup"><option value="all">Todos os grupos</option></select></label></div><div id="exerciseCatalog" class="exercise-catalog"></div></div>
     <div id="bikeStageAdder" class="bike-stage-adder" hidden><div class="picker-head"><div><span class="picker-kicker">CICLISMO</span><strong>Etapas do pedal</strong><small>Informe a etapa e a duração. Ex.: Aquecimento leve · 15 min.</small></div></div><div class="bike-stage-form"><label>Etapa<input id="bikeStageName" placeholder="Ex.: Aquecimento leve"></label><label>Duração<input id="bikeStageDuration" placeholder="Ex.: 15 min"></label><button class="btn btn-primary" id="addBikeStage" type="button">Adicionar</button></div></div>
     <div class="selected-exercises"><div class="picker-head"><strong id="selectedExerciseTitle">Exercícios do treino</strong><small id="selectedExerciseHint">Defina séries/repetições ou tempo</small></div><div id="selectedExercises" class="selected-exercise-list"><div class="muted">Nenhum exercício adicionado.</div></div></div>
-    <div class="form-grid"><label>Aluno (opcional)<select id="customWorkoutStudent"><option value="" selected>Não atribuir agora</option></select></label><label>Dia da semana<select id="customWorkoutWeekday"><option value="" selected>Selecione o dia</option><option value="0">Domingo</option><option value="1">Segunda-feira</option><option value="2">Terça-feira</option><option value="3">Quarta-feira</option><option value="4">Quinta-feira</option><option value="5">Sexta-feira</option><option value="6">Sábado</option></select></label><label>Validade<input id="customWorkoutValidity" type="number" min="1" value="30"><small>dias</small></label><label>Data de início<input id="customWorkoutStart" type="date"></label><label>Observação<input id="customWorkoutNote" placeholder="Orientação para o aluno"></label></div>
+    <div class="form-grid"><label>Observação<input id="customWorkoutNote" placeholder="Orientação para o aluno"></label></div>
     <button class="btn btn-primary" id="saveCustomWorkout"><svg class="cf-svg" aria-hidden="true"><use href="#i-check"/></svg> Salvar treino</button>
     <button class="btn btn-light" id="cancelCustomWorkoutEdit" type="button" hidden>Cancelar edição</button><div id="customWorkoutFeedback" class="muted" style="margin-top:8px">Defina o treino, adicione exercícios e salve como grupo. Você poderá atribuí-lo a alunos agora ou depois.</div>
     <div id="customWorkoutList" class="admin-list"></div>
@@ -350,7 +345,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="js/cloud-config.js"></script>
 <script src="js/cloud-sync.js"></script>
-<script src="js/app.js?v=61"></script>
+<script src="js/app.js?v=67"></script>
 <script>
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', async () => {
