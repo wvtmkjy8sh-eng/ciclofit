@@ -715,7 +715,7 @@ body:not([data-theme="dark"]) #home .section-head .text-btn {
     height: calc(100dvh - 12px);
     max-height: calc(100dvh - 12px);
     border-radius: 24px 24px 0 0;
-    padding: 10px 14px calc(96px + env(safe-area-inset-bottom));
+    padding: calc(10px + 1lh + env(safe-area-inset-top)) 14px calc(96px + env(safe-area-inset-bottom));
   }
 }
 
@@ -1161,7 +1161,7 @@ body[data-theme="dark"] #workouts .status-expired {
 
 @media (max-width: 700px) {
   .app-main {
-    padding-top: calc(32px + 3lh);
+    padding-top: clamp(14px, 4vw, 22px);
   }
 
   #adminPanel {
@@ -1247,6 +1247,16 @@ body[data-theme="dark"] #workouts .status-expired {
   resize: vertical;
   font: inherit;
   color: inherit;
+}
+
+#workouts .workout-item .workout-main {
+  min-width: 0;
+  max-width: 100%;
+}
+
+#workouts .workout-item .workout-meta {
+  flex-wrap: wrap;
+  row-gap: 4px;
 }
 
 .custom-workout-builder .selected-exercises {
