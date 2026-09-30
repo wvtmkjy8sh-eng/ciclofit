@@ -1319,6 +1319,72 @@ body:not([data-theme="dark"]) #exerciseCatalog .catalog-add {
   color: #2f5a0c !important;
 }
 
+body:not([data-theme="dark"]) #progress .pr-modality span {
+  color: #3d6b12;
+}
+
+input[type="date"] {
+  -webkit-appearance: none;
+  appearance: none;
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  text-align: left;
+}
+
+input[type="date"]::-webkit-date-and-time-value {
+  text-align: left;
+}
+
+#adminPanel [data-admin-panel="students"] .student-create-toggle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+#adminPanel [data-admin-panel="students"] .student-create-chevron {
+  flex: 0 0 auto;
+  width: 10px;
+  height: 10px;
+  margin-right: 6px;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: rotate(-135deg) translate(-2px, -2px);
+  transition: transform 0.2s ease;
+  opacity: 0.7;
+}
+
+#adminPanel [data-admin-panel="students"] .student-create-card.is-collapsed .student-create-chevron {
+  transform: rotate(45deg) translate(-2px, -2px);
+}
+
+#adminPanel [data-admin-panel="students"] .student-create-body {
+  margin-top: 18px;
+}
+
+#adminPanel [data-admin-panel="students"] .student-create-body[hidden] {
+  display: none;
+}
+
+#adminPanel [data-admin-panel="students"] .student-list-card {
+  margin-top: 16px;
+}
+
+#adminPanel [data-admin-panel="students"] .student-list-card .admin-student-search {
+  margin-top: 0;
+}
+
 body:not([data-theme="dark"]) #exerciseCatalog .catalog-item:hover .catalog-add {
   border-color: #3d6b12 !important;
   background: #d6ec9f !important;

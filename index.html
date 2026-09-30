@@ -53,7 +53,7 @@
     href="./assets/ciclofit-logo3.png"
   >
   <link rel="apple-touch-icon" sizes="180x180" href="icons/icon-180.png">
-  <title>CicloFit 5.0</title><link rel="stylesheet" href="css/style.css?v=35"><link rel="stylesheet" href="css/premium-visual.css?v=37"><link rel="stylesheet" href="css/atelier-visual.css?v=73">
+  <title>CicloFit 5.0</title><link rel="stylesheet" href="css/style.css?v=35"><link rel="stylesheet" href="css/premium-visual.css?v=37"><link rel="stylesheet" href="css/atelier-visual.css?v=74">
 </head>
 <script>
   window.addEventListener('load', () => {
@@ -218,9 +218,13 @@
   </div>
   <div class="admin-actions"><button class="btn btn-light" id="adminNotifyBtn"><svg class="cf-svg" aria-hidden="true"><use href="#i-bell"/></svg> Ativar notificações</button></div>
   <div class="admin-tab-panel active" data-admin-panel="students">
-  <div class="card"><div class="card-head"><div><span class="eyebrow">ALUNOS</span><h3>Contas dos alunos</h3></div></div>
+  <div class="card student-create-card is-collapsed"><button type="button" class="card-head student-create-toggle" id="studentCreateToggle" aria-expanded="false" aria-controls="studentCreateBody"><div><span class="eyebrow">ALUNOS</span><h3>Contas dos alunos</h3></div><i class="student-create-chevron" aria-hidden="true"></i></button>
+    <div class="student-create-body" id="studentCreateBody" hidden>
     <div class="form-grid admin-student-form"><label>Nome<input id="newStudentName" placeholder="Nome do aluno"></label><label>E-mail<input id="newStudentUser" type="email" placeholder="aluno@exemplo.com"></label><label>Senha<input id="newStudentPass" type="text" placeholder="Senha inicial"></label></div>
     <button class="btn btn-primary" id="createStudentBtn"><svg class="cf-svg" aria-hidden="true"><use href="#i-user"/></svg> Criar acesso</button>
+    </div>
+  </div>
+  <div class="card student-list-card">
     <label class="admin-student-search"><span class="admin-student-search-label"><strong>Buscar aluno cadastrado</strong><span class="admin-student-search-separator">/</span><span>Alunos registrados: <b id="adminStudentSearchCount">0</b></span></span><input id="adminStudentSearch" class="exercise-search" type="search" placeholder="Nome ou usuário" aria-label="Buscar aluno cadastrado"></label>
     <div id="studentList" class="admin-list"></div>
   </div>
@@ -345,7 +349,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="js/cloud-config.js"></script>
 <script src="js/cloud-sync.js"></script>
-<script src="js/app.js?v=68"></script>
+<script src="js/app.js?v=69"></script>
 <script>
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', async () => {
