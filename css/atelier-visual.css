@@ -966,14 +966,16 @@ body[data-theme="dark"] #adminPanel .selected-exercise {
   padding: 8px 12px;
 }
 
-#newExerciseModal.show {
+#newExerciseModal.show,
+#goalModal.show {
   z-index: 1400 !important;
   align-items: flex-end !important;
   justify-content: center !important;
   padding: 16px 16px calc(108px + env(safe-area-inset-bottom)) !important;
 }
 
-#newExerciseModal .modal-content {
+#newExerciseModal .modal-content,
+#goalModal .modal-content {
   margin: 0 auto !important;
   width: min(520px, 100%) !important;
   max-height: calc(100dvh - 140px - env(safe-area-inset-bottom)) !important;
@@ -1267,4 +1269,46 @@ body[data-theme="dark"] #workouts .status-expired {
 
 body[data-theme="dark"] .custom-workout-builder .selected-exercises {
   border-bottom-color: rgba(255, 255, 255, 0.07) !important;
+}
+
+#progress .pr-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+#progress .pr-rp-icon {
+  flex: 0 0 auto;
+  width: 30px;
+  height: 30px;
+}
+
+#progress .pr-rp-icon circle {
+  fill: #facc15;
+}
+
+#progress .pr-rp-icon text {
+  fill: #161a16;
+  font-family: var(--display);
+  font-size: 22px;
+  font-weight: 900;
+  letter-spacing: -1.5px;
+}
+
+#weekDayModal .gym-sheet-head {
+  margin-bottom: 16px !important;
+}
+
+body:not([data-theme="dark"]) .gym-workout-sheet .exercise-top strong {
+  color: #3d6b12 !important;
+}
+
+body:not([data-theme="dark"]) #workouts .status-done {
+  color: #14532d !important;
+}
+
+body:not([data-theme="dark"]) #adminPanel .admin-workout-row .admin-status-badge.active {
+  border-color: rgba(61, 107, 18, 0.35) !important;
+  background: #e4f3c2 !important;
+  color: #2f5a0c !important;
 }
