@@ -1237,6 +1237,103 @@ body[data-theme="dark"] #workouts .status-expired {
   margin-left: auto;
 }
 
+#profile #zones > .zone-1 { --zc: #3b9ede; }
+#profile #zones > .zone-2 { --zc: #5aa632; }
+#profile #zones > .zone-3 { --zc: #eab308; }
+#profile #zones > .zone-4 { --zc: #f97316; }
+#profile #zones > .zone-5 { --zc: #ef4444; }
+
+body #profile #zones > .profile-zone {
+  min-height: 62px;
+  gap: 12px;
+  padding: 11px 14px;
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--zc) 10%, #ffffff) !important;
+  border: 1px solid color-mix(in srgb, var(--zc) 30%, transparent) !important;
+}
+
+body[data-theme="dark"] #profile #zones > .profile-zone {
+  background: color-mix(in srgb, var(--zc) 13%, transparent) !important;
+  border-color: color-mix(in srgb, var(--zc) 34%, transparent) !important;
+}
+
+body #profile #zones > .profile-zone::before {
+  display: none;
+}
+
+#profile #zones .zone-icon {
+  flex: 0 0 30px;
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--zc);
+  color: #ffffff;
+  box-shadow: 0 4px 10px color-mix(in srgb, var(--zc) 35%, transparent);
+}
+
+#profile #zones > .zone-3 .zone-icon {
+  color: #3f2d00;
+}
+
+#profile #zones .zone-icon .cf-svg {
+  width: 15px;
+  height: 15px;
+}
+
+#profile #zones > .profile-zone strong {
+  font-size: 13px;
+}
+
+#profile #zones > .profile-zone small {
+  margin-top: 2px;
+  font-size: 12px;
+}
+
+#profile #zones > .profile-zone > span {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text);
+  opacity: 0.8;
+}
+
+body:not([data-theme="dark"]) #profile .section-label .cf-svg {
+  color: #3d6b12 !important;
+}
+
+body:not([data-theme="dark"]) #home .mini-icon.orange {
+  color: #3d6b12 !important;
+  background: #e4f3c2 !important;
+  border-color: rgba(61, 107, 18, 0.2) !important;
+}
+
+#cycling .ride-top > .ride-route-name {
+  flex: 0 0 auto;
+  align-self: flex-start;
+  margin: 0;
+  padding: 3px 9px;
+  border-radius: 999px;
+  border: 1px solid rgba(165, 140, 255, 0.18);
+  background: rgba(165, 140, 255, 0.08);
+  color: var(--purple);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  opacity: 1;
+}
+
+body:not([data-theme="dark"]) #cycling .ride-top > .ride-route-name {
+  border-color: rgba(139, 115, 217, 0.16);
+  background: rgba(139, 115, 217, 0.07);
+  color: #765fc1;
+}
+
+body:not([data-theme="dark"]) #cycling .ride-mode-btn:first-child.active,
+body:not([data-theme="dark"]) #cycling .ride-gpx-action strong .cf-svg {
+  color: #3d6b12 !important;
+}
+
 .custom-workout-info textarea {
   width: 100%;
   box-sizing: border-box;
