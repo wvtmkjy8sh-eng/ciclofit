@@ -1271,16 +1271,16 @@ body[data-theme="dark"] .custom-workout-builder .selected-exercises {
   border-bottom-color: rgba(255, 255, 255, 0.07) !important;
 }
 
-#progress .pr-title {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
+body #progress .pr-row > .pr-icon {
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
 }
 
 #progress .pr-rp-icon {
   flex: 0 0 auto;
-  width: 30px;
-  height: 30px;
+  width: 34px;
+  height: 34px;
 }
 
 #progress .pr-rp-icon circle {
@@ -1311,4 +1311,15 @@ body:not([data-theme="dark"]) #adminPanel .admin-workout-row .admin-status-badge
   border-color: rgba(61, 107, 18, 0.35) !important;
   background: #e4f3c2 !important;
   color: #2f5a0c !important;
+}
+
+body:not([data-theme="dark"]) #exerciseCatalog .catalog-add {
+  border-color: rgba(61, 107, 18, 0.35) !important;
+  background: #e4f3c2 !important;
+  color: #2f5a0c !important;
+}
+
+body:not([data-theme="dark"]) #exerciseCatalog .catalog-item:hover .catalog-add {
+  border-color: #3d6b12 !important;
+  background: #d6ec9f !important;
 }

@@ -1232,6 +1232,7 @@ function renderPRs(){
   ];
   const cycling=cyclingMetrics.map(metric=>{const best=bestRideBy(metric.pick);return best?{...metric,...best}:null}).filter(Boolean);
   const highlight=bestRideBy(r=>+r.distance)||cycling[0];
+  const rpIcon='<svg class="pr-rp-icon" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="24"/><text x="24" y="24.5" text-anchor="middle" dominant-baseline="central">RP</text></svg>';
   const cyclingRows=[];
   if(highlight){
     const ride=highlight.ride;
@@ -1241,12 +1242,12 @@ function renderPRs(){
       Number.isFinite(+ride.elevation)&&+ride.elevation>0?`${Math.round(+ride.elevation)} m`:null
     ].filter(Boolean);
     const date=ride.date?new Date(ride.date+'T12:00:00').toLocaleDateString('pt-BR'):'';
-    cyclingRows.push(`<div class="pr-row pr-highlight"><span class="pr-icon">${svgIcon('i-bike')}</span><div><strong>Melhor desempenho</strong><small>${esc(bits.join(' · ')||'Ciclismo')}</small></div><b>${esc(date||bits[0]||'')}</b></div>`);
+    cyclingRows.push(`<div class="pr-row pr-highlight"><span class="pr-icon">${rpIcon}</span><div><strong>Melhor desempenho</strong><small>${esc(bits.join(' · ')||'Ciclismo')}</small></div><b>${esc(date||bits[0]||'')}</b></div>`);
   }
   cycling.forEach(item=>{
-    cyclingRows.push(`<div class="pr-row"><span class="pr-icon">${svgIcon('i-bike')}</span><div><strong>${esc(item.label)}</strong><small>Melhor registro</small></div><b>${esc(item.format(item.value))}</b></div>`);
+    cyclingRows.push(`<div class="pr-row"><span class="pr-icon">${rpIcon}</span><div><strong>${esc(item.label)}</strong><small>Melhor registro</small></div><b>${esc(item.format(item.value))}</b></div>`);
   });
-  const gymRows=gym.map(x=>`<div class="pr-row"><span class="pr-icon">${svgIcon('i-dumbbell')}</span><div><strong>${esc(x.name)}</strong><small>Melhor registro</small></div><b>${x.weight} kg × ${x.reps}</b></div>`);
+  const gymRows=gym.map(x=>`<div class="pr-row"><span class="pr-icon">${rpIcon}</span><div><strong>${esc(x.name)}</strong><small>Melhor registro</small></div><b>${x.weight} kg × ${x.reps}</b></div>`);
   const groups=[];
   if(cyclingRows.length)groups.push(`<div class="pr-modality"><span>${svgIcon('i-bike')}</span><b>Ciclismo</b></div>${cyclingRows.join('')}`);
   if(gymRows.length)groups.push(`<div class="pr-modality"><span>${svgIcon('i-dumbbell')}</span><b>Academia</b></div>${gymRows.join('')}`);
