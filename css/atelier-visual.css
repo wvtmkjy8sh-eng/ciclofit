@@ -1298,6 +1298,221 @@ body #profile #zones > .profile-zone::before {
   opacity: 0.8;
 }
 
+#profile [hidden] {
+  display: none !important;
+}
+
+#profile .avatar-wrap {
+  position: relative;
+  flex: 0 0 auto;
+}
+
+#profile .avatar-wrap .photo-upload {
+  position: absolute;
+  right: -4px;
+  bottom: -2px;
+  z-index: 3;
+  display: block;
+}
+
+#profile .avatar-wrap .photo-upload-btn {
+  display: grid;
+  place-items: center;
+  width: 32px !important;
+  height: 32px !important;
+  min-height: 32px !important;
+  padding: 0 !important;
+  border-radius: 50% !important;
+  border: 3px solid var(--card) !important;
+  background: #3d6b12 !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18) !important;
+}
+
+body[data-theme="dark"] #profile .avatar-wrap .photo-upload-btn {
+  background: var(--accent) !important;
+  color: #162000 !important;
+}
+
+#profile .avatar-wrap .photo-upload-btn .cf-svg {
+  width: 15px;
+  height: 15px;
+  margin: 0;
+}
+
+#profile .profile-head-copy p {
+  margin-bottom: 0 !important;
+}
+
+#profile .profile-card {
+  min-height: 0 !important;
+  align-items: center !important;
+  gap: 18px !important;
+}
+
+#profile .profile-card .avatar {
+  width: 88px !important;
+  height: 88px !important;
+  flex: 0 0 88px !important;
+}
+
+#profile .profile-head-copy {
+  flex: 1 1 auto;
+}
+
+#profile .profile-head-copy .profile-display-goal {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin: 6px 0 0 !important;
+}
+
+#profile .profile-display-goal .cf-svg {
+  flex: 0 0 auto;
+  width: 18px;
+  height: 18px;
+  color: var(--accent);
+}
+
+body:not([data-theme="dark"]) #profile .profile-display-goal .cf-svg {
+  color: #3d6b12;
+}
+
+#profile .profile-stats {
+  display: flex;
+  flex-wrap: wrap;
+  row-gap: 8px;
+  margin-top: 12px;
+}
+
+#profile .profile-stats > div {
+  min-width: 0;
+  padding: 0 12px;
+  border-left: 1px solid var(--border);
+}
+
+#profile .profile-stats > div:first-child {
+  padding-left: 0;
+  border-left: 0;
+}
+
+#profile .profile-stats strong {
+  display: block;
+  color: var(--text);
+  font-family: var(--display);
+  font-size: 15px;
+  font-weight: 800;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+#profile .profile-stats small {
+  display: block;
+  margin-top: 2px;
+  color: var(--muted);
+  font-size: 11px;
+}
+
+@media (max-width: 420px) {
+  #profile .profile-card {
+    gap: 14px !important;
+  }
+
+  #profile .profile-card .avatar {
+    width: 76px !important;
+    height: 76px !important;
+    flex: 0 0 76px !important;
+  }
+
+  #profile .profile-stats > div {
+    padding: 0 10px;
+  }
+
+  #profile .profile-stats strong {
+    font-size: 14px;
+  }
+}
+
+#profile .profile-collapse-toggle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+#profile > .card:not(.profile-card) .profile-collapse-toggle .section-label {
+  margin-bottom: 0;
+}
+
+#profile .profile-collapse-chevron {
+  flex: 0 0 auto;
+  width: 9px;
+  height: 9px;
+  margin-right: 6px;
+  border-right: 2px solid var(--muted);
+  border-bottom: 2px solid var(--muted);
+  transform: rotate(-135deg) translate(-2px, -2px);
+  transition: transform 0.2s ease;
+}
+
+#profile .profile-collapse-card.is-collapsed .profile-collapse-chevron {
+  transform: rotate(45deg) translate(-2px, -2px);
+}
+
+#profile .profile-collapse-body {
+  margin-top: 15px;
+}
+
+#profile .profile-edit-bar {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 12px;
+}
+
+#profile #profileEditBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 34px;
+  padding: 7px 14px;
+  border-radius: 10px;
+  font-size: 11px;
+}
+
+#profile #profileEditBtn {
+  box-shadow: 0 10px 24px rgba(143, 217, 0, 0.12);
+}
+
+#profile #profileDataBody input:disabled,
+#profile #profileDataBody select:disabled {
+  opacity: 1;
+  color: var(--text);
+  -webkit-text-fill-color: var(--text);
+  cursor: default;
+  border-color: transparent !important;
+  background: rgba(0, 0, 0, 0.035) !important;
+  box-shadow: none !important;
+}
+
+body[data-theme="dark"] #profile #profileDataBody input:disabled,
+body[data-theme="dark"] #profile #profileDataBody select:disabled {
+  background: rgba(255, 255, 255, 0.04) !important;
+}
+
+#profile #profileDataBody select:disabled {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
 body:not([data-theme="dark"]) #profile .section-label .cf-svg {
   color: #3d6b12 !important;
 }
