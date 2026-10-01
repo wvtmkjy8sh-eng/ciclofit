@@ -544,12 +544,13 @@ html:has(#authScreen[style*="display: none"]):has(body:not(.admin-mode)) {
   overflow-y: scroll !important;
 }
 
-/* PWA no iPhone: com o documento mais curto que a tela (ex.: Perfil com os cards
-   recolhidos), o WebKit sobe o menu fixo. Mesma altura mínima já usada no admin. */
+/* PWA no iPhone (status bar black-translucent): quando o documento não rola, o iOS
+   desconta a barra de status da área visível (100svh = tela - safe-area-top) e o menu
+   fixo sobe essa altura. O documento precisa passar 1px da tela inteira. */
 @media (display-mode: standalone), (display-mode: fullscreen) {
   @media (max-width: 768px) {
     html:has(#authScreen[style*="display: none"]) body:not(.admin-mode) {
-      min-height: 100svh !important;
+      min-height: calc(100svh + env(safe-area-inset-top, 0px) + 1px) !important;
     }
   }
 }
