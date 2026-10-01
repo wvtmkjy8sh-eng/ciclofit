@@ -465,6 +465,137 @@ body[data-theme="dark"] #authScreen .auth-card {
   box-shadow: 0 8px 18px rgba(28, 22, 12, 0.08);
 }
 
+/* Indicador deslizante das abas de login (Aluno/Admin) */
+.auth-tabs {
+  position: relative;
+  isolation: isolate;
+}
+
+.auth-tabs::before {
+  content: "";
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  left: 4px;
+  width: calc(50% - 4px);
+  border-radius: 999px;
+  background: var(--accent);
+  box-shadow: 0 8px 18px rgba(28, 22, 12, 0.10);
+  transform: translateX(0);
+  transition: transform 0.42s cubic-bezier(0.65, 0, 0.35, 1);
+  animation: cfTabFillA 0.75s ease both;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.auth-tabs:has(.auth-tab[data-role="admin"].active)::before {
+  transform: translateX(100%);
+  animation-name: cfTabFillB;
+}
+
+#authScreen .auth-tab {
+  position: relative;
+  z-index: 1;
+  transition: color 0.25s ease;
+}
+
+#authScreen .auth-tab.active {
+  background: transparent;
+  border-color: transparent;
+  box-shadow: none;
+  color: var(--accent-ink);
+  transition: color 0.25s ease 0.38s;
+}
+
+#authScreen .auth-tab.active::after {
+  content: none;
+}
+
+/* Dois keyframes idênticos: trocar o nome reinicia a animação a cada seleção */
+@keyframes cfTabFillA {
+  0%, 55% { background-color: var(--card); }
+  100% { background-color: var(--accent); }
+}
+
+@keyframes cfTabFillB {
+  0%, 55% { background-color: var(--card); }
+  100% { background-color: var(--accent); }
+}
+
+@supports not selector(:has(*)) {
+  .auth-tabs::before { content: none; }
+  #authScreen .auth-tab.active { background: var(--accent); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .auth-tabs::before { transition: none; animation: none; }
+  #authScreen .auth-tab.active { transition: none; }
+}
+
+/* Indicador deslizante dos menus do aluno e do admin.
+   Posição e tamanho vêm de --cf-ind-* (definidos em app.js a partir do item ativo);
+   [data-cf-ind] só existe depois que o script mede o menu. */
+.bottom-nav[data-cf-ind]::before,
+#adminPanel .admin-tabs[data-cf-ind]::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: var(--cf-ind-w, 0);
+  height: var(--cf-ind-h, 0);
+  border-radius: 16px;
+  background: var(--accent);
+  box-shadow: 0 8px 18px rgba(28, 22, 12, 0.10);
+  transform: translate(var(--cf-ind-x, 0), var(--cf-ind-y, 0));
+  transition:
+    transform 0.42s cubic-bezier(0.65, 0, 0.35, 1),
+    width 0.42s cubic-bezier(0.65, 0, 0.35, 1),
+    height 0.42s cubic-bezier(0.65, 0, 0.35, 1);
+  animation: cfTabFillA 0.75s ease both;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.bottom-nav[data-cf-ind="b"]::before,
+#adminPanel .admin-tabs[data-cf-ind="b"]::before {
+  animation-name: cfTabFillB;
+}
+
+.bottom-nav.cf-ind-instant::before,
+#adminPanel .admin-tabs.cf-ind-instant::before {
+  transition: none;
+}
+
+.bottom-nav[data-cf-ind] .nav-btn,
+#adminPanel .admin-tabs[data-cf-ind] .admin-tab {
+  z-index: 1;
+}
+
+.bottom-nav[data-cf-ind] .nav-btn.active,
+#adminPanel .admin-tabs[data-cf-ind] .admin-tab.active {
+  background: transparent !important;
+  box-shadow: none !important;
+  color: var(--accent-ink) !important;
+  transition: color 0.25s ease 0.38s, transform 0.18s ease !important;
+}
+
+.bottom-nav[data-cf-ind] .nav-btn.active::before,
+#adminPanel .admin-tabs[data-cf-ind] .admin-tab.active::before {
+  content: none !important;
+}
+
+.bottom-nav[data-cf-ind] .nav-btn.active .cf-svg,
+#adminPanel .admin-tabs[data-cf-ind] .admin-tab.active .cf-svg {
+  filter: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bottom-nav[data-cf-ind]::before,
+  #adminPanel .admin-tabs[data-cf-ind]::before { transition: none; animation: none; }
+  .bottom-nav[data-cf-ind] .nav-btn.active,
+  #adminPanel .admin-tabs[data-cf-ind] .admin-tab.active { transition: none !important; }
+}
+
 body[data-theme="dark"] .auth-tab.active {
   background: #1a201b;
 }

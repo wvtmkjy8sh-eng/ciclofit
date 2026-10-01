@@ -1695,6 +1695,34 @@ function setAdminTab(tab){
 }
 $$('.admin-tab').forEach(b=>b.addEventListener('click',()=>setAdminTab(b.dataset.adminTab)));
 
+/* ===== Indicador deslizante dos menus (aluno e admin) ===== */
+function syncMenuIndicator(nav,items){
+  const btn=items.find(b=>b.classList.contains('active'));
+  if(!btn||!btn.offsetWidth){nav._cfIndShown=false;return}
+  const instant=!nav._cfIndShown;
+  if(instant)nav.classList.add('cf-ind-instant');
+  nav.style.setProperty('--cf-ind-x',btn.offsetLeft+'px');
+  nav.style.setProperty('--cf-ind-y',btn.offsetTop+'px');
+  nav.style.setProperty('--cf-ind-w',btn.offsetWidth+'px');
+  nav.style.setProperty('--cf-ind-h',btn.offsetHeight+'px');
+  if(nav._cfIndBtn!==btn){nav._cfIndBtn=btn;nav.dataset.cfInd=nav.dataset.cfInd==='a'?'b':'a'}
+  nav._cfIndShown=true;
+  if(instant)requestAnimationFrame(()=>requestAnimationFrame(()=>nav.classList.remove('cf-ind-instant')));
+}
+function initMenuIndicator(nav,itemSelector){
+  if(!nav)return;
+  const items=[...nav.querySelectorAll(itemSelector)];
+  if(!items.length)return;
+  const sync=()=>syncMenuIndicator(nav,items);
+  const mo=new MutationObserver(sync);
+  items.forEach(b=>mo.observe(b,{attributes:true,attributeFilter:['class']}));
+  if('ResizeObserver' in window)new ResizeObserver(sync).observe(nav);
+  window.addEventListener('resize',sync);
+  sync();
+}
+initMenuIndicator($('.bottom-nav'),'.nav-btn');
+initMenuIndicator($('#adminPanel .admin-tabs'),'.admin-tab');
+
 /* ===== v18: logout no cabeçalho + treinos personalizados ===== */
 const CUSTOM_EXERCISES_KEY='ciclofit-custom-exercises-v1';
 const CUSTOM_WORKOUTS_KEY='ciclofit-custom-workouts-v1';
