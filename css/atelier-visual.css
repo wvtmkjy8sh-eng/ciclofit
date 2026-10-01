@@ -1831,7 +1831,8 @@ input[type="date"]::-webkit-date-and-time-value {
   opacity: 0.7;
 }
 
-#adminPanel [data-admin-panel="students"] .student-create-card.is-collapsed .student-create-chevron {
+#adminPanel [data-admin-panel="students"] .student-create-card.is-collapsed .student-create-chevron,
+#adminPanel [data-admin-panel="students"] .student-list-card.is-collapsed .student-create-chevron {
   transform: rotate(45deg) translate(-2px, -2px);
 }
 
@@ -1849,6 +1850,23 @@ input[type="date"]::-webkit-date-and-time-value {
 
 #adminPanel [data-admin-panel="students"] .student-list-card .admin-student-search {
   margin-top: 0;
+}
+
+#adminPanel [data-admin-panel="students"] .student-list-count {
+  display: block;
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+#adminPanel [data-admin-panel="students"] .student-list-card .student-create-body {
+  display: grid;
+  gap: 12px;
+}
+
+#adminPanel [data-admin-panel="students"] .student-list-card .student-create-body[hidden] {
+  display: none;
 }
 
 body:not([data-theme="dark"]) #exerciseCatalog .catalog-item:hover .catalog-add {
@@ -2012,4 +2030,61 @@ body[data-theme="dark"] #progress .ring {
   --ring-start: #4f8a17;
   --ring-mid: #8ed000;
   --ring-end: #c8f53a;
+}
+
+#adminPanel .admin-topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+#adminPanel .admin-topbar-actions > button,
+.app-header .header-actions > button {
+  display: grid !important;
+  place-items: center;
+  flex: 0 0 40px;
+  width: 40px !important;
+  height: 40px !important;
+  min-width: 40px !important;
+  min-height: 40px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  line-height: 0;
+}
+
+#adminPanel .admin-topbar-actions > button svg,
+.app-header .header-actions > button svg {
+  display: block;
+  width: 18px;
+  height: 18px;
+  margin: 0;
+}
+
+body:not([data-theme="dark"]) #adminPanel .admin-topbar-actions > button {
+  border: 1px solid rgba(22, 26, 22, 0.1) !important;
+  border-radius: 11px !important;
+  background: #fbfaf6 !important;
+  color: #161a16 !important;
+  box-shadow: 0 5px 16px rgba(28, 45, 34, 0.043) !important;
+}
+
+body[data-theme="dark"] #adminPanel .admin-topbar-actions > button {
+  border: 1px solid rgba(214, 255, 90, 0.12) !important;
+  border-radius: 11px !important;
+  background: #121614 !important;
+  color: #f4f7f0 !important;
+  box-shadow: 0 8px 18px rgba(17, 29, 20, 0.05) !important;
+}
+
+#adminPanel .admin-workout-row .admin-status-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 0 !important;
+  padding: 7px 9px !important;
+  border-radius: 9px !important;
+  font-size: 14px !important;
+  font-weight: 800 !important;
+  line-height: normal !important;
+  letter-spacing: normal !important;
 }
