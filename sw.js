@@ -1,4 +1,4 @@
-const CACHE_NAME = 'ciclofit-static-v44';
+const CACHE_NAME = 'ciclofit-static-v45';
 const APP_SHELL = [
   './',
   './index.html',

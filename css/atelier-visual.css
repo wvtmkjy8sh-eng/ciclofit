@@ -538,6 +538,16 @@ html:has(#authScreen[style*="display: none"]) {
   scrollbar-gutter: stable;
 }
 
+/* PWA no iPhone: com o documento mais curto que a tela (ex.: Perfil com os cards
+   recolhidos), o WebKit sobe o menu fixo. Mesma altura mínima já usada no admin. */
+@media (display-mode: standalone), (display-mode: fullscreen) {
+  @media (max-width: 768px) {
+    html:has(#authScreen[style*="display: none"]) body:not(.admin-mode) {
+      min-height: 100svh !important;
+    }
+  }
+}
+
 /* Indicador deslizante dos menus do aluno e do admin.
    Posição e tamanho vêm de --cf-ind-* (definidos em app.js a partir do item ativo);
    [data-cf-ind] só existe depois que o script mede o menu. */
