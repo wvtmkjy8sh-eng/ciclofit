@@ -2,11 +2,11 @@
    Só aparência: tipo, cor, luz e material.
    Não altera estrutura, rotas nem comportamento. */
 
-@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap");
 
 :root {
-  --display: "Outfit", "Segoe UI", sans-serif;
-  --body: "Outfit", "Segoe UI", sans-serif;
+  --display: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --body: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --atelier-lime: #c8f53a;
   --atelier-lime-deep: #9ad40a;
   --atelier-ink: #121612;
