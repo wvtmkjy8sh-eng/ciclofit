@@ -1,4 +1,4 @@
-const CACHE_NAME = 'ciclofit-static-v42';
+const CACHE_NAME = 'ciclofit-static-v44';
 const APP_SHELL = [
   './',
   './index.html',
@@ -93,7 +93,7 @@ self.addEventListener('fetch', event => {
   if (url.pathname.startsWith('/api/')) return;
   if (url.origin !== self.location.origin) return;
 
-  const live = /\.(js|css|html)$/.test(url.pathname) || url.pathname.endsWith('/');
+  const live = /\.(js|css|html|json)$/.test(url.pathname) || url.pathname.endsWith('/');
   event.respondWith(
     live
       ? fetch(request).then(response => {

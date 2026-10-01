@@ -532,6 +532,12 @@ body[data-theme="dark"] #authScreen .auth-card {
   #authScreen .auth-tab.active { transition: none; }
 }
 
+/* Área logada: reserva o espaço da barra de rolagem mesmo em páginas curtas
+   (ex.: Perfil com os cards recolhidos), para o menu e o conteúdo não se deslocarem. */
+html:has(#authScreen[style*="display: none"]) {
+  scrollbar-gutter: stable;
+}
+
 /* Indicador deslizante dos menus do aluno e do admin.
    Posição e tamanho vêm de --cf-ind-* (definidos em app.js a partir do item ativo);
    [data-cf-ind] só existe depois que o script mede o menu. */
