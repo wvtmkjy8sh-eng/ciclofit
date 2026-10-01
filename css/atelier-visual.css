@@ -538,6 +538,12 @@ html:has(#authScreen[style*="display: none"]) {
   scrollbar-gutter: stable;
 }
 
+/* Aluno: barra de rolagem sempre presente (como no admin); só rola quando há conteúdo.
+   O :has(body...) eleva a especificidade acima das regras mobile/PWA com overflow-y:auto. */
+html:has(#authScreen[style*="display: none"]):has(body:not(.admin-mode)) {
+  overflow-y: scroll !important;
+}
+
 /* PWA no iPhone: com o documento mais curto que a tela (ex.: Perfil com os cards
    recolhidos), o WebKit sobe o menu fixo. Mesma altura mínima já usada no admin. */
 @media (display-mode: standalone), (display-mode: fullscreen) {
