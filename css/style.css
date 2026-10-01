@@ -2039,9 +2039,14 @@ body[data-theme="light"] .auth-screen .auth-bg-photo{mix-blend-mode:multiply;opa
   }
 }
 
-/* Admin: Avisos não desloca o menu (scrollbar some e o foco da última aba empurra) */
+/* Admin: Avisos não desloca o menu (scrollbar some e o foco da última aba empurra).
+   Só em ponteiro fino: em touch essa reserva encolhia a largura da tela. */
+@media (pointer: fine){
+  html:has(body.admin-mode){
+    scrollbar-gutter:stable;
+  }
+}
 html:has(body.admin-mode){
-  scrollbar-gutter:stable;
   overflow-x:hidden;
   overflow-y:scroll;
 }

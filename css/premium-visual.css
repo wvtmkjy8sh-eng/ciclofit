@@ -501,15 +501,25 @@ body[data-theme="dark"] .auth-screen{background:radial-gradient(circle at 50% -1
 
 html {
   min-height: 100%;
-  background: var(--bg);
+  /* Fallback sólido: var(--bg) não é lido aqui (custom property só desce de html
+     para body, não o contrário) e :has() não existe em WebViews mais antigas
+     (ex.: navegador interno do WhatsApp em iOS < 16.4), deixando o fundo branco
+     do sistema aparecer nas áreas de safe-area. prefers-color-scheme cobre esse caso. */
+  background: #efece4;
+}
+
+@media (prefers-color-scheme: dark) {
+  html {
+    background: #070908;
+  }
 }
 
 html:has(body[data-theme="dark"]) {
-  background: #0b0f0d;
+  background: #070908;
 }
 
 html:has(body:not([data-theme="dark"])) {
-  background: #f4f7f3;
+  background: #efece4;
 }
 
 body {
@@ -9868,9 +9878,14 @@ body:not([data-theme="dark"]) {
   }
 }
 
-/* Admin: Avisos não desloca o menu (scrollbar some em página curta / foco da última aba) */
+/* Admin: Avisos não desloca o menu (scrollbar some em página curta / foco da última aba).
+   Só em ponteiro fino: em touch essa reserva encolhia a largura da tela. */
+@media (pointer: fine) {
+  html:has(body.admin-mode) {
+    scrollbar-gutter: stable;
+  }
+}
 html:has(body.admin-mode) {
-  scrollbar-gutter: stable;
   overflow-x: hidden !important;
   overflow-y: scroll !important;
 }

@@ -49,7 +49,7 @@
   >
   
   <link rel="apple-touch-icon" sizes="180x180" href="icons/icon-180.png?v=2">
-  <title>CicloFit 5.0</title><link rel="stylesheet" href="css/style.css?v=35"><link rel="stylesheet" href="css/premium-visual.css?v=37"><link rel="stylesheet" href="css/atelier-visual.css?v=105">
+  <title>CicloFit 5.0</title><link rel="stylesheet" href="css/style.css?v=36"><link rel="stylesheet" href="css/premium-visual.css?v=38"><link rel="stylesheet" href="css/atelier-visual.css?v=110">
 </head>
 <script>
   window.addEventListener('load', () => {
@@ -73,7 +73,9 @@
 <script>
 (function () {
   try {
-    document.body.dataset.theme = localStorage.getItem('ciclofit-theme') || 'dark';
+    var cfTheme = localStorage.getItem('ciclofit-theme') || 'dark';
+    document.body.dataset.theme = cfTheme;
+    document.documentElement.dataset.theme = cfTheme;
   } catch (e) {}
   try {
     var auth = sessionStorage.getItem('ciclofit-auth-v1');

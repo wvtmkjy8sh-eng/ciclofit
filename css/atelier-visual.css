@@ -64,6 +64,43 @@ html:has(body:not([data-theme="dark"])) {
   background: #efece4 !important;
 }
 
+/* Mesma regra sem :has() — cobre navegadores/WebViews sem suporte a :has()
+   (ex.: navegador interno de apps como WhatsApp), que deixavam vazar o fundo
+   claro na fresta do rodapé durante o tema escuro/splash. */
+html[data-theme="dark"] {
+  background: #070908 !important;
+}
+
+html:not([data-theme="dark"]) {
+  background: #efece4 !important;
+}
+
+/* Camada de fundo fixa cobrindo 100% da viewport, independente da altura real
+   de html/body (iOS Safari recalcula 100vh/100dvh de forma inconsistente
+   quando a barra do navegador recolhe, deixando uma faixa sem pintura no
+   rodapé). position:fixed + inset:0 nunca depende desse cálculo. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: var(--bg);
+}
+
+/* PWA instalado (tela de início): sem barra do Safari, a altura usada pelo
+   WebKit para posicionar o home indicator às vezes fica maior que o
+   conteúdo pintado no 1º frame. Reforça a mesma camada presa na <html>,
+   que é desenhada antes do <body> e cobre também esse instante inicial. */
+@media (display-mode: standalone), (display-mode: fullscreen) {
+  html::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -2;
+    background: inherit;
+  }
+}
+
 body:not([data-theme="dark"]) .app-header {
   background: color-mix(in srgb, #fbfaf6 78%, transparent);
   border-bottom: 1px solid rgba(22, 26, 22, 0.08);
@@ -376,9 +413,28 @@ html.cf-session #authScreen {
 
 .ciclofit-splash {
   z-index: 100001 !important;
+}
+
+/* A splash deve refletir o tema já escolhido pelo usuário (lido do
+   localStorage antes do primeiro paint), não ficar fixa no escuro. */
+body[data-theme="dark"] .ciclofit-splash {
   background:
     radial-gradient(520px 280px at 50% 18%, rgba(200, 245, 58, 0.18), transparent 62%),
     #070908 !important;
+}
+
+body:not([data-theme="dark"]) .ciclofit-splash {
+  background:
+    radial-gradient(520px 280px at 50% 18%, rgba(154, 212, 10, 0.16), transparent 62%),
+    #efece4 !important;
+}
+
+body:not([data-theme="dark"]) .ciclofit-splash-text {
+  color: rgba(22, 26, 22, 0.68) !important;
+}
+
+body:not([data-theme="dark"]) .ciclofit-splash-loader {
+  background: rgba(22, 26, 22, 0.1) !important;
 }
 
 @media (max-width: 700px), (display-mode: standalone) {
@@ -406,7 +462,7 @@ html.cf-session #authScreen {
   background:
     radial-gradient(720px 380px at 12% -10%, rgba(200, 245, 58, 0.2), transparent 60%),
     radial-gradient(540px 320px at 100% 0%, rgba(196, 132, 74, 0.16), transparent 55%),
-    linear-gradient(180deg, #f6f3ea, #e8e3d6) !important;
+    linear-gradient(180deg, #f6f3ea, #efece4) !important;
 }
 
 body[data-theme="dark"] #authScreen.auth-screen,
@@ -533,9 +589,13 @@ body[data-theme="dark"] #authScreen .auth-card {
 }
 
 /* Área logada: reserva o espaço da barra de rolagem mesmo em páginas curtas
-   (ex.: Perfil com os cards recolhidos), para o menu e o conteúdo não se deslocarem. */
-html:has(#authScreen[style*="display: none"]) {
-  scrollbar-gutter: stable;
+   (ex.: Perfil com os cards recolhidos), para o menu e o conteúdo não se deslocarem.
+   Só em ponteiro fino (mouse/desktop): em touch (iPhone) não há scrollbar
+   clássica e essa reserva encolhia a largura útil da tela, limitando o rodapé. */
+@media (pointer: fine) {
+  html:has(#authScreen[style*="display: none"]) {
+    scrollbar-gutter: stable;
+  }
 }
 
 /* Aluno: barra de rolagem sempre presente (como no admin); só rola quando há conteúdo.
