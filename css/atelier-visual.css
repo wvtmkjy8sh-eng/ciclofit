@@ -658,7 +658,7 @@ body:not([data-theme="dark"]) #home .goal-row > b {
 
 body:not([data-theme="dark"]) #home .goals-card .progress i,
 body:not([data-theme="dark"]) #home .progress i {
-  background: linear-gradient(90deg, #3d6b12, #6a9a22) !important;
+  background: linear-gradient(90deg, #3d6b12 0%, #8ed000 60%, #c8f53a 100%) !important;
   box-shadow: none !important;
 }
 
@@ -1994,4 +1994,22 @@ body:not([data-theme="dark"]) #home #weekGrid .day.today {
   #home #weekGrid .day .day-duration {
     font-size: 9px;
   }
+}
+
+body:not([data-theme="dark"]) #home .section-head .text-btn,
+body[data-theme="dark"] #home .section-head .text-btn {
+  border: 0 !important;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.35), transparent 42%),
+    linear-gradient(135deg, #e4ff7a 0%, #c8f53a 42%, #8ed000 100%) !important;
+  color: #152000 !important;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.55) inset,
+    0 8px 18px rgba(154, 196, 20, 0.24) !important;
+}
+
+body[data-theme="dark"] #progress .ring {
+  --ring-start: #4f8a17;
+  --ring-mid: #8ed000;
+  --ring-end: #c8f53a;
 }
