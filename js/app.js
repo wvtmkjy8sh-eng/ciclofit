@@ -356,9 +356,9 @@ function renderWeek(){
     const isToday=date===today;
     const iconId=items.length?weekActivityIcon(items[0]):'';
     const label=items.length?[...new Set(items.map(shortWeekWorkoutLabel))].join(' + '):'Sem treino';
-    const done=items.length&&items.every(x=>isDoneWorkout(x.type));
+    const done=items.length&&items.every(x=>isDoneWorkout(x.type,date));
     const iconHtml=iconId?svgIcon(iconId):'<span class="day-x" aria-hidden="true">X</span>';
-    return `<article class="day ${isToday?'today':''} ${items.length?'assigned-day':'rest-day'} ${done?'done':''}" data-week-date="${date}" role="button" tabindex="0" title="${esc(fullNames[i])}: ${esc(label)}"><span class="day-name">${letters[i]}</span><span class="day-date">${d.getDate()}</span><div class="icon">${iconHtml}</div></article>`;
+    return `<article class="day ${isToday?'today':''} ${items.length?'assigned-day':'rest-day'} ${done?'done':''}" data-week-date="${date}" role="button" tabindex="0" title="${esc(fullNames[i])}: ${esc(label)}"><span class="day-name">${letters[i]}</span><span class="day-date">${d.getDate()}</span><div class="icon">${iconHtml}</div><span class="day-status ${done?'is-done':''}" aria-hidden="true">${done?svgIcon('i-check'):''}</span>${isToday&&items.length&&workoutByKey(items[0].type)?.duration?`<small class="day-duration">${esc(workoutByKey(items[0].type).duration)}</small>`:''}</article>`;
   }).join('');
   const end=new Date(monday);end.setDate(monday.getDate()+6);
   const fmt=new Intl.DateTimeFormat('pt-BR',{day:'2-digit',month:'short'});
@@ -1293,6 +1293,7 @@ function renderZones(){const max=+data.profile.maxHr||190,zones=[['Zona 1',.5,.6
 $('#saveProfile').onclick=async()=>{['name','birthDate','phone','weight','height','goal','level','maxHr','ftp'].forEach(k=>{const el=$('#profile'+k[0].toUpperCase()+k.slice(1));if(el)data.profile[k]=el.value});data.profile.age=calculateAge(data.profile.birthDate)||data.profile.age||'';const cloud=window.CicloFitCloud;if(cloud?.enabled){const result=await cloud.updateMyProfile(data.profile);if(result.error){toast(result.error.message||'Não foi possível salvar o perfil.','error');return}if(result.data?.profile)data.profile={...data.profile,...result.data.profile};}save();loadProfile();refresh();setProfileEditing(false);toast('👤 Perfil salvo e sincronizado com o painel do Admin!')};
 function setProfileEditing(on){
   $$('#profileDataBody input, #profileDataBody select').forEach(el=>{el.disabled=!on});
+  $('#profileDataBody')?.classList.toggle('is-editing',on);
   const btn=$('#profileEditBtn');if(btn){btn.classList.toggle('is-editing',on);btn.querySelector('span').textContent=on?'Cancelar':'Editar'}
   const saveBtn=$('#saveProfile');if(saveBtn)saveBtn.hidden=!on;
 }
