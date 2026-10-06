@@ -162,6 +162,20 @@ body[data-theme="dark"] .gpx-detail-modal{background:#000}
 .gym-workout-sheet .set-check.done{background:var(--accent);border-color:var(--accent);color:#fff;box-shadow:0 5px 14px rgba(183,245,0,.22)}
 .gym-workout-sheet #finishWorkout{font-size:13px;letter-spacing:.01em}
 
+/* Botão deslizante de confirmação — arraste até o fim para concluir o treino */
+.slide-confirm{position:relative;display:flex;align-items:center;min-height:52px;border-radius:16px;background:var(--bg);border:1px solid var(--border);overflow:hidden;user-select:none;touch-action:none;cursor:grab}
+.slide-confirm-fill{position:absolute;left:0;top:0;bottom:0;width:52px;background:linear-gradient(90deg,var(--accent),var(--accent-2));opacity:.92;pointer-events:none}
+.slide-confirm-fill.is-animating{transition:width .28s ease}
+.slide-confirm-label{position:relative;z-index:1;flex:1;text-align:center;font-size:12px;font-weight:800;letter-spacing:.01em;color:var(--muted);display:flex;align-items:center;justify-content:center;gap:6px;transition:opacity .15s linear}
+.slide-confirm-label svg{width:14px;height:14px}
+.slide-confirm-thumb{position:absolute;left:4px;top:4px;width:44px;height:44px;border-radius:12px;background:var(--accent);color:#fff;display:grid;place-items:center;box-shadow:0 5px 14px rgba(183,245,0,.28);z-index:2;will-change:transform}
+.slide-confirm-thumb.is-animating{transition:transform .28s ease}
+.slide-confirm-thumb svg{width:18px;height:18px}
+.slide-confirm.disabled,.slide-confirm[aria-disabled="true"]{opacity:.48;cursor:not-allowed;filter:saturate(.45);box-shadow:none}
+.slide-confirm.disabled .slide-confirm-thumb,.slide-confirm[aria-disabled="true"] .slide-confirm-thumb{cursor:not-allowed}
+.slide-confirm.dragging{cursor:grabbing}
+.slide-confirm.dragging .slide-confirm-thumb{box-shadow:0 8px 20px rgba(183,245,0,.4)}
+
 
 /* CicloFit 5.0 — aba de treino realmente responsiva + timer de descanso */
 .gym-workout-overlay{
@@ -428,7 +442,7 @@ body[data-theme="dark"] .gpx-detail-modal{background:#000}
 .week-card .day.today .day-more{color:#fff}
 @media(max-width:700px){.week-card .day-more{font-size:6.5px}}
 /* v40 — indicação visual de conclusão bloqueada fora do dia agendado */
-#finishWorkout:disabled{opacity:.48;cursor:not-allowed;filter:saturate(.45);box-shadow:none}
+#finishWorkout[aria-disabled="true"]{opacity:.48;cursor:not-allowed;filter:saturate(.45);box-shadow:none}
 .mini-add-exercise{padding:8px 10px;font-size:10px;white-space:nowrap}.new-exercise-note{margin-top:6px}
 
 /* CicloFit 5.0 v47 — organização da aba Treinos no painel Admin */

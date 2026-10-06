@@ -453,7 +453,7 @@ function updateGymStatus(){
 
 function openWorkout(type){currentWorkout=type;const w=workoutByKey(type);if(!w){currentWorkout=null;toast('Treino não encontrado.','error');return;}const exercises=Array.isArray(w.exercises)?w.exercises:[];if(!exercises.length){toast('Este treino não possui exercícios cadastrados.','error');return;}$('#modalTitle').textContent=w.title||'Treino';$('#modalSubtitle').textContent='';const key=workoutDraftKey(type),saved=data.workoutDrafts?.[key]?.sets||data.workouts?.[key]?.sets||[];$('#exerciseList').innerHTML=exercises.map((e,i)=>{const savedExercise=saved[i]||[],def=defaultLoadForExercise(e[0]);const rows=Array.from({length:e[2]},(_,s)=>{const x=savedExercise[s]||{};return `<div class="sets"><span>${s+1}</span><input data-e="${i}" data-s="${s}" data-field="weight" type="number" value="${x.weight!==undefined&&x.weight!==''?esc(x.weight):esc(def)}" placeholder="${def?'kg · padrão '+esc(def):'kg'}"><input data-e="${i}" data-s="${s}" data-field="reps" type="number" value="${x.reps||e[3]}" placeholder="reps"><button class="set-check ${x.done?'done':''}" data-e="${i}" data-s="${s}" aria-label="Marcar série ${s+1}">${x.done?'✓':'○'}</button></div>`});return `<div class="exercise"><div class="exercise-top"><div><h3>${i+1}. ${esc(e[0])}</h3><small>${esc(e[1])}</small><label class="default-load-label">Carga padrão<input class="default-load-input" data-default-exercise="${esc(e[0])}" type="number" min="0" step="0.5" value="${esc(def)}" placeholder="Ex.: 20"></label></div><strong>${e[2]} × ${e[3]}</strong></div>${rows.join('')}</div>`}).join('');$$('.set-check').forEach(b=>b.onclick=()=>{b.classList.toggle('done');b.textContent=b.classList.contains('done')?'✓':'+';b.setAttribute('aria-label',b.classList.contains('done')?'Série concluída':'Concluir série');saveWorkoutDraft();updateGymStatus();renderInProgressExercises()});$$('.default-load-input').forEach(input=>input.addEventListener('change',()=>{const value=String(input.value??'').trim();setDefaultLoad(input.dataset.defaultExercise,value);const card=input.closest('.exercise');if(card){card.querySelectorAll('[data-field="weight"]').forEach(w=>{w.value=value})}saveWorkoutDraft();}));$$('#exerciseList input:not(.default-load-input)').forEach(input=>input.addEventListener('input',()=>{saveWorkoutDraft();renderInProgressExercises()}));updateGymStatus();$('#workoutModal').classList.add('show');resumeOrResetTimer();renderInProgressExercises()}
 function collectWorkout(){const activeWorkout=workoutByKey(currentWorkout)||workouts[currentWorkout];if(!activeWorkout)return [];return activeWorkout.exercises.map((e,i)=>Array.from({length:e[2]},(_,s)=>{const w=$(`[data-e="${i}"][data-s="${s}"][data-field="weight"]`),r=$(`[data-e="${i}"][data-s="${s}"][data-field="reps"]`),c=$(`.set-check[data-e="${i}"][data-s="${s}"]`);return{weight:w?.value||'',reps:r?.value||'',done:c?.classList.contains('done')||false}}))}
-$('#finishWorkout').onclick=()=>{
+function confirmFinishWorkout(){
   if(!currentWorkout)return;
   const gate=activityCompletionGate(currentWorkout);
   if(!gate.ok){toast(gate.reason,'error');updateFinishWorkoutState();return;}
@@ -468,7 +468,60 @@ $('#finishWorkout').onclick=()=>{
   renderInProgressExercises();
   toast('Treino registrado!');
   renderPRs();
-};function closeModal(){if(currentWorkout&&$('#workoutModal')?.classList.contains('show'))saveWorkoutDraft();stopTimer();$('#workoutModal').classList.remove('show')}$('#closeModal').onclick=closeModal;$('#workoutModal').onclick=e=>{if(e.target.id==='workoutModal')closeModal()};
+}
+// Botão deslizante: só confirma se o usuário arrastar o círculo até ~90% do trilho antes de soltar.
+(function setupFinishWorkoutSlider(){
+  const track=document.getElementById('finishWorkout');
+  const thumb=document.getElementById('finishWorkoutThumb');
+  const fill=document.getElementById('finishWorkoutFill');
+  const label=document.getElementById('finishWorkoutLabel');
+  if(!track||!thumb||!fill||!label)return;
+  const CONFIRM_RATIO=.9;
+  let dragging=false,startX=0,posX=0;
+  function maxTravel(){return Math.max(0,track.clientWidth-thumb.offsetWidth-8)}
+  function apply(x,animate){
+    thumb.classList.toggle('is-animating',!!animate);
+    fill.classList.toggle('is-animating',!!animate);
+    const max=maxTravel();
+    posX=Math.min(Math.max(x,0),max);
+    thumb.style.transform=`translateX(${posX}px)`;
+    fill.style.width=`${thumb.offsetWidth+4+posX}px`;
+    label.style.opacity=String(1-Math.min(posX/Math.max(max,1),1)*.9);
+  }
+  function reset(animate){apply(0,animate)}
+  function isDisabled(){return track.getAttribute('aria-disabled')==='true'}
+  function onPointerDown(e){
+    if(isDisabled())return;
+    dragging=true;
+    startX=e.clientX-posX;
+    track.classList.add('dragging');
+    thumb.setPointerCapture?.(e.pointerId);
+    e.preventDefault();
+  }
+  function onPointerMove(e){
+    if(!dragging)return;
+    apply(e.clientX-startX,false);
+  }
+  function onPointerUp(){
+    if(!dragging)return;
+    dragging=false;
+    track.classList.remove('dragging');
+    const max=maxTravel();
+    const ratio=max>0?posX/max:0;
+    if(ratio>=CONFIRM_RATIO){apply(max,true);confirmFinishWorkout();}
+    else reset(true);
+  }
+  thumb.addEventListener('pointerdown',onPointerDown);
+  thumb.addEventListener('pointermove',onPointerMove);
+  thumb.addEventListener('pointerup',onPointerUp);
+  thumb.addEventListener('pointercancel',onPointerUp);
+  track.addEventListener('keydown',e=>{
+    if(isDisabled())return;
+    if(e.key==='Enter'||e.key===' '){e.preventDefault();confirmFinishWorkout();}
+  });
+  window.resetFinishWorkoutSlider=()=>reset(false);
+})();
+function closeModal(){if(currentWorkout&&$('#workoutModal')?.classList.contains('show'))saveWorkoutDraft();stopTimer();$('#workoutModal').classList.remove('show')}$('#closeModal').onclick=closeModal;$('#workoutModal').onclick=e=>{if(e.target.id==='workoutModal')closeModal()};
 let restAudioContext=null,restEndAt=0,restFinishTimer=0,restKeepWatch=0,restBeepHold=0,restWakeLock=null,restPendingBeep=false;
 const restAlertAudio=$('#restAlertAudio'),restKeepAudio=$('#restKeepAliveAudio');
 const REST_ALERT={title:'CicloFit — descanso finalizado',body:'Seu descanso terminou. Próxima série.'};
@@ -1679,11 +1732,6 @@ $('#assignWorkoutBtn')?.addEventListener('click',()=>{
 window.deleteAdminWorkout=id=>{if(!confirm('Excluir este treino?'))return;if(editingAdminWorkoutId===id)resetAdminWorkoutForm();saveAdminWorkouts(adminWorkouts().filter(x=>x.id!==id));renderAdminWorkouts()};
 window.editAdminWorkout=id=>{const x=adminWorkouts().find(a=>a.id===id);if(!x)return;if(x.type?.startsWith('custom:')){setAdminTab('custom');return editCustomWorkout(x.customId||x.type.slice(7))}editingAdminWorkoutId=id;$('#adminWorkoutStudent').value=x.studentId;$('#adminWorkoutType').value=x.type;$('#adminWorkoutStart').value=x.startDate;$('#adminWorkoutValidity').value=x.validityDays||30;$('#adminWorkoutNote').value=x.note||'';$('#assignWorkoutBtn').textContent='✓ Salvar alterações';$('#cancelAdminWorkoutEdit').hidden=false;setAdminTab('workouts');toast('Edite os campos e salve as alterações.')};
 $('#cancelAdminWorkoutEdit')?.addEventListener('click',resetAdminWorkoutForm);
-$('#finishWorkout')?.addEventListener('click',e=>{
-  if(!currentWorkout)return;
-  const gate=activityCompletionGate(currentWorkout);
-  if(!gate.ok){e.stopImmediatePropagation();toast(gate.reason,'error');updateFinishWorkoutState();}
-},true);
 const _oldRefresh=window.refresh;window.refresh=function(){_oldRefresh?.();if(currentAuth()?.role==='student')renderStudentAssigned();};
 setInterval(()=>{if(currentAuth()?.role==='admin')checkWorkoutValidity()},60000);
 if($('#adminWorkoutStart')&&!$('#adminWorkoutStart').value)$('#adminWorkoutStart').value=iso();
@@ -2098,14 +2146,16 @@ function canFinishCurrentWorkout(){
   return activityCompletionGate(currentWorkout).ok;
 }
 function updateFinishWorkoutState(){
-  const btn=$('#finishWorkout'); if(!btn)return;
+  const track=$('#finishWorkout'); if(!track)return;
+  const label=$('#finishWorkoutLabel');
   const finished=isCurrentWorkoutFinished();
   const gate=activityCompletionGate(currentWorkout);
   const allowed=gate.ok;
-  btn.disabled=!allowed;
-  btn.setAttribute('aria-disabled',String(!allowed));
-  btn.title=finished?'Treino já finalizado':(allowed?'Concluir treino':gate.reason);
-  btn.innerHTML=finished?`${svgIcon('i-check')} Treino finalizado`:(allowed?`${svgIcon('i-check')} Concluir treino`:`${svgIcon('i-lock')} ${finished?'Já concluído':'Somente o treino do dia'}`);
+  track.classList.toggle('disabled',!allowed);
+  track.setAttribute('aria-disabled',String(!allowed));
+  track.title=finished?'Treino já finalizado':(allowed?'Arraste para concluir treino':gate.reason);
+  if(label)label.innerHTML=finished?`${svgIcon('i-check')} Treino finalizado`:(allowed?`${svgIcon('i-check')} Arraste para concluir treino`:`${svgIcon('i-lock')} Somente o treino do dia`);
+  window.resetFinishWorkoutSlider?.();
 }
 
 /* ===== v22: treinos personalizados também aparecem na caixa Treinos + fechamento robusto ===== */
