@@ -2302,3 +2302,30 @@ body[data-theme="dark"] #adminPanel .admin-topbar-actions > button {
   line-height: normal !important;
   letter-spacing: normal !important;
 }
+
+/* Modal de treino em tela cheia: a lista de exercícios ocupa toda a altura livre.
+   No desktop o conteúdo fica centralizado em até 760px para não esticar as séries. */
+#workoutModal.gym-workout-overlay {
+  padding: 0;
+  align-items: stretch;
+}
+
+#workoutModal .gym-workout-sheet {
+  width: 100%;
+  max-width: none;
+  height: 100vh;
+  height: 100dvh;
+  max-height: none;
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  padding:
+    calc(14px + env(safe-area-inset-top, 0px))
+    max(14px, calc((100% - 760px) / 2))
+    calc(14px + env(safe-area-inset-bottom, 0px));
+}
+
+#workoutModal .gym-sheet-handle {
+  display: none;
+}

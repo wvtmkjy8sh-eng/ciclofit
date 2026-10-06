@@ -447,7 +447,7 @@ body[data-theme="dark"] .gpx-detail-modal{background:#000}
 .week-card .day.today .day-more{color:#fff}
 @media(max-width:700px){.week-card .day-more{font-size:6.5px}}
 /* v40 — indicação visual de conclusão bloqueada fora do dia agendado */
-#finishWorkout[aria-disabled="true"]{opacity:.48;cursor:not-allowed;filter:saturate(.45);box-shadow:none}
+#finishWorkout[aria-disabled="true"]:not(.finished){opacity:.48;cursor:not-allowed;filter:saturate(.45);box-shadow:none}
 .mini-add-exercise{padding:8px 10px;font-size:10px;white-space:nowrap}.new-exercise-note{margin-top:6px}
 
 /* CicloFit 5.0 v47 — organização da aba Treinos no painel Admin */
