@@ -520,6 +520,7 @@ function confirmFinishWorkout(){
     if(e.key==='Enter'||e.key===' '){e.preventDefault();confirmFinishWorkout();}
   });
   window.resetFinishWorkoutSlider=()=>reset(false);
+  window.fillFinishWorkoutSlider=()=>apply(maxTravel(),false);
 })();
 function closeModal(){if(currentWorkout&&$('#workoutModal')?.classList.contains('show'))saveWorkoutDraft();stopTimer();$('#workoutModal').classList.remove('show')}$('#closeModal').onclick=closeModal;$('#workoutModal').onclick=e=>{if(e.target.id==='workoutModal')closeModal()};
 let restAudioContext=null,restEndAt=0,restFinishTimer=0,restKeepWatch=0,restBeepHold=0,restWakeLock=null,restPendingBeep=false;
@@ -2151,11 +2152,12 @@ function updateFinishWorkoutState(){
   const finished=isCurrentWorkoutFinished();
   const gate=activityCompletionGate(currentWorkout);
   const allowed=gate.ok;
-  track.classList.toggle('disabled',!allowed);
-  track.setAttribute('aria-disabled',String(!allowed));
-  track.title=finished?'Treino já finalizado':(allowed?'Arraste para concluir treino':gate.reason);
-  if(label)label.innerHTML=finished?`${svgIcon('i-check')} Treino finalizado`:(allowed?`${svgIcon('i-check')} Arraste para concluir treino`:`${svgIcon('i-lock')} Somente o treino do dia`);
-  window.resetFinishWorkoutSlider?.();
+  track.classList.toggle('disabled',!allowed&&!finished);
+  track.classList.toggle('finished',finished);
+  track.setAttribute('aria-disabled',String(!allowed||finished));
+  track.title=finished?'Treino concluído':(allowed?'Deslize para concluir treino':gate.reason);
+  if(label)label.innerHTML=finished?'Treino Concluído':(allowed?'Deslize para concluir treino':`${svgIcon('i-lock')} Somente o treino do dia`);
+  if(finished)window.fillFinishWorkoutSlider?.();else window.resetFinishWorkoutSlider?.();
 }
 
 /* ===== v22: treinos personalizados também aparecem na caixa Treinos + fechamento robusto ===== */
