@@ -515,6 +515,10 @@ function confirmFinishWorkout(){
   thumb.addEventListener('pointermove',onPointerMove);
   thumb.addEventListener('pointerup',onPointerUp);
   thumb.addEventListener('pointercancel',onPointerUp);
+  // iOS: na primeira abertura do modal (ainda animando) o touch-action pode não valer
+  // e o arraste vira rolagem (pointercancel). Bloquear o toque no círculo garante o gesto.
+  thumb.addEventListener('touchstart',e=>{if(!isDisabled())e.preventDefault()},{passive:false});
+  thumb.addEventListener('touchmove',e=>{if(dragging)e.preventDefault()},{passive:false});
   track.addEventListener('keydown',e=>{
     if(isDisabled())return;
     if(e.key==='Enter'||e.key===' '){e.preventDefault();confirmFinishWorkout();}

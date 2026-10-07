@@ -2201,13 +2201,13 @@ body:not([data-theme="dark"]) #home #weekGrid .day.today {
 }
 
 #home #weekGrid .day.today .day-status.is-done {
-  background: #2f5a0c;
+  background: #6fae1f;
   box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.55);
 }
 
 #home #weekGrid .day .day-status.is-done,
 #home #weekGrid .day .day-status.is-done .cf-svg {
-  color: #ffffff !important;
+  color: #111 !important;
 }
 
 #home #weekGrid .day .day-status .cf-svg {
@@ -2346,4 +2346,20 @@ body[data-theme="dark"] #adminPanel .admin-topbar-actions > button {
 
 #workoutModal #finishWorkout .slide-confirm-thumb {
   top: calc(50% - 22px);
+  touch-action: none;
+  color: #111;
+}
+
+/* Checks sobre o verde-limão em preto: o branco não tinha contraste. */
+#workoutModal .set-check.done {
+  color: #111;
+}
+
+#workoutModal #finishWorkout.finished .slide-confirm-label {
+  color: #111;
+}
+
+#workoutModal #finishWorkout.finished .slide-confirm-thumb {
+  background: #111;
+  color: var(--accent);
 }
