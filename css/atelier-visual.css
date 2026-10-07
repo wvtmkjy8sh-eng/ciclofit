@@ -1172,6 +1172,13 @@ body[data-theme="dark"] #adminPanel .selected-exercise {
 .week-day-list small {
   color: var(--muted);
   text-align: right;
+  flex: 0 0 auto;
+  max-width: 60%;
+}
+
+.week-day-list b {
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 #weekDayMinimize {
@@ -2328,4 +2335,15 @@ body[data-theme="dark"] #adminPanel .admin-topbar-actions > button {
 
 #workoutModal .gym-sheet-handle {
   display: none;
+}
+
+/* Botão deslizante: o trilho mantém a altura do desenho (52px) e o círculo fica
+   centralizado; regras antigas de 46/48px faziam o círculo vazar por baixo. */
+#workoutModal #finishWorkout {
+  min-height: 52px;
+  flex-shrink: 0;
+}
+
+#workoutModal #finishWorkout .slide-confirm-thumb {
+  top: calc(50% - 22px);
 }

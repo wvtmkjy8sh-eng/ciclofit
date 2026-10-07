@@ -2004,7 +2004,7 @@ window.openWorkout=function(type){try{if(!$('#exerciseList')||!$('#workoutModal'
 function renderInProgressExercisesLegacy(){
   const box=$('#inProgressExercises'); if(!box)return;
   const a=currentAuth(); if(!a||a.role!=='student'){box.innerHTML='';return}
-  const today=iso(), drafts=Object.values(data.workoutDrafts||{}).filter(d=>String(d.updatedAt||'').slice(0,10)===today||String(d.type||'').startsWith('custom:'));
+  const today=iso(), drafts=Object.entries(data.workoutDrafts||{}).filter(([k,d])=>d&&k===workoutDraftKey(d.type,today)).map(([,d])=>d);
   const unique=[]; const seen=new Set();
   drafts.forEach(d=>{const key=workoutDraftKey(d.type,today);if(seen.has(d.type))return;const w=workoutByKey(d.type);if(!w)return;const sets=(d.sets||[]).flat();const completed=sets.filter(s=>s.done).length;const total=sets.length;if(completed>0&&completed<total){seen.add(d.type);unique.push({d,w,completed,total})}});
   box.innerHTML=unique.length?unique.map(({d,w,completed,total})=>`<article class="in-progress-card"><div class="in-progress-icon">${String(w.category||'').toLowerCase()==='bike'?svgIcon('i-bike'):svgIcon('i-dumbbell')}</div><div class="in-progress-main"><div class="in-progress-top"><span>EM ANDAMENTO</span><b>${completed}/${total} séries</b></div><strong>${esc((w.title||'Treino').replace(/^Treino [ABC] — /,''))}</strong><small>${esc(w.duration||'')} · continue de onde parou</small><div class="in-progress-bar"><i style="width:${Math.round(completed/Math.max(total,1)*100)}%"></i></div></div><button class="mini-action" onclick="openWorkout('${esc(d.type)}')">Continuar</button></article>`).join(''):'<div class="in-progress-empty">Nenhum exercício em andamento. Seus treinos iniciados aparecerão aqui.</div>';
@@ -2177,7 +2177,7 @@ function renderCustomWorkoutsInTrainings(){
 function renderInProgressExercises(){
   const box=$('#inProgressExercises'); if(!box)return;
   const a=currentAuth(); if(!a||a.role!=='student'){box.innerHTML='';return}
-  const today=iso(), drafts=Object.values(data.workoutDrafts||{}).filter(d=>String(d.updatedAt||'').slice(0,10)===today||String(d.type||'').startsWith('custom:'));
+  const today=iso(), drafts=Object.entries(data.workoutDrafts||{}).filter(([k,d])=>d&&k===workoutDraftKey(d.type,today)).map(([,d])=>d);
   const unique=[]; const seen=new Set();
   drafts.forEach(d=>{if(seen.has(d.type))return;const w=workoutByKey(d.type);if(!w)return;if(isDoneWorkout(d.type,today)||!isWorkoutScheduledToday(d.type))return;const sets=(d.sets||[]).flat();const completed=sets.filter(s=>s.done).length;const total=sets.length;if(completed>0&&completed<total){seen.add(d.type);unique.push({d,w,completed,total})}});
   box.innerHTML=unique.length?unique.map(({d,w,completed,total})=>`<article class="in-progress-card"><div class="in-progress-icon">${String(w.category||'').toLowerCase()==='bike'?svgIcon('i-bike'):svgIcon('i-dumbbell')}</div><div class="in-progress-main"><div class="in-progress-top"><span>EM ANDAMENTO</span><b>${completed}/${total} séries</b></div><strong>${esc((w.title||'Treino').replace(/^Treino [ABC] — /,''))}</strong><small>${esc(w.duration||'')} · continue de onde parou</small><div class="in-progress-bar"><i style="width:${Math.round(completed/Math.max(total,1)*100)}%"></i></div></div><button class="mini-action" onclick="openWorkout('${esc(d.type)}')">Continuar</button></article>`).join(''):'<div class="in-progress-empty">Nenhum exercício em andamento. Seus treinos iniciados aparecerão aqui.</div>';
