@@ -321,9 +321,6 @@ function scheduledDateThisWeek(x,now=new Date()){
   monday.setDate(monday.getDate()-((monday.getDay()+6)%7));
   const d=new Date(monday);
   d.setDate(monday.getDate()+((wd+6)%7));
-  const scheduled=iso(d);
-  const start=dateOnly(x?.startDate);
-  if(start&&scheduled<start)d.setDate(d.getDate()+7);
   return iso(d);
 }
 function isAssignedWorkoutOnDate(x,date=iso()){
