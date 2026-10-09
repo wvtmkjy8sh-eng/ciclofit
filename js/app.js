@@ -301,13 +301,12 @@ function weeklyAssignedSchedule(baseDate=new Date()){
   const days=Array.from({length:7},(_,i)=>{const d=new Date(weekStart);d.setDate(weekStart.getDate()+i);return iso(d)});
   const dayNames=['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
   all.forEach(x=>{
-    const start=dateOnly(x.startDate);
     const end=dateOnly(x.validUntil);
-    // Cada atribuição recebe um dia fixo da semana. Registros antigos usam o dia da data de início.
+    // O calendário mostra o dia atribuído; a data de início continua controlando a elegibilidade.
     const wd=canonicalWeekday(x);
     if(wd<0||wd>6)return;
     const target=days[(wd+6)%7];
-    if((start&&target<start)||(end&&target>end))return;
+    if(end&&target>end)return;
     if(!map.has(target))map.set(target,[]);
     map.get(target).push({...x,weekday:wd,weekdayName:dayNames[wd]});
   });
@@ -355,7 +354,7 @@ function canonicalWeekday(x){
   if(x?.type==='A')return 1;
   if(x?.type==='B')return 3;
   if(x?.type==='C')return 5;
-  return new Date((x?.startDate||iso())+'T12:00:00').getDay();
+  return new Date(`${dateOnly(x?.startDate)||iso()}T12:00:00`).getDay();
 }
 function weekActivityIcon(item){
   if(item?.type==='ride')return 'i-bike';
@@ -412,8 +411,8 @@ function openWeekDay(date){
   const body=$('#weekDayBody');
   if(body){
     body.innerHTML=items.length?items.map(item=>{
-      const w=workoutByKey(item.type)||{};
-      const bike=String(w.category||'').toLowerCase()==='bike'||item.type==='ride';
+      const w=workoutByKey(item.type)||customById(item.customId)?.workout||{};
+      const bike=String(w.category||'').toLowerCase()==='bike'||String(w.icon||'').toLowerCase()==='i-bike'||item.type==='ride';
       const group=assignmentGroup(item);
       const exercises=Array.isArray(w.exercises)?w.exercises:[];
       const ride=w.ride||{};
