@@ -279,7 +279,7 @@ function renderToday(){
 function weeklyAssignedSchedule(baseDate=new Date()){
   const map=new Map(),a=currentAuth?.();
   if(!a||a.role!=='student')return map;
-  const all=adminWorkouts().filter(x=>String(x.studentId)===String(a.id)&&x.startDate);
+  const all=adminWorkouts().filter(x=>String(x.studentId)===String(a.id));
   const weekStart=new Date(baseDate);weekStart.setHours(0,0,0,0);
   // A semana do calendário é sempre de segunda a domingo.
   // getDay(): domingo=0, segunda=1 ... sábado=6.
@@ -287,13 +287,13 @@ function weeklyAssignedSchedule(baseDate=new Date()){
   const days=Array.from({length:7},(_,i)=>{const d=new Date(weekStart);d.setDate(weekStart.getDate()+i);return iso(d)});
   const dayNames=['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
   all.forEach(x=>{
-    const start=x.startDate;
-    const end=x.validUntil||start;
+    const start=dateOnly(x.startDate);
+    const end=dateOnly(x.validUntil);
     // Cada atribuição recebe um dia fixo da semana. Registros antigos usam o dia da data de início.
     const wd=canonicalWeekday(x);
     if(wd<0||wd>6)return;
     const target=days[(wd+6)%7];
-    if(target<start||target>end)return;
+    if((start&&target<start)||(end&&target>end))return;
     if(!map.has(target))map.set(target,[]);
     map.get(target).push({...x,weekday:wd,weekdayName:dayNames[wd]});
   });
@@ -309,23 +309,26 @@ function scheduledDateThisWeek(x,now=new Date()){
   const d=new Date(monday);
   d.setDate(monday.getDate()+((wd+6)%7));
   const scheduled=iso(d);
-  if(x?.startDate&&scheduled<x.startDate)d.setDate(d.getDate()+7);
+  const start=dateOnly(x?.startDate);
+  if(start&&scheduled<start)d.setDate(d.getDate()+7);
   return iso(d);
 }
 function isAssignedWorkoutOnDate(x,date=iso()){
   const scheduledDate=scheduledDateThisWeek(x,new Date(`${date}T12:00:00`));
-  return scheduledDate===date&&(!x?.startDate||x.startDate<=date)&&(!x?.validUntil||x.validUntil>=date);
+  const start=dateOnly(x?.startDate),end=dateOnly(x?.validUntil);
+  return scheduledDate===date&&(!start||start<=date)&&(!end||end>=date);
 }
 function workoutListState(x){
   const day=scheduledDateThisWeek(x);
   const today=iso();
+  const start=dateOnly(x?.startDate),end=dateOnly(x?.validUntil);
   if(isDoneWorkout(x.type,day))return 'done';
-  if(x?.startDate&&x.startDate>today)return 'future';
-  if(x?.validUntil&&x.validUntil<today)return 'missed';
-  if(x?.validUntil&&day>x.validUntil)return 'missed';
+  if(start&&start>today)return 'future';
+  if(end&&end<today)return 'missed';
+  if(end&&day>end)return 'missed';
   if(day>today)return 'future';
   if(day<today)return 'missed';
-  if(x?.startDate&&day<x.startDate)return 'future';
+  if(start&&day<start)return 'future';
   return 'today';
 }
 function canonicalWeekday(x){
