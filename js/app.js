@@ -237,7 +237,21 @@ function renderToday(){
     const scheduled=weeklyAssignedSchedule(d).get(today)||[];
     const x=scheduled.find(item=>isAssignedWorkoutOnDate(item,today));
     if(!x){
-      $('.hero-card')?.style.setProperty('display','none');
+      const todayCard=$('.hero-card');
+      todayCard?.style.removeProperty('display');
+      todayCard?.classList.remove('today-card-clickable','today-done');
+      if(todayCard)todayCard.onclick=null;
+      $('#todayIcon').innerHTML=svgIcon('i-calendar');
+      $('#todayLabel').textContent='TREINO DO DIA';
+      $('#todayWorkout').textContent='Nenhum treino programado';
+      $('#todayDescription').textContent='Confira a aba Treinos para ver sua programação.';
+      $('#todayDuration').textContent='—';
+      $('#todayExercises').textContent='—';
+      $('#todayIntensity').textContent='—';
+      $('#todayAction').textContent='Sem treino hoje';
+      $('#todayAction').disabled=true;
+      $('#todayAction').classList.add('is-disabled');
+      $('#todayAction').onclick=null;
       return;
     }
     $('.hero-card')?.style.removeProperty('display');
