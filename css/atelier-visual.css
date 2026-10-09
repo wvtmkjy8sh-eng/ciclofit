@@ -2211,17 +2211,24 @@ body:not([data-theme="dark"]) #home #weekGrid .day.today {
 }
 
 #home #weekGrid .day .day-status.is-pending {
-  border: 1px solid rgba(220, 38, 38, 0.3);
-  background: rgba(220, 38, 38, 0.12);
+  box-sizing: border-box;
+  width: 22px;
+  height: 22px;
+  place-items: center;
+  border: 1px solid rgba(220, 38, 38, 0.24);
+  background: linear-gradient(145deg, #fff1f2, #fee2e2);
   color: #dc2626 !important;
-  font-size: 11px;
+  font-family: Arial, sans-serif;
+  font-size: 12px;
   font-weight: 900;
-  box-shadow: 0 2px 6px rgba(127, 29, 29, 0.12);
+  line-height: 1;
+  text-align: center;
+  box-shadow: 0 2px 7px rgba(127, 29, 29, 0.16), inset 0 1px 0 rgba(255, 255, 255, 0.9);
 }
 
 #home #weekGrid .day.today .day-status.is-pending {
-  border-color: rgba(220, 38, 38, 0.45);
-  background: rgba(220, 38, 38, 0.16);
+  border-color: rgba(220, 38, 38, 0.32);
+  background: linear-gradient(145deg, #fee2e2, #fecaca);
   color: #b91c1c !important;
 }
 
