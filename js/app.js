@@ -293,9 +293,7 @@ function weeklyAssignedSchedule(baseDate=new Date()){
     const wd=canonicalWeekday(x);
     if(wd<0||wd>6)return;
     const target=days[(wd+6)%7];
-    // A vigência precisa cruzar a semana. O dia escolhido continua visível
-    // mesmo que a data desse dia caia um pouco antes do início ou depois do fim.
-    if(end<days[0]||start>days[6])return;
+    if(target<start||target>end)return;
     if(!map.has(target))map.set(target,[]);
     map.get(target).push({...x,weekday:wd,weekdayName:dayNames[wd]});
   });
@@ -310,6 +308,8 @@ function scheduledDateThisWeek(x,now=new Date()){
   monday.setDate(monday.getDate()-((monday.getDay()+6)%7));
   const d=new Date(monday);
   d.setDate(monday.getDate()+((wd+6)%7));
+  const scheduled=iso(d);
+  if(x?.startDate&&scheduled<x.startDate)d.setDate(d.getDate()+7);
   return iso(d);
 }
 function isAssignedWorkoutOnDate(x,date=iso()){
@@ -319,11 +319,13 @@ function isAssignedWorkoutOnDate(x,date=iso()){
 function workoutListState(x){
   const day=scheduledDateThisWeek(x);
   const today=iso();
+  if(isDoneWorkout(x.type,day))return 'done';
   if(x?.startDate&&x.startDate>today)return 'future';
   if(x?.validUntil&&x.validUntil<today)return 'missed';
-  if(isDoneWorkout(x.type,day))return 'done';
+  if(x?.validUntil&&day>x.validUntil)return 'missed';
   if(day>today)return 'future';
   if(day<today)return 'missed';
+  if(x?.startDate&&day<x.startDate)return 'future';
   return 'today';
 }
 function canonicalWeekday(x){
