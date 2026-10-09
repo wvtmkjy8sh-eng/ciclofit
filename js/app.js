@@ -235,7 +235,7 @@ function renderToday(){
   if(a?.role==='student'){
     const today=iso(d);
     const scheduled=weeklyAssignedSchedule(d).get(today)||[];
-    const x=scheduled[0];
+    const x=scheduled.find(item=>isAssignedWorkoutOnDate(item,today));
     if(!x){
       $('.hero-card')?.style.setProperty('display','none');
       return;
@@ -312,10 +312,15 @@ function scheduledDateThisWeek(x,now=new Date()){
   d.setDate(monday.getDate()+((wd+6)%7));
   return iso(d);
 }
+function isAssignedWorkoutOnDate(x,date=iso()){
+  const scheduledDate=scheduledDateThisWeek(x,new Date(`${date}T12:00:00`));
+  return scheduledDate===date&&(!x?.startDate||x.startDate<=date)&&(!x?.validUntil||x.validUntil>=date);
+}
 function workoutListState(x){
   const day=scheduledDateThisWeek(x);
   const today=iso();
   if(x?.startDate&&x.startDate>today)return 'future';
+  if(x?.validUntil&&x.validUntil<today)return 'missed';
   if(isDoneWorkout(x.type,day))return 'done';
   if(day>today)return 'future';
   if(day<today)return 'missed';
@@ -2093,7 +2098,7 @@ function isBikeWorkoutType(type){
 function isWorkoutScheduledToday(type){
   const a=currentAuth();
   if(!type)return false;
-  if(a?.role==='student')return todayAssignedForStudent().some(x=>String(x.type)===String(type));
+  if(a?.role==='student')return todayAssignedForStudent().some(x=>String(x.type)===String(type)&&isAssignedWorkoutOnDate(x));
   const fallback=todayType();
   return String(fallback)===String(type);
 }
@@ -2102,7 +2107,7 @@ function activityOpenGate(type){
   if(isDoneWorkout(type))return {ok:false,reason:'Esta atividade já foi concluída e não pode ser aberta novamente.'};
   const a=currentAuth();
   if(a?.role==='student'){
-    const active=adminWorkouts().some(x=>String(x.studentId)===String(a.id)&&String(x.type)===String(type)&&workoutListState(x)==='today');
+    const active=adminWorkouts().some(x=>String(x.studentId)===String(a.id)&&String(x.type)===String(type)&&isAssignedWorkoutOnDate(x));
     if(!active)return {ok:false,reason:'Só é possível registrar o treino do dia.'};
     return {ok:true};
   }
@@ -2112,11 +2117,12 @@ function activityOpenGate(type){
 function activityCompletionGate(type){
   if(!type)return {ok:false,reason:'Nenhuma atividade selecionada.'};
   if(isDoneWorkout(type))return {ok:false,reason:'Esta atividade já foi concluída e não pode ser finalizada novamente.'};
-  if(!isWorkoutScheduledToday(type))return {ok:false,reason:'Só é possível concluir a atividade do dia.'};
   const a=currentAuth();
   if(a?.role==='student'){
-    const active=adminWorkouts().find(x=>String(x.studentId)===String(a.id)&&String(x.type)===String(type)&&(!x.validUntil||new Date(x.validUntil+'T23:59:59')>=new Date()));
+    const active=adminWorkouts().find(x=>String(x.studentId)===String(a.id)&&String(x.type)===String(type)&&isAssignedWorkoutOnDate(x));
     if(!active)return {ok:false,reason:'Este treino não está válido.'};
+  }else if(!isWorkoutScheduledToday(type)){
+    return {ok:false,reason:'Só é possível concluir a atividade do dia.'};
   }
   if(isBikeWorkoutType(type))return {ok:false,reason:'Pedais são concluídos na aba Pedal.'};
   return {ok:true};
@@ -2263,7 +2269,7 @@ cleanLegacyABCWorkouts();
     const today=iso(new Date());
     const items=typeof weeklyAssignedSchedule==='function' ? (weeklyAssignedSchedule(new Date()).get(today)||[]) : [];
     return items.find(x=>{
-      if(planEnded(x.validUntil)) return false;
+      if(!isAssignedWorkoutOnDate(x,today)) return false;
       return !!workoutByKey(x.type);
     })||null;
   }
