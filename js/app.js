@@ -384,7 +384,7 @@ function renderWeek(){
     const label=items.length?[...new Set(items.map(shortWeekWorkoutLabel))].join(' + '):'Sem treino';
     const done=items.length&&items.every(x=>isDoneWorkout(x.type,date));
     const iconHtml=iconId?svgIcon(iconId):'<span class="day-x" aria-hidden="true">X</span>';
-    return `<article class="day ${isToday?'today':''} ${items.length?'assigned-day':'rest-day'} ${done?'done':''}" data-week-date="${date}" role="button" tabindex="0" title="${esc(fullNames[i])}: ${esc(label)}"><span class="day-name">${letters[i]}</span><span class="day-date">${d.getDate()}</span><div class="icon">${iconHtml}</div><span class="day-status ${done?'is-done':''}" aria-hidden="true">${done?svgIcon('i-check'):''}</span>${isToday&&items.length&&workoutByKey(items[0].type)?.duration?`<small class="day-duration">${esc(workoutByKey(items[0].type).duration)}</small>`:''}</article>`;
+    return `<article class="day ${isToday?'today':''} ${items.length?'assigned-day':'rest-day'} ${done?'done':''}" data-week-date="${date}" role="button" tabindex="0" title="${esc(fullNames[i])}: ${esc(label)}"><span class="day-name">${letters[i]}</span><span class="day-date">${d.getDate()}</span><div class="icon">${iconHtml}</div><span class="day-status ${done?'is-done':''}" aria-hidden="true">${done?svgIcon('i-check'):(items.length?'X':'')}</span>${isToday&&items.length&&workoutByKey(items[0].type)?.duration?`<small class="day-duration">${esc(workoutByKey(items[0].type).duration)}</small>`:''}</article>`;
   }).join('');
   const end=new Date(monday);end.setDate(monday.getDate()+6);
   const fmt=new Intl.DateTimeFormat('pt-BR',{day:'2-digit',month:'short'});
