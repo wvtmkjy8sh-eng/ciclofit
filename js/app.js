@@ -460,9 +460,8 @@ function confirmFinishWorkout(){
   const key=workoutDraftKey(currentWorkout),sets=collectWorkout();
   data.workouts[key]={type:currentWorkout,sets,createdAt:new Date().toISOString(),completedAt:new Date().toISOString()};
   delete data.workoutDrafts[key];
+  window.closeWorkout({saveDraft:false});
   save();
-  updateFinishWorkoutState();
-  closeModal();
   refresh();
   renderWeek();
   renderInProgressExercises();
@@ -2220,8 +2219,8 @@ const _renderAdminWorkoutsV22=renderAdminWorkouts;
 renderAdminWorkouts=function(){_renderAdminWorkoutsV22();renderCustomWorkoutsInTrainings()};
 
 /* Fechamento confiável da aba/modal de treino em botão, toque, backdrop e ESC. */
-window.closeWorkout=function(){
-  try{if(currentWorkout)saveWorkoutDraft()}catch(e){}
+window.closeWorkout=function({saveDraft=true}={}){
+  if(saveDraft&&currentWorkout)saveWorkoutDraft();
   try{stopTimer()}catch(e){}
   currentWorkout=null;
   $('#workoutModal')?.classList.remove('show');
@@ -2280,7 +2279,7 @@ cleanLegacyABCWorkouts();
     const gate=activityOpenGate(type);
     if(!gate.ok){toast?.(gate.reason,'error');return false;}
 
-    const isBike=String(w.category||'').toLowerCase()==='bike';
+    const isBike=isBikeWorkoutType(type);
     if(isBike){
       try{
         navigate('cycling');
@@ -2294,22 +2293,29 @@ cleanLegacyABCWorkouts();
       }
       return true;
     }
-
     try{
-      navigate('workouts');
-      requestAnimationFrame(()=>{
-        try{
-          if(assigned?.id && typeof openAssignedWorkout==='function'){
-            const opened=openAssignedWorkout(assigned.id);
-            if(opened===false) openWorkout(type);
-          }else{
-            openWorkout(type);
-          }
-        }catch(err){
-          console.error('CicloFit: falha ao abrir treino de academia',err);
-          toast?.('Não foi possível abrir a lista de exercícios.','error');
+      if(assigned&&typeof openAssignedWorkout==='function'){
+        const opened=openAssignedWorkout(assigned.id||assigned.type);
+        if(opened===false){
+          navigate('workouts');
+          requestAnimationFrame(()=>{
+            try{openWorkout(type)}
+            catch(err){
+              console.error('CicloFit: falha ao abrir treino de academia',err);
+              toast?.('Não foi possível abrir a lista de exercícios.','error');
+            }
+          });
         }
-      });
+      }else{
+        navigate('workouts');
+        requestAnimationFrame(()=>{
+          try{openWorkout(type)}
+          catch(err){
+            console.error('CicloFit: falha ao abrir treino de academia',err);
+            toast?.('Não foi possível abrir a lista de exercícios.','error');
+          }
+        });
+      }
     }catch(err){
       console.error('CicloFit: falha ao abrir aba Treinos',err);
       toast?.('Não foi possível abrir a aba Treinos.','error');
